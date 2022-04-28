@@ -1,0 +1,381 @@
+/*--------------------------------------------------------------
+14. wpo-service-single-section
+--------------------------------------------------------------*/
+
+.wpo-service-single-section{
+
+    @media(max-width:991px){
+      padding-bottom: 60px;
+    }
+    .wpo-service-single-wrap{
+        img{
+            width: 100%;
+        }
+        .wpo-service-single-content{
+            .wpo-service-single-content-des{
+                padding: 60px 0;
+
+                @media(max-width:767px){
+                    padding: 35px 0;
+                }
+
+                h2{
+                    font-size: 33px;
+                    font-family: $heading-font;
+                    margin-bottom: 30px;
+
+                    @media(max-width:767px){
+                        font-size: 25px;
+                        margin-bottom: 16px;
+                    }
+                }
+
+                p{
+                    margin-bottom: 30px;
+                }
+                .wpo-service-single-sub-img{
+                    margin-top: 50px;
+                    ul{
+                        display: flex;
+                        list-style: none;
+                    }
+    
+                    li{
+                        padding-left: 10px;
+                        padding-right: 10px;
+    
+                        &:last-child{
+                            padding-left:10px;
+                            padding-right: 0;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        .wpo-solutions-section{
+            h2{
+                font-size: 33px;
+                font-family: $heading-font;
+                margin-bottom: 30px;
+
+                @media(max-width:575px){
+                    font-size: 25px;
+                }
+            }
+            .wpo-solutions-item{
+                background: $white;
+                padding: 30px 25px;
+                margin-bottom: 30px;
+                box-shadow: 0px 5px 15px 0px rgba(62, 65, 159, 0.1);
+
+                .wpo-solutions-icon{
+                    .fi{
+                        font-size: 50px;
+                        color: $theme-primary-color-s2;     
+                        line-height: 1;    
+                    }
+                }
+
+                .wpo-solutions-text{
+                    h2{
+                        font-size: 22px;
+                        font-weight: 500;
+                        margin: 20px 0;
+
+                        a{
+                            color: $dark-gray;
+
+                            &:hover{
+                                color: $theme-primary-color;
+                            }
+                        }
+                    }
+                    p{
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+
+        .wpo-benefits-section{
+            padding-top: 30px;
+            h2{
+                font-size: 33px;
+                font-family: $heading-font;
+                margin-bottom: 30px;
+            }
+
+            .accordion{
+                border-top: 1px solid #e1e1e1;
+            }
+
+            .accordion-item{
+                border: 0;
+                border-bottom: 1px solid #e1e1e1;
+
+                .accordion-body{
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+
+                button{
+                    padding: 20px;
+                    border:0;
+                    border-radius: 0;
+                    padding-left: 0;
+                    padding-right: 0;
+                    font-size: 20px;
+                    color: $heading-color;
+                    text-align: left;
+
+                    &::after{
+                        background: none;
+                        font-family: "themify";
+                        content: "\e622";
+                        font-size: 15px;
+                        transform: rotate(0deg);
+                        font-weight: 700;
+                    }
+
+                    
+                    &.collapsed{
+                        color: #373b3e;
+
+                        &::after{
+                            content: "\e61a";
+                        }
+                    }
+                    &:focus{
+                        box-shadow: none;
+                        outline: none;
+                        border-color: #e1e1e1;
+                        
+                    }
+
+                    
+                }
+
+                .accordion-collapse{
+                    border: 0;
+                }
+            }
+
+            .accordion-button{
+                background: transparent;
+            }
+        }
+    }
+    
+}
+.wpo-single-sidebar{
+    padding-left: 20px;
+
+    @media(max-width:991px){
+        padding-left: 0;
+        margin-top: 60px;
+    }
+
+    .widget{
+        padding: 30px 40px;
+        border: 1px solid #e1e1e1;
+        margin-bottom: 40px;
+
+        @media(max-width:1200px){
+            padding:20px;
+        }
+
+        h2{
+           font-size: 25px;
+           font-family: $heading-font;
+           padding-bottom: 35px;
+           position: relative;
+           text-align: center;
+           display: block;
+           margin-bottom: 30px;
+
+           &::before{
+               position: absolute;
+               left: 50%;
+               transform: translateX(-50%);
+               bottom: 0;
+               background: url(../../images/Single-title-shape.png) no-repeat right center;
+               content: "";
+               width: 52px;
+               height: 20px;
+           }
+        }
+
+        ul{
+            list-style: none;
+        }
+
+    }
+    .wpo-service-widget{
+        ul{
+
+            li{
+                a{
+                  display: block;
+                  padding: 15px 0;
+                  font-size: 16px;
+                  color: $dark-gray;
+                  font-weight: 600;
+                  border-bottom: 1px solid #e1e1e1;
+                  padding-left: 30px;
+                  position: relative;
+
+                  &:before{
+                      position: absolute;
+                      left: 0;
+                      top: 15px;
+                      font-family: "themify";
+                      content: "\e649";
+                      font-size: 14px;
+                      color: $theme-primary-color;
+                  }
+
+                  &:hover{
+                      color: $theme-primary-color;
+                  }
+
+                  
+                }
+                &:last-child {
+                    a{
+                        padding-bottom: 0;
+                        border-bottom: 0;
+                    }
+                }
+                &:first-child {
+                    a{
+                        padding-top: 0;
+                        
+                        &:before{
+                            top: 2px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .wpo-newsletter-widget{
+        p{
+            font-size: 20px;
+            font-family: $heading-font;
+            color: $dark-gray;
+            text-align: center;
+        }
+        span{
+            font-size: 15px;
+            color: $cyan;
+            a{
+                color: $dark-gray;
+                font-weight: 700;
+                &:hover{
+                    color: $theme-primary-color;
+                }
+            }
+        }
+        .form{
+            input{
+                border: 0;
+                display: block;
+                width: 100%;
+                height: 50px;
+                @include rounded-border(50px);
+                border: 1px solid #e1e1e1;
+                padding: 15px;
+                text-align: center;
+
+                &:focus{
+                    box-shadow: none;
+                }
+            }
+
+            button{
+                background: $theme-primary-color;
+                width: 100%;
+                height: 50px;
+                @include rounded-border(50px);
+                text-align: center;
+                color: $white;
+                border: none;
+                margin: 20px 0;
+            }
+            
+        }
+    }
+
+    .wpo-instagram-widget{
+        
+       ul{
+           display: flex;
+           flex-wrap: wrap;
+           li{
+            -ms-flex: 0 0 33.33%;
+            -webkit-box-flex: 0;
+            flex: 0 0 33.33%;
+            max-width: 33.33%;
+            margin-bottom: 5px;
+            padding: 0px 3px;
+
+            img{
+                width: 100%;
+                border-radius: 6px;
+                height: 80px;
+                object-fit: cover;
+            }
+           }
+       }
+    
+    }
+
+    .wpo-contact-widget{
+        border: 0;
+        background: $theme-primary-color;
+
+        h2{
+            font-size: 36px;
+            font-weight: 700;
+            text-align: left;
+            color: $white;
+            margin-bottom: 20px;
+
+            &::before{
+                left: 28px;
+                background: url(../../images/Single-title-shape2.png) no-repeat right center;
+            }
+        }
+
+        p{
+            color: $white;
+            font-size: 18px;
+        }
+
+
+        a{
+            display:inline-block;
+            padding: 10px 20px;
+            border: 1px solid $white;
+            font-size: 18px;
+            color: $white;
+            padding-right: 90px;
+            position: relative;
+            margin-top: 10px;
+
+            &::before{
+                font-family: "themify";
+                content: "\e628";
+                font-size: 18px;
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                -webkit-transform: translateY(-50%);
+                transform: translateY(-50%);
+            }
+        }
+    }
+}
