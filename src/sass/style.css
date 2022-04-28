@@ -2668,7 +2668,7 @@ h2.hidden {
 .wpo-hero-section-6,
 .wpo-hero-section-7 {
   position: relative;
-  height: 900px;
+  height: 700px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2690,7 +2690,7 @@ h2.hidden {
   .wpo-hero-section-5,
   .wpo-hero-section-6,
   .wpo-hero-section-7 {
-    height: 700px;
+    height: 600px;
     border-bottom: 1px solid #ebebeb;
   }
 }
