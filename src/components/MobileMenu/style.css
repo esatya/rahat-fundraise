@@ -1,0 +1,131 @@
+.mobileMenu {
+    position: fixed;
+    left: -300px;
+    top: 0;
+    z-index: 9999;
+    height: 100vh;
+    width: 300px;
+    background: #191933;
+    transition: all 0.3s ease 0s;
+    box-shadow: 0px 10px 40px 0px rgba(50, 50, 50, 0.1);
+    overflow-x: auto;
+    overflow-y: scroll;
+}
+.responsivemenu .card-body{
+    background: #191933;
+}
+.mobileMenu h2{
+    padding-left: 20px;
+}
+.mobileMenu.show{
+    left: 0;
+}
+.showmenu {
+    position: relative;
+    top: 0;
+    z-index: 999;
+    cursor: pointer;
+}
+.responsivemenu {
+    list-style: none;
+    padding-left: 0;
+    padding-top: 30px;
+}
+.responsivemenu li a,
+.responsivemenu li p{
+    display: block;
+    padding: 13px 35px;
+    font-size: 16px;
+    letter-spacing: 0;
+    text-transform: capitalize;
+    font-weight: 500;
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+}
+.responsivemenu li p{
+    position: relative;
+    margin-bottom: 0;
+}
+
+.responsivemenu .card{
+  border:none
+}
+.responsivemenu .card-body{
+  padding-top: 0;
+}
+
+.responsivemenu .card-body li {
+    background: #191933;
+}
+
+.responsivemenu li a{
+    position: relative;
+}
+.responsivemenu li i{
+    position: absolute;
+    right: 20px;
+    top: 17px;
+}
+.showmenu i {
+    font-size: 30px;
+    color: #fff;
+}
+
+.mobileMenu{
+    display: none;
+}
+.showmenu{
+    display: none;
+}
+@media (max-width:992px){
+    .showmenu {
+        display: block;
+        width: 40px;
+        height: 36px;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 5px;
+    }
+
+    .showmenu button:focus{
+        outline: none;
+        box-shadow: none;
+    }
+    .showmenu button span{
+        background-color: #fff;
+        width: 20px;
+        display: block;
+        height: 2px;
+        margin: 0 auto;
+        margin-bottom: 5px;
+    }
+    .mobileMenu{
+        display: block;
+    }
+}
+
+
+
+.middle-header-3 .showmenu {
+    top: 36px;
+}
+.middle-header2 .showmenu {
+    top: 26px;
+}
+
+.middle-header-3 .showmenu i{
+    color: #fff;
+}
+
+
+@media(max-width:450px){
+    .mobileMenu {
+        left: -240px;
+        width: 240px;
+    }
+    .responsivemenu li a, .responsivemenu li p {
+        font-size: 14px;
+        padding: 13px 25px;
+    }
+}

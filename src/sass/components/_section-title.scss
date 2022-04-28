@@ -1,0 +1,43 @@
+.wpo-section-title {
+	text-align: center;
+	margin-bottom: 60px;
+	
+	@include media-query(767px) {
+		margin-bottom: 40px;
+	}
+
+	span{
+		font-size: 18px;
+		font-size: calc-rem-value(18);
+		color: $theme-primary-color;
+		font-family: $heading-font;
+	}
+
+	h2 {
+		font-size: 40px;
+		font-size: calc-rem-value(40);
+		margin: 0;
+		position: relative;
+		text-transform: capitalize;
+		font-family: $heading-font;
+		margin: 15px 0 20px;
+
+		@include media-query(1200px) {
+			font-size: 35px;
+			font-size: calc-rem-value(35);
+		}
+		@include media-query(767px) {
+			font-size: 32px;
+		}
+		@include media-query(575px) {
+			font-size: 22px;
+		}
+
+	}
+
+	p{
+		max-width: 580px;
+		font-size: 18px;
+	}
+
+}

@@ -1,3 +1,4 @@
+
 # Introduction 
 
 Rahat Crowdfunding tool is a decentralized fundraising tool where anyone can raise fund in behalf of Beneficiaries from the donars globally. Here, the fundraiser can start a fundraising campaign and raise fund for the relief. Similarly, Donors can read out the need and donate to the beneficiary directly, without having to go through multiple organizations in the middle. The fund will instantly be transferred through the blockchain network. Blockchain will make the whole process secure and efficient along with cheaper or free transaction fees.
@@ -27,3 +28,4 @@ This repository uses eslint to enforce air-bnb coding styles.
 Everyone is very welcome to contribute on the codebase of Rahat. Please reach us in [Discord](https://discord.gg/AV5j2T94VR) in case of any query/feedback/suggestion.
 
 For more information on the contributing procedure, see [Contribution](https://docs.rahat.io/docs/next/Contribution-Guidelines).
+
