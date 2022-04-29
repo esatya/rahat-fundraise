@@ -1,10 +1,15 @@
 import React from 'react'
 import {Link} from  'react-router-dom'
-import Projects from '../../api/projects'
+import ins1 from '../../images/instragram/1.jpg'
+import ins2 from '../../images/instragram/2.jpg'
+import ins3 from '../../images/instragram/3.jpg'
+import ins4 from '../../images/instragram/4.jpg'
+import ins5 from '../../images/instragram/5.jpg'
+import ins6 from '../../images/instragram/6.jpg'
 
-import Events from '../../api/event'
+import Causes from '../../api/cause'
 
-const EventSidebar = (props) => {
+const CauseSidebar = (props) => {
 
     const SubmitHandler = (e) => {
         e.preventDefault()
@@ -28,14 +33,14 @@ const EventSidebar = (props) => {
                 <div className="widget recent-post-widget">
                     <h3>Related Posts</h3>
                     <div className="posts">
-                        {Events.slice(0,3).map((event, eitem) => (
-                            <div className="post" key={eitem}>
+                        {Causes.slice(0,4).map((Cause, citem) => (
+                            <div className="post" key={citem}>
                                 <div className="img-holder">
-                                    <img src={event.eImg} alt=""/>
+                                    <img src={Cause.cImg} alt=""/>
                                 </div>
                                 <div className="details">
-                                    <h4><Link onClick={ClickHandler} to={`/event-single/${event.id}`}>{event.eTitle}</Link></h4>
-                                    <span className="date">{event.date}</span>
+                                    <h4><Link onClick={ClickHandler} to={`/cause-single/${Cause.id}`}>{Cause.cTitle}</Link></h4>
+                                    <span className="date">19 Jun 2021 </span>
                                 </div>
                             </div>
                         ))}
@@ -46,15 +51,12 @@ const EventSidebar = (props) => {
                         <h3>Projects</h3>
                     </div>
                     <ul className="d-flex">
-                        {Projects.slice(0,6).map((project, pitem)=>(
-                            <li className="grid" key={pitem}>
-                                <div className="img-holder">
-                                    <Link onClick={ClickHandler} to={`/project-single/${project.id}`}>
-                                        <img src={project.projectImg} alt=""/>
-                                    </Link>
-                                </div>
-                            </li>
-                        ))}
+                        <li><img src={ins1} alt=""/></li>
+                        <li><img src={ins2} alt=""/></li>
+                        <li><img src={ins3} alt=""/></li>
+                        <li><img src={ins4} alt=""/></li>
+                        <li><img src={ins5} alt=""/></li>
+                        <li><img src={ins6} alt=""/></li>
                     </ul>
                 </div>
                 <div className="widget tag-widget">
@@ -82,4 +84,4 @@ const EventSidebar = (props) => {
     )
 }
 
-export default EventSidebar;
+export default CauseSidebar;

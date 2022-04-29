@@ -2,7 +2,7 @@ import React from 'react';
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Homepage from '../HomePage'
 import EventPage from '../EventPage'
-import ProjectPage from '../EventSinglePage'
+import ProjectPage from '../ProjectPage'
 import ErrorPage from '../ErrorPage'
       
 

@@ -33,8 +33,8 @@ export default class Header extends Component {
                                 </div>
                                 <div className="col-lg-3 col-md-6 col-6">
                                     <div className="navbar-header">
-                                        <Link onClick={ClickHandler} className="navbar-brand" to="/home"><img src={'https://rahat.io/images/logo.png'}
-                                            alt="" style={{width:'200px'}}/></Link>
+                                        <Link onClick={ClickHandler} className="navbar-brand" to="/"><img src={'https://rahat.io/images/logo.png'}
+                                            alt="rahat logo" style={{width:'200px'}}/></Link>
                                     </div>
                                 </div>
                                 <div className="col-lg-6 col-md-1 col-1">

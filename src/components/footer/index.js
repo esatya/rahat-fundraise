@@ -57,13 +57,12 @@ const Footer = (props) =>{
                     <div className="col col-lg-3 col-md-6 col-sm-12 col-12">
                         <div className="widget link-widget">
                             <div className="widget-title">
-                                <h3>Technology </h3>
+                                <h3>Resources </h3>
                             </div>
                             <ul>
-                                <li><Link onClick={ClickHandler} to="/#">Documentation</Link></li>
-                                <li><Link onClick={ClickHandler} to="/#">Discord</Link></li>
-                                <li><Link onClick={ClickHandler} to="/#">GitHub</Link></li>
-                                <li><Link onClick={ClickHandler} to="/#">Media Kit</Link></li>
+                                <li><Link onClick={ClickHandler} to="https://rahat.io/">Rahat Website</Link></li>
+                                <li><Link onClick={ClickHandler} to="https://docs.rahat.io/">Documentation</Link></li>
+                                <li><Link onClick={ClickHandler} to="https://github.com/esatya">GitHub</Link></li>
                             </ul>
                         </div>
                     </div>
@@ -75,7 +74,7 @@ const Footer = (props) =>{
                             <div className="contact-ft">
                                 <ul>
                                     <li><i className="fi flaticon-location"></i>Sanepa-02 Lalitpur, Nepal</li>
-                                    <li><i className="fi flaticon-phone-call"></i>++977 9801109713</li>
+                                    <li><i className="fi flaticon-phone-call"></i>+977 9801109713</li>
                                     <li><i className="fi flaticon-mail"></i>team@rahat.io</li>
                                 </ul>
                             </div>

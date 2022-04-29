@@ -15,13 +15,13 @@ const Hero =() => {
                     <div className="col col-xs-6 col-lg-6">
                         <div className="wpo-hero-section-text">
                             <div className="wpo-hero-title-top">
-                                <span>Rahat Fundraiser</span>
+                                <span>Rahat Crowdfunding Tool</span>
                             </div>
                             <div className="wpo-hero-title">
                                 <h2>Uplifting the lives of people in need. </h2>
                             </div>
                             <div className="wpo-hero-subtitle">
-                                <p>Rahat’s crowdfunding tool  to directly receive crypto and non-crypto donations from around the world for aid distribution through Rahat.</p>
+                                <p>We help you keep track and stay up-to-date with your crypto and non-crypto donations from all around the world for aid distribution. </p>
                             </div>
                             <div className="btns">
                                 <Link to="/about" className="theme-btn">Start a Fundraiser</Link>
