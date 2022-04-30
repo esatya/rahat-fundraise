@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
-const { CAMPAIGN_OPTIONS } = require('../config/constants');
+import mongoose from 'mongoose';
+import uniqueValidator from 'mongoose-unique-validator';
 
-const CampaignModel = mongoose.Schema(
+import { CAMPAIGN_OPTIONS } from '../config/constants';
+
+const CampaignModel =  new mongoose.Schema(
   {
     title: { type: String, minLength: 5, required: true },
     excerpt: { type: String, maxLength: 100, required: true },
@@ -37,4 +38,5 @@ CampaignModel.set('toJSON', {
 });
 
 CampaignModel.plugin(uniqueValidator);
-module.exports = mongoose.model('Campaign', CampaignModel);
+
+export default mongoose.model('Campaign', CampaignModel);

@@ -1,21 +1,24 @@
 // Import the packages
-const express = require('express');
+import express from 'express';
 require('express-async-errors');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const path = require('path');
-const morgan = require('morgan');
 
-require('dotenv').config();
+import cors from 'cors';
+import path from 'path';
+import dotenv from 'dotenv';
+import morgan from 'morgan';
+import mongoose from 'mongoose';
+
+
+dotenv.config()
 
 // Create an instance for express
 const app = express();
 
 // Import routes
-const allRoute = require('./routes/allRoute');
-const userRoute = require('./routes/User.route');
-const campaignRoute = require('./routes/Campaign.route');
-const donationRoute = require('./routes/Donation.route');
+import allRoute from './routes/allRoute';
+import userRoute from './routes/User.route';
+import campaignRoute from './routes/Campaign.route';
+import donationRoute from './routes/Donation.route';
 
 // Import Middlewares
 

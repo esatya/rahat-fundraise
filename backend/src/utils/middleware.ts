@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-const User = require('../models/User.model');
+import User from '../models/User.model';
 
-const tokenExtractor = (req, res, next) => {
+export const tokenExtractor = (req, res, next) => {
   const authorization = req.get('authorization');
   if (authorization && authorization.toLowerCase().startsWith('bearer')) {
     req.token = authorization.substring(7);
@@ -12,7 +12,7 @@ const tokenExtractor = (req, res, next) => {
   next();
 };
 
-const userExtractor = async (req, res, next) => {
+export const userExtractor = async (req, res, next) => {
   try {
     const decodedToken = jwt.verify(req.headers.token, process.env.SECRET);
     if (decodedToken.id) {
@@ -27,7 +27,3 @@ const userExtractor = async (req, res, next) => {
   next();
 };
 
-module.exports = {
-  tokenExtractor,
-  userExtractor,
-};

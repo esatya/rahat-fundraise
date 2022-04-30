@@ -1,13 +1,14 @@
-const express = require('express');
+import express from 'express';
+import jsonwebtoken from 'jsonwebtoken';
+import { body, validationResult } from 'express-validator';
+
+import User from '../models/User.model';
+import { secret } from '../config/keys';
+
+import { userExtractor } from '../utils/middleware';
+import { convertUserData, isObjectIdValidator } from '../utils/helper';
 
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
-const jsonwebtoken = require('jsonwebtoken');
-const { secret } = require('../config/keys');
-
-const User = require('../models/User.model');
-const { convertUserData, isObjectIdValidator } = require('../utils/helper');
-const { userExtractor } = require('../utils/middleware');
 
 const newUserValidationRules = [
   body('name').isString(),
@@ -244,7 +245,7 @@ router.post(
 // @access  Public
 router.get('/get-my-profile', userExtractor, async (req, res) => {
   try {
-    console.log(req.user);
+    // console.log(req.user);
     return res.json({
       ok: true,
       msg: 'Login Successful',
@@ -391,4 +392,4 @@ router.post(
 );
 
 // Export the routes of person
-module.exports = router;
+export default router;

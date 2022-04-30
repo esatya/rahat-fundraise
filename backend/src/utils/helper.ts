@@ -1,18 +1,15 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const convertUserData = (user) => {
+export const convertUserData = (user) => {
   const { updatedDate, createdDate, ...newUser } = user;
   return newUser;
 };
 
-const isObjectIdValidator = (value) => {
+export const isObjectIdValidator = (value) => {
   if (mongoose.isValidObjectId(value)) {
     return true;
   }
   throw Error('Id is not valid');
 };
 
-module.exports = {
-  convertUserData,
-  isObjectIdValidator,
-};
+

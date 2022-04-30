@@ -1,6 +1,6 @@
-const express = require('express');
+import { Router } from 'express';
 
-const router = express.Router();
+const router = Router();
 
 // @Route   GET api/content/education/
 // @desc    Get all educations
@@ -14,4 +14,4 @@ router.get('/', async (req, res) => {
 });
 
 // Export the routes of person
-module.exports = router;
+export default router;

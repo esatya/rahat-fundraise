@@ -2,10 +2,10 @@
   "name": "rahat_backend",
   "version": "1.0.0",
   "description": "Rahat Backend Application",
-  "main": "server.js",
+  "main": "dist/server",
   "scripts": {
-    "start": "nodemon src/server.js",
-    "server": "node src/server.js",
+    "start": "nodemon dist/server",
+    "server": "node dist/server",
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js . --fix",
     "format": "prettier --write ."
