@@ -4,8 +4,8 @@
   "description": "Rahat Backend Application",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "server": "node server.js",
+    "start": "nodemon src/server.js",
+    "server": "node src/server.js",
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js . --fix",
     "format": "prettier --write ."
