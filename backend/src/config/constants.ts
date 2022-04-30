@@ -1,0 +1,3 @@
+export const CAMPAIGN_OPTIONS = ['DRAFT', 'PUBLISHED', 'ARCHIVE'];
+
+

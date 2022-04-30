@@ -1,11 +1,11 @@
-const express = require('express');
+import { Router } from 'express';
+import { body, validationResult } from 'express-validator';
 
-const router = express.Router();
-const { body, validationResult } = require('express-validator');
-const { CAMPAIGN_OPTIONS } = require('../config/constants');
+const router = Router();
 
-const Campaign = require('../models/Campaign.model');
-const { isObjectIdValidator } = require('../utils/helper');
+import Campaign from '../models/Campaign.model';
+import { isObjectIdValidator } from '../utils/helper';
+import { CAMPAIGN_OPTIONS } from '../config/constants';
 
 // @Route   GET api/campaign
 // @desc    Ping campaign
@@ -374,4 +374,4 @@ router.post(
 );
 
 // Export the routes of person
-module.exports = router;
+export default router;

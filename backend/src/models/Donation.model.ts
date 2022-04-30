@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
+import mongoose from 'mongoose';
+import uniqueValidator from 'mongoose-unique-validator';
 
-const DonationSchema = mongoose.Schema(
+const DonationSchema = new mongoose.Schema(
   {
     transactionId: { type: String, required: true, unique: true },
     campaignId: {
@@ -57,4 +57,5 @@ DonationSchema.set('toJSON', {
 });
 
 DonationSchema.plugin(uniqueValidator);
-module.exports = mongoose.model('Donation', DonationSchema);
+
+export default mongoose.model('Donation', DonationSchema);

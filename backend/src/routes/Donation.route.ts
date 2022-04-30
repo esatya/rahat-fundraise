@@ -1,12 +1,13 @@
-const express = require('express');
-const Uuid = require('uuid');
+import Uuid from 'uuid';
+import express from 'express';
+import { body, validationResult } from 'express-validator';
+
+import Donation from '../models/Donation.model';
+import Campaign from '../models/Campaign.model';
+
+import { isObjectIdValidator } from '../utils/helper';
 
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
-
-const Donation = require('../models/Donation.model');
-const { isObjectIdValidator } = require('../utils/helper');
-const Campaign = require('../models/Campaign.model');
 
 // @Route   GET api/donation
 // @desc    All donations
@@ -224,4 +225,4 @@ router.post(
 );
 
 // Export the routes of person
-module.exports = router;
+export default router;
