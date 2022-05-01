@@ -5,7 +5,7 @@ import { body, validationResult } from 'express-validator';
 import User from '../models/User.model';
 import { secret } from '../config/keys';
 
-import { userExtractor } from '../utils/middleware';
+import { userExtractor } from '../middlewares/middleware';
 import { convertUserData, isObjectIdValidator } from '../utils/helper';
 
 const router = express.Router();
@@ -249,7 +249,8 @@ router.get('/get-my-profile', userExtractor, async (req, res) => {
     return res.json({
       ok: true,
       msg: 'Login Successful',
-      data: convertUserData(req.user?.toJSON()),
+      //   FIXME: ADD CURRENT INTERFACE
+      //   data: convertUserData(req?.user?.toJSON()),
     });
   } catch (error) {
     return res
