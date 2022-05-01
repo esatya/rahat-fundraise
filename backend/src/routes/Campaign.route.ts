@@ -4,13 +4,14 @@ import { body, validationResult } from 'express-validator';
 import Campaign from '../models/Campaign.model';
 import { isObjectIdValidator } from '../utils/helper';
 import { CAMPAIGN_OPTIONS } from '../config/constants';
+import { IRequest, IResponse } from '../interfaces/vendors';
 
 const router = Router();
 
 // @Route   GET api/campaign
 // @desc    Ping campaign
 // @access  Public
-router.get('/', async (req, res) => {
+router.get('/', async (req: IRequest, res: IResponse) => {
   try {
     const campaigns = await Campaign.find();
     if (!campaigns) {
@@ -44,7 +45,7 @@ router.post(
     body('status').isString().toUpperCase().isIn(CAMPAIGN_OPTIONS).optional(),
     body('expiryDate').isISO8601({ strict: true }).isAfter(),
   ],
-  async (req, res) => {
+  async (req: IRequest, res: IResponse) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -86,7 +87,7 @@ router.post(
     body('status').isString().toUpperCase().isIn(CAMPAIGN_OPTIONS).optional(),
     body('expiryDate').isISO8601({ strict: true }).isAfter().optional(),
   ],
-  async (req, res) => {
+  async (req: IRequest, res: IResponse) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -139,7 +140,7 @@ router.post(
     body('id').isString().custom(isObjectIdValidator),
     body('status').isString().toUpperCase().isIn(CAMPAIGN_OPTIONS),
   ],
-  async (req, res) => {
+  async (req: IRequest, res: IResponse) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -185,7 +186,7 @@ router.post(
     body('id').isString().custom(isObjectIdValidator),
     body('extendBy').isInt().toInt(),
   ],
-  async (req, res) => {
+  async (req: IRequest, res: IResponse) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -229,7 +230,7 @@ router.post(
 router.post(
   '/remove',
   [body('id').isString().custom(isObjectIdValidator)],
-  async (req, res) => {
+  async (req: IRequest, res: IResponse) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -262,7 +263,7 @@ router.post(
 router.post(
   '/archive',
   [body('id').isString().custom(isObjectIdValidator)],
-  async (req, res) => {
+  async (req: IRequest, res: IResponse) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
