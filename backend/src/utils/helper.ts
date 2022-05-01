@@ -11,5 +11,3 @@ export const isObjectIdValidator = (value) => {
   }
   throw Error('Id is not valid');
 };
-
-

@@ -6,13 +6,14 @@ import Donation from '../models/Donation.model';
 import Campaign from '../models/Campaign.model';
 
 import { isObjectIdValidator } from '../utils/helper';
+import { IRequest, IResponse } from '../interfaces/vendors';
 
 const router = express.Router();
 
 // @Route   GET api/donation
 // @desc    All donations
 // @access  Public
-router.get('/', async (req, res) => {
+router.get('/', async (req: IRequest, res: IResponse) => {
   try {
     const donations = await Donation.find();
     if (!donations) {
@@ -34,7 +35,7 @@ router.get('/', async (req, res) => {
 router.post(
   '/campaign',
   [body('campaignId').isString().custom(isObjectIdValidator)],
-  async (req, res) => {
+  async (req: IRequest, res: IResponse) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -76,7 +77,7 @@ router.post(
     // body('isVerified').toBoolean(true).optional(),
     body('amount').isNumeric().toFloat(),
   ],
-  async (req, res) => {
+  async (req: IRequest, res: IResponse) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -122,7 +123,7 @@ router.post(
     body('id').isString().custom(isObjectIdValidator),
     body('email').isEmail().normalizeEmail(),
   ],
-  async (req, res) => {
+  async (req: IRequest, res: IResponse) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -158,7 +159,7 @@ router.post(
 router.post(
   '/verify-donation',
   [body('id').isString().custom(isObjectIdValidator)],
-  async (req, res) => {
+  async (req: IRequest, res: IResponse) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -194,7 +195,7 @@ router.post(
 router.post(
   '/approve-donation',
   [body('id').isString().custom(isObjectIdValidator)],
-  async (req, res) => {
+  async (req: IRequest, res: IResponse) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
