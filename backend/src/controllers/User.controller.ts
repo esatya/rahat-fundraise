@@ -174,7 +174,7 @@ export const getProfile = async (req: IRequest, res: IResponse) => {
     return res.json({
       ok: true,
       msg: 'Login Successful',
-      data: convertUserData(req?.user),
+      data: convertUserData(req?.user?.toJSON()),
     });
   } catch (error) {
     if (error instanceof Error) {

@@ -1,4 +1,4 @@
-import Uuid from 'uuid';
+import * as Uuid from 'uuid';
 import { validationResult } from 'express-validator';
 
 import Donation from '../models/Donation.model';
