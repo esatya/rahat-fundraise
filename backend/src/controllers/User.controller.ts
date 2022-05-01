@@ -6,7 +6,7 @@ import { IRequest, IResponse } from '../interfaces/vendors';
 
 import { secret } from '../config/keys';
 import User from '../models/User.model';
-import { convertUserData } from '../utils/helper';
+import { convertUserData, generateOTP } from '../utils/helper';
 
 export const pingUser = async (req: IRequest, res: IResponse) => {
   try {
@@ -188,26 +188,99 @@ export const getProfile = async (req: IRequest, res: IResponse) => {
 export const userLogin = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ ok: false, errors: errors.array() });
     }
+
     const { email } = req.body;
     const user = await User.findOne({ email });
 
     if (!user) {
       throw new Error(`User with ${email} not found.`);
     }
-    console.log(user);
-    const token = jsonwebtoken.sign(
-      { id: user?._id, email: user?.email, alias: user?.alias },
-      secret,
-    );
+
+    // const token = jsonwebtoken.sign(
+    //   { id: user?._id, email: user?.email, alias: user?.alias },
+    //   secret,
+    // );
+
     return res.json({
       ok: true,
-      msg: 'Login Successful',
+      msg: 'User Verified',
       data: convertUserData(user?.toJSON()),
-      token,
+      //   token,
+      isEmailVerified: true,
     });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'User Route Error' });
+  }
+};
+
+export const sendOTP = async (req: IRequest, res: IResponse) => {
+  try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ ok: false, errors: errors.array() });
+    }
+
+    const { phoneNumber } = req.body;
+
+    const user = await User.findOne({ phoneNumber });
+
+    if (!user) {
+      throw new Error(`User with ${phoneNumber} not found.`);
+    }
+
+    const OTP = generateOTP();
+
+    //   SEND SMS
+
+    // const payload = {
+    //   token: OTP,
+    //   phoneNumber,
+    //   expires_at: Date.now() + 5 * 60000,
+    // }; expires in 5 mins
+
+    // STORE OTP to be verified later on
+    // CREATE VERIFICATION MODEL TO STORE THE INFO FOR PERSISITENT
+    // await VerificationModel.findOneAndUpdate({ phone }, payload, { upsert: true });
+
+    res.json({
+      token: OTP,
+      phoneNumber,
+      expires_at: Date.now() + 5 * 60000,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'User Route Error' });
+  }
+};
+
+export const verifyOTP = async (req: IRequest, res: IResponse) => {
+  try {
+    const { otp } = req.body;
+
+    //   const res = await VerificationModel.findOne({ token: otp });
+    //   if (!res) throw ERR.INVALID_OTP;
+
+    //   const { phone, expires_at } = res;
+    //   if (!phone || expires_at < Date.now()) throw ERR.INVALID_OTP;
+
+    // return json web token in response
+    // for user populate verification model that relate to specific user
+    // const token = jsonwebtoken.sign(
+    //   { id: user?._id, email: user?.email, alias: user?.alias },
+    //   secret,
+    // );
   } catch (error) {
     if (error instanceof Error) {
       return res.status(401).json({ ok: false, msg: error.message });
