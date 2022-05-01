@@ -22,6 +22,8 @@ import {
   updateUserById,
   getUserBySocialId,
   getUsersByWalletId,
+  sendOTP,
+  verifyOTP,
 } from '../controllers/User.controller';
 
 import { userExtractor } from '../middlewares/middleware';
@@ -86,5 +88,16 @@ router.post(
   getByWalletIdValidationRules,
   getUsersByWalletId,
 );
+
+// Add phonenumber validation
+// not empty
+// length --> According to different country
+
+// @Route   POST api/user/send-otp
+// @desc    Send OTP
+// @access  Public
+router.post('/otp', sendOTP);
+
+router.post('/otp/verify', verifyOTP);
 
 export default router;
