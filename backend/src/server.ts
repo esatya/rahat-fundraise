@@ -9,13 +9,10 @@ import campaignRoute from './routes/Campaign.route';
 import donationRoute from './routes/Donation.route';
 
 import { mongoURI, port } from './config/keys';
-import { Console } from 'console';
 
 require('express-async-errors');
 
 const app: express.Application = express();
-
-console.log({ port });
 
 app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms'),
