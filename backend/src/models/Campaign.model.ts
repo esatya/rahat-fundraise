@@ -3,13 +3,13 @@ import uniqueValidator from 'mongoose-unique-validator';
 
 import { CAMPAIGN_OPTIONS } from '../config/constants';
 
-const CampaignModel =  new mongoose.Schema(
+const CampaignModel = new mongoose.Schema(
   {
     title: { type: String, minLength: 5, required: true },
     excerpt: { type: String, maxLength: 100, required: true },
     story: { type: String },
     fundRaiser: { type: String },
-    wallet: { type: Number, required: true },
+    wallet: { type: String, required: true },
     target: { type: Number, required: true },
     amount: { type: Number, required: true },
     status: {
