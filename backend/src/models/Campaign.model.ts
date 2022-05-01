@@ -2,8 +2,9 @@ import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
 import { CAMPAIGN_OPTIONS } from '../config/constants';
+import { ICampaign } from '../interfaces/models/Campaign';
 
-const CampaignModel =  new mongoose.Schema(
+const CampaignModel = new mongoose.Schema<ICampaign>(
   {
     title: { type: String, minLength: 5, required: true },
     excerpt: { type: String, maxLength: 100, required: true },
@@ -19,7 +20,7 @@ const CampaignModel =  new mongoose.Schema(
       default: 'DRAFT',
     },
 
-    expiryDate: { type: Date, required: true, default: Date.now() },
+    expiryDate: { type: Number, required: true, default: Date.now() },
   },
   {
     timestamps: {
@@ -39,4 +40,4 @@ CampaignModel.set('toJSON', {
 
 CampaignModel.plugin(uniqueValidator);
 
-export default mongoose.model('Campaign', CampaignModel);
+export default mongoose.model<ICampaign>('Campaign', CampaignModel);
