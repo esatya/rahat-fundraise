@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 
-const router = Router();
-
 import Campaign from '../models/Campaign.model';
 import { isObjectIdValidator } from '../utils/helper';
 import { CAMPAIGN_OPTIONS } from '../config/constants';
+
+const router = Router();
 
 // @Route   GET api/campaign
 // @desc    Ping campaign
