@@ -5,7 +5,7 @@ export interface ICampaign extends Document {
   excerpt: string;
   story?: string;
   fundRaiser?: string;
-  wallet: number;
+  wallet: string;
   target: number;
   amount: number;
   status: string;
