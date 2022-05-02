@@ -24,7 +24,7 @@ const Hero =() => {
                                 <p>We help you keep track and stay up-to-date with your crypto and non-crypto donations from all around the world for aid distribution. </p>
                             </div>
                             <div className="btns">
-                                <Link to="/about" className="theme-btn">Start a Fundraiser</Link>
+                                <Link to="/login" className="theme-btn">Start a Fundraiser</Link>
                             </div>
                         </div>
                     </div>
@@ -37,20 +37,6 @@ const Hero =() => {
                                     </div>
                                 </div>
                                 <div className="right-item">
-                                    {/* <div className="wpo-total-project">
-                                        <div className="wpo-total-project-wrap">
-                                            <div className="wpo-total-project-icon">
-                                                <i className="fi flaticon-salary"></i>
-                                            </div>
-                                            <div className="wpo-total-project-text">
-                                                <h3>252+</h3>
-                                                <p>Total Projects</p>
-                                            </div>
-                                        </div>
-                                        <div className="project-shape">
-                                            <img src={hero2} alt=""/>
-                                        </div>
-                                    </div> */}
                                     <div className="r-img">
                                         <img src={hero3} alt=""/>
                                     </div>
