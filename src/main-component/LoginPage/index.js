@@ -106,11 +106,6 @@ const LoginPage = (props) => {
                             <Grid className="formFooter">
                                 <Button fullWidth className="cBtnTheme" type="submit">Login</Button>
                             </Grid>
-                            <Grid className="loginWithSocial">
-                                <Button className="facebook"><i className="fa fa-facebook"></i></Button>
-                                <Button className="twitter"><i className="fa fa-twitter"></i></Button>
-                                <Button className="linkedin"><i className="fa fa-linkedin"></i></Button>
-                            </Grid>
                             <p className="noteHelp">Don't have an account? <Link to="/signup">Create free account</Link>
                             </p>
                         </Grid>

@@ -8,7 +8,6 @@ import SignUpPage from '../SignUpPage'
 import FundraiseRegisterPage from '../FundraiseRegister'
 import ErrorPage from '../ErrorPage'
       
-
 const AllRoute = () => { 
 
   return (
