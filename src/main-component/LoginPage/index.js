@@ -8,6 +8,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import {Link, withRouter} from "react-router-dom";
 
+
 import './style.scss';
 
 const LoginPage = (props) => {
@@ -120,6 +121,7 @@ const LoginPage = (props) => {
                 </div>
             </Grid>
         </Grid>
+
     )
 };
 

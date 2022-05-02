@@ -1,16 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import Services from '../../api/service';
 
 const CauseSidebar = (props) => {
-
-    const SubmitHandler = (e) => {
-        e.preventDefault()
-    }
-
-    const ClickHandler = () => {
-        window.scrollTo(10, 0);
-    }
 
     return (
         <div className="col col-lg-4 col-12">

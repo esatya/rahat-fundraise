@@ -94,10 +94,10 @@ Version:        1.0.0
 /*---------------------------
 	Fonts
 ----------------------------*/
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,600;1,100;1,200;1,500;1,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700;800;900&display=swap");
 @font-face {
-  font-family: 'Poppins', sans-serif;
-  src: url("../../fonts/text-font/Poppins-Light.ttf") format("truetype");
+  font-family: 'Muli';
+  src: url("../../fonts/text-font/Muli.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
@@ -5897,7 +5897,7 @@ wpo-hero-section-6
 
 .wpo-cta-area .wpo-cta-section,
 .wpo-cta-area-s2 .wpo-cta-section {
-  padding: 100px 80px;
+  padding: 60px 80px;
   background: -webkit-gradient(linear, right top, left top, from(rgba(33, 126, 194, 0.75)), to(#1d6da8));
   background: linear-gradient(to left, rgba(33, 126, 194, 0.75), #1d6da8);
   position: relative;
@@ -5910,7 +5910,6 @@ wpo-hero-section-6
   .wpo-cta-area .wpo-cta-section,
   .wpo-cta-area-s2 .wpo-cta-section {
     padding: 100px 60px;
-    padding-right: 450px;
   }
 }
 
@@ -5981,7 +5980,6 @@ wpo-hero-section-6
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  max-width: 970px;
 }
 
 @media (max-width: 1200px) {
@@ -5992,10 +5990,10 @@ wpo-hero-section-6
   }
 }
 
-.wpo-cta-area .wpo-cta-section .wpo-cta-content h2,
-.wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h2 {
-  max-width: 560px;
-  font-size: 50px;
+.wpo-cta-area .wpo-cta-section .wpo-cta-content h3,
+.wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h3 {
+  max-width: 760px;
+  font-size: 30px;
   font-weight: 500;
   line-height: 80px;
   margin: 0;
@@ -6003,41 +6001,40 @@ wpo-hero-section-6
 }
 
 @media (max-width: 1400px) {
-  .wpo-cta-area .wpo-cta-section .wpo-cta-content h2,
-  .wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h2 {
+  .wpo-cta-area .wpo-cta-section .wpo-cta-content h3,
+  .wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h3 {
     font-size: 35px;
     line-height: 50px;
-    max-width: 390px;
     margin-bottom: 30px;
   }
 }
 
 @media (max-width: 1200px) {
-  .wpo-cta-area .wpo-cta-section .wpo-cta-content h2,
-  .wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h2 {
+  .wpo-cta-area .wpo-cta-section .wpo-cta-content h3,
+  .wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h3 {
     margin-bottom: 30px;
   }
 }
 
 @media (max-width: 991px) {
-  .wpo-cta-area .wpo-cta-section .wpo-cta-content h2,
-  .wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h2 {
+  .wpo-cta-area .wpo-cta-section .wpo-cta-content h3,
+  .wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h3 {
     font-size: 25px;
     line-height: 40px;
   }
 }
 
 @media (max-width: 767px) {
-  .wpo-cta-area .wpo-cta-section .wpo-cta-content h2,
-  .wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h2 {
+  .wpo-cta-area .wpo-cta-section .wpo-cta-content h3,
+  .wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h3 {
     margin-bottom: 15px;
     max-width: 100%;
   }
 }
 
 @media (max-width: 575px) {
-  .wpo-cta-area .wpo-cta-section .wpo-cta-content h2,
-  .wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h2 {
+  .wpo-cta-area .wpo-cta-section .wpo-cta-content h3,
+  .wpo-cta-area-s2 .wpo-cta-section .wpo-cta-content h3 {
     font-size: 20px;
     line-height: 30px;
   }

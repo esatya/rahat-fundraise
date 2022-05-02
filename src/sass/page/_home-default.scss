@@ -838,7 +838,7 @@
      }
 
      .wpo-cta-section {
-         padding: 100px 80px;
+         padding: 60px 80px;
          @include linear-gradient-bg( to left,transparentize($theme-primary-color, 0.25), darken($theme-primary-color, 6%));
          position: relative;
          z-index: 1;
@@ -847,7 +847,6 @@
      
          @media(max-width:1400px){
              padding: 100px 60px;
-             padding-right: 450px;
          }
      
          @media(max-width:991px){
@@ -887,15 +886,14 @@
              display: flex;
              justify-content: space-between;
              align-items: center;
-             max-width: 970px;
      
              @media(max-width:1200px){
                  flex-wrap: wrap;
              }
      
-             h2 {
-                 max-width: 560px;
-                 font-size: 50px;
+             h3 {
+                 max-width: 760px;
+                 font-size: 30px;
                  font-weight: 500;
                  line-height: 80px;
                  margin: 0;
@@ -904,7 +902,6 @@
                  @media(max-width:1400px){
                      font-size: 35px;
                      line-height: 50px;
-                     max-width: 390px;
                      margin-bottom: 30px;
                  }
                  @media(max-width:1200px){

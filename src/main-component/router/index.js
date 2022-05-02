@@ -5,6 +5,7 @@ import EventPage from '../EventPage'
 import ProjectPage from '../ProjectPage'
 import LoginPage from '../LoginPage'
 import SignUpPage from '../SignUpPage'
+import FundraiseRegisterPage from '../FundraiseRegister'
 import ErrorPage from '../ErrorPage'
       
 
@@ -19,6 +20,7 @@ const AllRoute = () => {
             <Route path='/project/:id' component={ProjectPage}/>
             <Route path='/login' component={LoginPage}/>
             <Route path='/signup' component={SignUpPage}/>
+            <Route path='/FundraiseRegister' component={FundraiseRegisterPage}/>
             <Route path='/404' component={ErrorPage}/> 
           </Switch>
       </Router>
