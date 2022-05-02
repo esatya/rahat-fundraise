@@ -9,7 +9,7 @@ const CauseSection = (props) => {
 
     return(
 
-        <div className={`wpo-campaign-area section-padding ${props.CmClass}`}>
+        <div className={`wpo-campaign-area ${props.CmClass}`}>
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-lg-6">

@@ -13,13 +13,11 @@ const CtaSection = (props) => {
                     <div className="col-12">
                         <div className="wpo-cta-section">
                             <div className="wpo-cta-content">
-                                <h2>{props.cTitle}</h2>
+                                <h3>Decentralized and Transparent Crowdfunding Platform</h3>
+                                <div className="volunteer-img"></div>
                                 <Link to="/volunteer">Donate Here</Link>
                             </div>
-                            <div className="volunteer-img">
-                                <img src={props.vImg} alt=""/>
-                            </div>
-                            <div className="shape"><img src={shape} alt=""/></div>
+                            <div className="shape"><img src={shape} alt="" /></div>
                         </div>
                     </div>
                 </div>
