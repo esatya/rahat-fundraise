@@ -12,4 +12,9 @@ export interface IUser extends mongoose.Document {
   wallet?: string[];
   isActive: boolean;
   emailVerified: boolean;
+  otp?: {
+    number: number;
+    expiry: number;
+    phoneNumber: number;
+  };
 }

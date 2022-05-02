@@ -1,25 +1,10 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 import { secret } from '../config/keys';
+import User from '../models/User.model';
 import { INext, IRequest, IResponse } from '../interfaces/vendors';
 
-import User from '../models/User.model';
-
-export const tokenExtractor = (req: IRequest, res: IResponse, next: INext) => {
-  const authorization = req.get('authorization');
-
-  if (authorization && authorization.toLowerCase().startsWith('bearer')) {
-    req.token = authorization.substring(7);
-  }
-
-  next();
-};
-
-export const userExtractor = async (
-  req: IRequest,
-  res: IResponse,
-  next: INext,
-) => {
+const userExtractor = async (req: IRequest, res: IResponse, next: INext) => {
   try {
     const token = req.headers.token as string;
 
@@ -44,3 +29,5 @@ export const userExtractor = async (
 
   next();
 };
+
+export default userExtractor;
