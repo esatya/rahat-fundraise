@@ -11,10 +11,12 @@ import {
 } from '../validators/User.validation';
 
 import {
+  sendOTP,
   addUser,
-  addWallet,
   pingUser,
   userLogin,
+  addWallet,
+  verifyOTP,
   listUsers,
   getProfile,
   socialLogin,
@@ -22,11 +24,9 @@ import {
   updateUserById,
   getUserBySocialId,
   getUsersByWalletId,
-  sendOTP,
-  verifyOTP,
 } from '../controllers/User.controller';
 
-import { userExtractor } from '../middlewares/middleware';
+import { isAuth, tokenExtractor, userExtractor } from '../middlewares';
 
 const router = express.Router();
 
@@ -96,8 +96,8 @@ router.post(
 // @Route   POST api/user/send-otp
 // @desc    Send OTP
 // @access  Public
-router.post('/otp', sendOTP);
+router.post('/otp/verify', tokenExtractor, isAuth, verifyOTP);
 
-router.post('/otp/verify', verifyOTP);
+router.post('/otp', tokenExtractor, sendOTP);
 
 export default router;

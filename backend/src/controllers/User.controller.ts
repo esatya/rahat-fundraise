@@ -200,16 +200,16 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
       throw new Error(`User with ${email} not found.`);
     }
 
-    // const token = jsonwebtoken.sign(
-    //   { id: user?._id, email: user?.email, alias: user?.alias },
-    //   secret,
-    // );
+    const token = jsonwebtoken.sign(
+      { id: user?._id, email: user?.email, alias: user?.alias },
+      secret,
+    );
 
     return res.json({
       ok: true,
       msg: 'User Verified',
       data: convertUserData(user?.toJSON()),
-      //   token,
+      token,
       isEmailVerified: true,
     });
   } catch (error) {
@@ -223,15 +223,15 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
 
 export const sendOTP = async (req: IRequest, res: IResponse) => {
   try {
-    const errors = validationResult(req);
+    // const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ ok: false, errors: errors.array() });
-    }
+    // if (!errors.isEmpty()) {
+    //   return res.status(400).json({ ok: false, errors: errors.array() });
+    // }
 
     const { phoneNumber } = req.body;
 
-    const user = await User.findOne({ phoneNumber });
+    const user = await User.findOne({ phone: phoneNumber });
 
     if (!user) {
       throw new Error(`User with ${phoneNumber} not found.`);
@@ -240,22 +240,21 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
     const OTP = generateOTP();
 
     //   SEND SMS
+    console.log('OTP: ', OTP);
 
-    // const payload = {
-    //   token: OTP,
-    //   phoneNumber,
-    //   expires_at: Date.now() + 5 * 60000,
-    // }; expires in 5 mins
-
-    // STORE OTP to be verified later on
-    // CREATE VERIFICATION MODEL TO STORE THE INFO FOR PERSISITENT
-    // await VerificationModel.findOneAndUpdate({ phone }, payload, { upsert: true });
-
-    res.json({
+    const payload = {
       token: OTP,
       phoneNumber,
       expires_at: Date.now() + 5 * 60000,
-    });
+    };
+
+    user.otp.number = payload.token;
+    user.otp.expiry = payload.expires_at;
+    user.otp.phoneNumber = payload.phoneNumber;
+
+    await user.save({ validateModifiedOnly: true });
+
+    res.json(payload);
   } catch (error) {
     if (error instanceof Error) {
       return res.status(401).json({ ok: false, msg: error.message });
@@ -267,20 +266,28 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
 
 export const verifyOTP = async (req: IRequest, res: IResponse) => {
   try {
-    const { otp } = req.body;
+    const { otpNumber } = req.body;
 
-    //   const res = await VerificationModel.findOne({ token: otp });
-    //   if (!res) throw ERR.INVALID_OTP;
+    const user = await User.findOne({ 'otp.number': otpNumber });
 
-    //   const { phone, expires_at } = res;
-    //   if (!phone || expires_at < Date.now()) throw ERR.INVALID_OTP;
+    const { number, expiry } = user.otp;
+
+    if (number !== otpNumber || expiry < Date.now()) {
+      throw new Error(`Invalid/Expired OTP.`);
+    }
 
     // return json web token in response
     // for user populate verification model that relate to specific user
-    // const token = jsonwebtoken.sign(
-    //   { id: user?._id, email: user?.email, alias: user?.alias },
-    //   secret,
-    // );
+    const token = jsonwebtoken.sign(
+      { id: user?._id, email: user?.email, alias: user?.alias },
+      secret,
+    );
+
+    res.json({
+      ok: true,
+      token: token,
+      msg: 'OTP Verified',
+    });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(401).json({ ok: false, msg: error.message });
