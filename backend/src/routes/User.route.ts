@@ -96,7 +96,7 @@ router.post(
 // @Route   POST api/user/send-otp
 // @desc    Send OTP
 // @access  Public
-router.post('/otp/verify', tokenExtractor, isAuth, verifyOTP);
+router.post('/otp/verify', tokenExtractor, verifyOTP);
 
 router.post('/otp', tokenExtractor, sendOTP);
 
