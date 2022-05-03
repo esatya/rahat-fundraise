@@ -4,8 +4,9 @@ import { validationResult } from 'express-validator';
 import { IUser } from '../interfaces/models/User';
 import { IRequest, IResponse } from '../interfaces/vendors';
 
-import { secret } from '../config/keys';
 import User from '../models/User.model';
+import transporter from '../services/mail.service';
+import { secret, senderEmail } from '../config/keys';
 import { convertUserData, generateOTP } from '../utils/helper';
 
 export const pingUser = async (req: IRequest, res: IResponse) => {
@@ -229,32 +230,37 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
     //   return res.status(400).json({ ok: false, errors: errors.array() });
     // }
 
-    const { phoneNumber } = req.body;
+    const { email } = req.body;
 
-    const user = await User.findOne({ phone: phoneNumber });
+    const user = await User.findOne({ email: email });
 
     if (!user) {
-      throw new Error(`User with ${phoneNumber} not found.`);
+      throw new Error(`User with ${email} not found.`);
     }
-
     const OTP = generateOTP();
 
-    //   SEND SMS
     console.log('OTP: ', OTP);
 
-    const payload = {
-      token: OTP,
-      phoneNumber,
-      expires_at: Date.now() + 5 * 60000,
+    const message = {
+      from: senderEmail,
+      to: email,
+      subject: 'OTP for Login',
+      text: `Your OTP is ${OTP}`,
     };
 
-    user.otp.number = payload.token;
-    user.otp.expiry = payload.expires_at;
-    user.otp.phoneNumber = payload.phoneNumber;
+    user.otp.number = OTP;
+    user.otp.expiry = Date.now() + 5 * 60000;
 
     await user.save({ validateModifiedOnly: true });
 
-    res.json(payload);
+    await transporter.sendMail(message);
+
+    //   SEND SMS
+
+    res.json({
+      ok: true,
+      msg: 'OTP Sent',
+    });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(401).json({ ok: false, msg: error.message });

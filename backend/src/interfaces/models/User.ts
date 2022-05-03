@@ -15,6 +15,5 @@ export interface IUser extends mongoose.Document {
   otp?: {
     number: number;
     expiry: number;
-    phoneNumber: number;
   };
 }

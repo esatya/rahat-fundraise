@@ -17,9 +17,8 @@ const UserSchema = new mongoose.Schema<IUser>(
     bio: { type: String },
     isActive: { type: Boolean, default: false },
     otp: {
-      number: { type: Number, required: true },
-      expiry: { type: Number, required: true },
-      phoneNumber: { type: Number, required: true },
+      expiry: { type: Number },
+      number: { type: Number },
     },
   },
   {
