@@ -5,15 +5,21 @@ import { INext, IRequest, IResponse } from '../interfaces/vendors';
 
 const isAuth = (req: IRequest, res: IResponse, next: INext) => {
   try {
-    if (!req.token) {
-      throw new Error('Invalid Token');
+    const authorizationHeader = req.headers.authorization;
+
+    if (!authorizationHeader) {
+      throw new Error('Authorization Header is missing.');
     }
 
-    const decodedToken = jwt.verify(req.token, secret);
+    const jwtToken = authorizationHeader.split(' ')[1];
 
-    if (decodedToken['id']) {
-      req.userId = decodedToken['id'];
+    if (!jwtToken) {
+      throw new Error('Empty Token');
     }
+
+    const decodedToken = jwt.verify(jwtToken, secret);
+
+    req.userId = decodedToken['id'];
   } catch (error) {
     throw new Error('Invalid Token');
   }

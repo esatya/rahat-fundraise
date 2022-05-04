@@ -63,7 +63,7 @@ router.post('/add-wallet', addWalletValidationRules, userExtractor, addWallet);
 // @Route   POST api/user/get-my-profile
 // @desc    Get My Profile. Assumes JWT token is passed
 // @access  Public
-router.get('/get-my-profile', userExtractor, getProfile);
+router.get('/get-my-profile', isAuth, getProfile);
 
 // @Route   POST api/user/login
 // @desc    User Login with Email & OTP
