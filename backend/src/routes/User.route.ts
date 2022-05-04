@@ -26,7 +26,7 @@ import {
   getUsersByWalletId,
 } from '../controllers/User.controller';
 
-import { isAuth, userExtractor } from '../middlewares';
+import { isAuth } from '../middlewares';
 
 const router = express.Router();
 
