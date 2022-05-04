@@ -24,6 +24,7 @@
     "react-scripts": "3.1.1",
     "react-scroll": "^1.7.16",
     "react-slick": "^0.28.1",
+    "react-stepzilla": "^7.0.0",
     "react-sticky-header": "^0.2.0",
     "react-toastify": "^6.0.8",
     "reactjs-countdown": "0.0.8",

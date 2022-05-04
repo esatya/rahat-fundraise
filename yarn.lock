@@ -9855,6 +9855,11 @@ react-slick@^0.28.1:
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
 
+react-stepzilla@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/react-stepzilla/-/react-stepzilla-7.0.0.tgz#cea91c5ff0fe6425da2939980559ec6bf296e987"
+  integrity sha512-8SbVrNyCvVIewC1NcolmcxXE7lP4U38+5fQRa5jfXEv3AscOZikS9Z2DsTOWjL2F9VFy/YHb8pZe3p3BkRquPw==
+
 react-sticky-header@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/react-sticky-header/-/react-sticky-header-0.2.0.tgz#cf4ebb30ebcb2763898c2026f72b3ae3746dd037"
