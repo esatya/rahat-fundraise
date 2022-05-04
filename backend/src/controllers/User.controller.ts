@@ -88,7 +88,7 @@ export const registerUser = async (req: IRequest, res: IResponse) => {
 
     return res.json({
       ok: true,
-      msg: 'User Route Reached',
+      msg: 'User Registered Successfully',
       data: convertUserData(savedUser?.toJSON()),
     });
   } catch (error) {
@@ -172,10 +172,12 @@ export const addWallet = async (req: IRequest, res: IResponse) => {
 
 export const getProfile = async (req: IRequest, res: IResponse) => {
   try {
+    const user = await User.findOne({ _id: req.userId });
+
     return res.json({
       ok: true,
       msg: 'Login Successful',
-      data: convertUserData(req?.user?.toJSON()),
+      data: convertUserData(user.toObject()),
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -201,17 +203,12 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
       throw new Error(`User with ${email} not found.`);
     }
 
-    const token = jsonwebtoken.sign(
-      { id: user?._id, email: user?.email, alias: user?.alias },
-      secret,
-    );
-
     return res.json({
       ok: true,
-      msg: 'User Verified',
-      data: convertUserData(user?.toJSON()),
-      token,
-      isEmailVerified: true,
+      msg: 'User Exists',
+      data: {
+        email: user.email,
+      },
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -237,6 +234,7 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
     if (!user) {
       throw new Error(`User with ${email} not found.`);
     }
+
     const OTP = generateOTP();
 
     console.log('OTP: ', OTP);
@@ -245,7 +243,7 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
       from: senderEmail,
       to: email,
       subject: 'OTP for Login',
-      text: `Your OTP is ${OTP}`,
+      text: `Your Login OTP is ${OTP}. Do not share it with others.`,
     };
 
     user.otp.number = OTP;
@@ -266,15 +264,17 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
       return res.status(401).json({ ok: false, msg: error.message });
     }
 
-    return res.status(401).json({ ok: false, msg: 'User Route Error' });
+    return res
+      .status(401)
+      .json({ ok: false, msg: 'Something went wrong. Please try again.' });
   }
 };
 
 export const verifyOTP = async (req: IRequest, res: IResponse) => {
   try {
-    const { otpNumber } = req.body;
+    const { email, otpNumber } = req.body;
 
-    const user = await User.findOne({ 'otp.number': otpNumber });
+    const user = await User.findOne({ email: email, 'otp.number': otpNumber });
 
     const { number, expiry } = user.otp;
 
@@ -287,6 +287,7 @@ export const verifyOTP = async (req: IRequest, res: IResponse) => {
     const token = jsonwebtoken.sign(
       { id: user?._id, email: user?.email, alias: user?.alias },
       secret,
+      { expiresIn: '1h' },
     );
 
     res.json({
@@ -299,7 +300,9 @@ export const verifyOTP = async (req: IRequest, res: IResponse) => {
       return res.status(401).json({ ok: false, msg: error.message });
     }
 
-    return res.status(401).json({ ok: false, msg: 'User Route Error' });
+    return res
+      .status(401)
+      .json({ ok: false, msg: 'Something went wrong. Please try again.' });
   }
 };
 
