@@ -19,7 +19,6 @@ export const newUserValidationRules: ValidationChain[] = [
 ];
 
 export const updateUserValidationRules: ValidationChain[] = [
-  body('id').isString().custom(isObjectIdValidator),
   body('name').isString().optional(),
   body('address').isString().optional(),
   body('phone').isString().optional(),

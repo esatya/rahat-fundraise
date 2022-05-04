@@ -26,7 +26,7 @@ import {
   getUsersByWalletId,
 } from '../controllers/User.controller';
 
-import { isAuth, tokenExtractor, userExtractor } from '../middlewares';
+import { isAuth, userExtractor } from '../middlewares';
 
 const router = express.Router();
 
@@ -43,7 +43,7 @@ router.get('/all', listUsers);
 // @Route   POST api/user/add
 // @desc    Add User by admin
 // @access  Public
-router.post('/add', newUserValidationRules, addUser);
+router.post('/add', isAuth, newUserValidationRules, addUser);
 
 // @Route   POST api/user/register
 // @desc    Register new user from webapp
@@ -53,12 +53,12 @@ router.post('/register', newUserValidationRules, registerUser);
 // @Route   POST api/user/update-by-id
 // @desc    Update User by Id
 // @access  Public
-router.post('/update-by-id', updateUserValidationRules, updateUserById);
+router.post('/update-by-id', isAuth, updateUserValidationRules, updateUserById);
 
 // @Route   POST api/user/add-wallet
 // @desc    Add Wallet
 // @access  Public
-router.post('/add-wallet', addWalletValidationRules, userExtractor, addWallet);
+router.post('/add-wallet', isAuth, addWalletValidationRules, addWallet);
 
 // @Route   POST api/user/get-my-profile
 // @desc    Get My Profile. Assumes JWT token is passed
@@ -89,15 +89,14 @@ router.post(
   getUsersByWalletId,
 );
 
-// Add phonenumber validation
-// not empty
-// length --> According to different country
-
 // @Route   POST api/user/send-otp
 // @desc    Send OTP
 // @access  Public
-router.post('/otp/verify', tokenExtractor, verifyOTP);
+router.post('/otp', sendOTP);
 
-router.post('/otp', tokenExtractor, sendOTP);
+// @Route   POST api/user/verify-otp
+// @desc    Verify OTP
+// @access  Public
+router.post('/otp/verify', verifyOTP);
 
 export default router;

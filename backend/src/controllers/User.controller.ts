@@ -36,6 +36,7 @@ export const listUsers = async (req: IRequest, res: IResponse) => {
 export const addUser = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
@@ -50,6 +51,7 @@ export const addUser = async (req: IRequest, res: IResponse) => {
         error: 'email already in use',
       });
     }
+
     const userWithAlias = await User.findOne({
       alias: req.body.alias,
     });
@@ -59,18 +61,21 @@ export const addUser = async (req: IRequest, res: IResponse) => {
         error: 'alias already in use',
       });
     }
+
     // Add User
     const user = new User(req.body);
 
     const savedUser = await user.save();
 
-    return res.json({ ok: true, msg: 'User Route Reached', data: savedUser });
+    return res.json({ ok: true, msg: 'New User added', data: savedUser });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(401).json({ ok: false, msg: error.message });
     }
 
-    return res.status(401).json({ ok: false, msg: 'User Route Error' });
+    return res
+      .status(401)
+      .json({ ok: false, msg: 'Something went wrong. Please try again.' });
   }
 };
 
@@ -103,11 +108,12 @@ export const registerUser = async (req: IRequest, res: IResponse) => {
 export const updateUserById = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { id, ...updatedData } = req.body;
+    const { ...updatedData } = req.body;
 
     if (Object.keys(updatedData).length === 0) {
       return res.status(400).json({
@@ -115,7 +121,7 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       });
     }
 
-    const updatedUser = await User.findByIdAndUpdate(id, updatedData, {
+    const updatedUser = await User.findByIdAndUpdate(req.userId, updatedData, {
       runValidators: true,
       new: true,
     });
@@ -143,22 +149,25 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
 export const addWallet = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ ok: false, errors: errors.array() });
     }
-    const { user } = req;
-    const { wallet } = req.body;
+
+    const user = await User.findById(req.userId);
 
     if (!user) {
-      throw new Error(`User from Token failed.`);
+      throw new Error(`User does not exist.`);
     }
+
+    const { wallet } = req.body;
 
     user.wallet = [...(user.wallet || []), wallet];
     const updatedUser = await user.save({ validateModifiedOnly: true });
 
     return res.json({
       ok: true,
-      msg: 'Login Successful',
+      msg: 'Wallet Added',
       data: convertUserData(updatedUser?.toJSON()),
     });
   } catch (error) {
@@ -172,12 +181,12 @@ export const addWallet = async (req: IRequest, res: IResponse) => {
 
 export const getProfile = async (req: IRequest, res: IResponse) => {
   try {
-    const user = await User.findOne({ _id: req.userId });
+    const user = await User.findById(req.userId);
 
     return res.json({
       ok: true,
       msg: 'Login Successful',
-      data: convertUserData(user.toObject()),
+      data: convertUserData(user.toJSON()),
     });
   } catch (error) {
     if (error instanceof Error) {
