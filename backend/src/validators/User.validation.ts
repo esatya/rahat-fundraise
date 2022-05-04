@@ -51,5 +51,5 @@ export const getByIdValidationRules: ValidationChain[] = [
 ];
 
 export const getByWalletIdValidationRules: ValidationChain[] = [
-  body('id').exists().isString().custom(isObjectIdValidator),
+  body('walletId').exists().isString(),
 ];
