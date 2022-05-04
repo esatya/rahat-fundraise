@@ -282,8 +282,6 @@ export const verifyOTP = async (req: IRequest, res: IResponse) => {
       throw new Error(`Invalid/Expired OTP.`);
     }
 
-    // return json web token in response
-    // for user populate verification model that relate to specific user
     const token = jsonwebtoken.sign(
       { id: user?._id, email: user?.email, alias: user?.alias },
       secret,
@@ -363,19 +361,19 @@ export const getUserBySocialId = async (req: IRequest, res: IResponse) => {
 export const getUsersByWalletId = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ ok: false, errors: errors.array() });
     }
+
     const { walletId } = req.body;
+
     const users = await User.find({ wallet: { $in: [walletId] } });
 
-    if (!users) {
+    if (!users.length) {
       throw new Error(`User with wallet address ${walletId} not found.`);
     }
 
-    if (users.length === 0) {
-      throw new Error(`No User with wallet address ${walletId}.`);
-    }
     return res.json({
       ok: true,
       msg: 'Users Found.',
