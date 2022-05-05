@@ -1,11 +1,12 @@
-const express = require('express');
+import { Router } from 'express';
+import { IRequest, IResponse } from '../interfaces/vendors';
 
-const router = express.Router();
+const router = Router();
 
 // @Route   GET api/content/education/
 // @desc    Get all educations
 // @access  Public
-router.get('/', async (req, res) => {
+router.get('/', async (req: IRequest, res: IResponse) => {
   try {
     return res.json({ message: 'Done!' });
   } catch (err) {
@@ -14,4 +15,4 @@ router.get('/', async (req, res) => {
 });
 
 // Export the routes of person
-module.exports = router;
+export default router;

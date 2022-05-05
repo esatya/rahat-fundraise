@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
+import mongoose from 'mongoose';
+import uniqueValidator from 'mongoose-unique-validator';
 
-const DonationSchema = mongoose.Schema(
+import { IDonation } from '../interfaces/models/Donation';
+
+const DonationSchema = new mongoose.Schema<IDonation>(
   {
     transactionId: { type: String, required: true, unique: true },
     campaignId: {
@@ -36,7 +38,7 @@ const DonationSchema = mongoose.Schema(
       },
     },
     isAnonymous: { type: Boolean, required: true, default: false },
-    emailReciept: { type: String },
+    emailReceipt: { type: String },
     isVerified: { type: Boolean, required: true, default: false },
     amount: { type: Number, required: true },
   },
@@ -57,4 +59,5 @@ DonationSchema.set('toJSON', {
 });
 
 DonationSchema.plugin(uniqueValidator);
-module.exports = mongoose.model('Donation', DonationSchema);
+
+export default mongoose.model<IDonation>('Donation', DonationSchema);

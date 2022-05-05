@@ -1,14 +1,16 @@
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
-const { CAMPAIGN_OPTIONS } = require('../config/constants');
+import mongoose from 'mongoose';
+import uniqueValidator from 'mongoose-unique-validator';
 
-const CampaignModel = mongoose.Schema(
+import { CAMPAIGN_OPTIONS } from '../config/constants';
+import { ICampaign } from '../interfaces/models/Campaign';
+
+const CampaignModel = new mongoose.Schema<ICampaign>(
   {
     title: { type: String, minLength: 5, required: true },
     excerpt: { type: String, maxLength: 100, required: true },
     story: { type: String },
     fundRaiser: { type: String },
-    wallet: { type: Number, required: true },
+    wallet: { type: String, required: true },
     target: { type: Number, required: true },
     amount: { type: Number, required: true },
     status: {
@@ -18,7 +20,7 @@ const CampaignModel = mongoose.Schema(
       default: 'DRAFT',
     },
 
-    expiryDate: { type: Date, required: true, default: Date.now() },
+    expiryDate: { type: Number, required: true, default: Date.now() },
   },
   {
     timestamps: {
@@ -37,4 +39,5 @@ CampaignModel.set('toJSON', {
 });
 
 CampaignModel.plugin(uniqueValidator);
-module.exports = mongoose.model('Campaign', CampaignModel);
+
+export default mongoose.model<ICampaign>('Campaign', CampaignModel);
