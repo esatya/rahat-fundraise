@@ -19,7 +19,6 @@ export const newUserValidationRules: ValidationChain[] = [
 ];
 
 export const updateUserValidationRules: ValidationChain[] = [
-  body('id').isString().custom(isObjectIdValidator),
   body('name').isString().optional(),
   body('address').isString().optional(),
   body('phone').isString().optional(),
@@ -51,5 +50,5 @@ export const getByIdValidationRules: ValidationChain[] = [
 ];
 
 export const getByWalletIdValidationRules: ValidationChain[] = [
-  body('id').exists().isString().custom(isObjectIdValidator),
+  body('walletId').exists().isString(),
 ];
