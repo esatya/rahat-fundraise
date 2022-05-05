@@ -11,10 +11,12 @@ import {
 } from '../validators/User.validation';
 
 import {
+  sendOTP,
   addUser,
-  addWallet,
   pingUser,
   userLogin,
+  addWallet,
+  verifyOTP,
   listUsers,
   getProfile,
   socialLogin,
@@ -24,7 +26,7 @@ import {
   getUsersByWalletId,
 } from '../controllers/User.controller';
 
-import { userExtractor } from '../middlewares/middleware';
+import { isAuth } from '../middlewares';
 
 const router = express.Router();
 
@@ -41,7 +43,7 @@ router.get('/all', listUsers);
 // @Route   POST api/user/add
 // @desc    Add User by admin
 // @access  Public
-router.post('/add', newUserValidationRules, addUser);
+router.post('/add', isAuth, newUserValidationRules, addUser);
 
 // @Route   POST api/user/register
 // @desc    Register new user from webapp
@@ -51,17 +53,17 @@ router.post('/register', newUserValidationRules, registerUser);
 // @Route   POST api/user/update-by-id
 // @desc    Update User by Id
 // @access  Public
-router.post('/update-by-id', updateUserValidationRules, updateUserById);
+router.post('/update-by-id', isAuth, updateUserValidationRules, updateUserById);
 
 // @Route   POST api/user/add-wallet
 // @desc    Add Wallet
 // @access  Public
-router.post('/add-wallet', addWalletValidationRules, userExtractor, addWallet);
+router.post('/add-wallet', isAuth, addWalletValidationRules, addWallet);
 
 // @Route   POST api/user/get-my-profile
 // @desc    Get My Profile. Assumes JWT token is passed
 // @access  Public
-router.get('/get-my-profile', userExtractor, getProfile);
+router.get('/get-my-profile', isAuth, getProfile);
 
 // @Route   POST api/user/login
 // @desc    User Login with Email & OTP
@@ -86,5 +88,15 @@ router.post(
   getByWalletIdValidationRules,
   getUsersByWalletId,
 );
+
+// @Route   POST api/user/send-otp
+// @desc    Send OTP
+// @access  Public
+router.post('/otp', sendOTP);
+
+// @Route   POST api/user/verify-otp
+// @desc    Verify OTP
+// @access  Public
+router.post('/otp/verify', verifyOTP);
 
 export default router;

@@ -16,6 +16,10 @@ const UserSchema = new mongoose.Schema<IUser>(
     wallet: [{ type: String }],
     bio: { type: String },
     isActive: { type: Boolean, default: false },
+    otp: {
+      expiry: { type: Number },
+      number: { type: Number },
+    },
   },
   {
     timestamps: {
