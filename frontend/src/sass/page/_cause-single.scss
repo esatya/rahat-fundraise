@@ -1,0 +1,440 @@
+/*--------------------------------------------------------------
+12. cause-single-page
+--------------------------------------------------------------*/
+
+
+.wpo-case-details-tab {
+    padding: 15px 30px;
+    border: 1px solid #ebebeb;
+    margin-top: 40px;
+}
+
+.wpo-case-details-tab .nav li a {
+    display: block;
+    width: 160px;
+    height: 45px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 40px;
+    color: #2d4277;
+    transition: all .5s;
+    font-weight: 600;
+    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.wpo-case-details-tab .nav li.active a,
+.wpo-case-details-tab .nav li:hover a {
+    background: $theme-primary-color;
+    color: #fff;
+    outline: none;
+    border-radius: 40px;
+    border: none;
+}
+
+.nav-tabs {
+    border-bottom: none;
+
+    @media(max-width:767px){
+        justify-content: center;
+    }
+}
+
+.wpo-case-details-text {
+    margin-top: 50px;
+}
+
+.case-b-text {
+    margin-top: 40px;
+}
+
+#Description {
+    padding: 15px 30px;
+    border: 1px solid #ebebeb;
+
+    @media(max-width:575px){
+        padding: 15px 2px;
+    }
+}
+
+.wpo-case-details-text .wpo-case-text-top p {
+    margin-bottom: 30px;
+}
+
+.wpo-case-details-tab .event-b-text {
+    margin-top: 40px;
+}
+
+.wpo-case-details-text .wpo-case-content h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.wpo-case-details-text .wpo-case-content h3 {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.case-bb-text ul {
+    display: unset;
+    list-style: none;
+}
+
+.case-bb-text ul li {
+    font-size: 15px;
+    font-size: 0.9375rem;
+    position: relative;
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
+
+.case-bb-text ul li:before {
+    content: "";
+    background: $theme-primary-color;
+    width: 6px;
+    height: 6px;
+    position: absolute;
+    left: 0;
+    top: 6px;
+}
+
+.wpo-case-details-area .wpo-blog-single-section .comments-area {
+    margin-top: 0;
+}
+
+.wpo-donations-amount,
+.wpo-donations-details,
+.wpo-doanation-payment {
+    padding: 30px;
+    border: 1px solid #ebebeb;
+    margin-bottom: 40px;
+}
+
+.wpo-donations-amount h2,
+.wpo-donations-details h2,
+.wpo-doanation-payment h2 {
+    font-size: 18px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    position: relative;
+    text-transform: capitalize;
+    margin-bottom: 30px;
+    margin-top: 0;
+}
+
+.wpo-donations-amount input,
+.wpo-donations-details input,
+.wpo-donations-details textarea {
+    background: transparent;
+    width: 100%;
+    height: 50px;
+    border: 0;
+    border: 1px solid #ebebeb;
+    padding-left: 15px;
+    border-radius: 0;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    color: #525252;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+.wpo-donations-details textarea {
+    height: 135px;
+}
+.wpo-donations-details .form-group .error{
+    margin-bottom: 20px;
+}
+
+.wpo-donations-amount input:focus,
+.wpo-donations-details input:focus,
+.wpo-donations-details textarea:focus {
+    border-color: $theme-primary-color;
+}
+
+.payment-name ul li input {
+    margin-right: 0;
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+.wpo-payment-select ul {
+    list-style: none;
+}
+
+.payment-name ul {
+    display: flex;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.wpo-payment-area form {
+    overflow: unset !important;
+}
+
+.payment-name ul li {
+    width: 100px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    margin-bottom: 5px;
+}
+
+.payment-name ul {
+    list-style: none;
+}
+
+.payment-name ul li input {
+    margin-right: 0;
+}
+
+.payment-name ul li {
+    margin-right: 15px;
+}
+
+.wpo-payment-area h2 {
+    padding-bottom: 40px;
+    margin-bottom: 0;
+}
+
+.wpo-payment-select ul {
+    display: flex;
+}
+
+.wpo-payment-select ul li {
+    margin-right: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #5B5B5B;
+
+    input{
+        margin-right: 5px;
+    }
+}
+
+.wpo-payment-select label {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.wpo-payment-area h2 {
+    font-size: 20px;
+    color: #878787;
+    font-weight: 700;
+}
+
+.wpo-payment-area h2 span {
+    font-size: 30px;
+    color: #ff493c;
+}
+
+.wpo-payment-area {
+    width: 100%;
+}
+
+.payment-name ul li input {
+    margin-right: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+.payment-name ul li input:checked~label {
+    background: #fcebbd;
+}
+
+.payment-name label {
+    width: 100%;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.payment-name .visa label {
+    border: 1px solid #0057A0;
+}
+
+.payment-name .mas label {
+    border: 1px solid #CC0000;
+}
+
+.payment-name .ski label {
+    border: 1px solid #691A5F;
+}
+
+.payment-name .pay label {
+    border: 1px solid #019CDE;
+}
+
+.wpo-payment-option {
+    padding: 0 15px;
+}
+
+.payment-name.active {
+    display: block;
+}
+
+.wpo-payment-option.active .payment-name {
+    display: none !important;
+}
+
+.wpo-payment-area .form-style input {
+    width: 100%;
+    margin-bottom: 15px;
+    padding-left: 20px;
+    height: 40px;
+    background: #fff;
+    border-radius: 2px;
+    border: none;
+    border: 1px solid #ebebeb;
+}
+
+.wpo-payment-area .form-style input:focus {
+    border: 1px solid $theme-primary-color;
+}
+
+.wpo-payment-area .contact-form {
+    margin-top: 40px;
+}
+
+#Donations .theme-btn {
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: none;
+    &:after{
+        border-radius: 40px;
+    }
+}
+
+#Donations .submit-area {
+    text-align: center;
+
+}
+
+.progress-sub{
+    .progress-section {
+        padding-top: 20px;
+    }
+    
+    .progress {
+        height: 8px;
+        overflow: unset;
+        background-color: #ffdcd1;
+        margin-bottom: 15px;
+    }
+    
+    .progress .progress-bar {
+        border-radius: 15px;
+        box-shadow: none;
+        position: relative;
+        animation: animate-positive 4s;
+        background: $theme-primary-color;
+        height: 8px;
+    }
+    
+    .progress-bar {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -ms-flex-pack: center;
+        justify-content: center;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        background-color: #F26522;
+        transition: width .6s ease;
+        overflow: unset;
+    }
+    .progress .progress-value {
+        text-align: center;
+        left: 90%;
+        position: absolute;
+        color: $dark-gray;
+        font-weight: 700;
+        font-size: 14px;
+        text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.45);
+        top: -30px;
+        line-height: 20px;
+    }
+
+    ul {
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+
+        li {
+            font-size: 14px;
+            color:$dark-gray;
+            display: flex;
+            align-items: center;
+
+            @media(max-width:575px){
+                font-size: 13px;
+            }
+
+            span{
+                font-weight: 700;
+
+                a{
+                    color: $dark-gray;
+                    &:hover{
+                    color: $theme-primary-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(max-width: 992px) {
+    .wpo-event-details-wrap {
+        margin-bottom: 30px;
+    }
+}
+
+@media(max-width: 590px) {
+    .wpo-case-details-text .wpo-case-content h2 {
+        font-size: 18px;
+    }
+
+    .wpo-case-details-tab .nav li a {
+        margin-bottom: 20px;
+    }
+
+    .wpo-case-details-tab .nav li:last-child a {
+        margin-bottom: 0;
+    }
+
+    .wpo-case-details-text .wpo-case-text-top {
+        padding: 8px;
+    }
+
+    .wpo-payment-select ul {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .wpo-doanation-payment {
+        padding: 20px 10px;
+    }
+
+}
+
+.wpo-donate-header h2 {
+    margin-bottom: 50px;
+    text-align: center;
+    font-size: 36px;
+    font-weight: 500;
+    margin-top: 0;
+}
+
+
+
+.br-top{
+    border-top: 1px solid #ebebeb;
+    padding: 60px 0;
+}
