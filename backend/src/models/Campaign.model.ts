@@ -10,8 +10,11 @@ const CampaignModel = new mongoose.Schema<ICampaign>(
     excerpt: { type: String, maxLength: 100, required: true },
     story: { type: String },
     fundRaiser: { type: String },
+    // Majale bujna paryo business team sanga
     wallet: { type: String, required: true },
+    // Target amount
     target: { type: Number, required: true },
+    // Collected amount
     amount: { type: Number, required: true },
     status: {
       type: String,
