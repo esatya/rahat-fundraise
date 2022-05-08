@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema<IUser>(
     social: [{ type: String }],
     image: { type: String },
     alias: { type: String, unique: true },
-    wallet: { type: String, unique: true },
+    wallet: { type: String },
     bio: { type: String },
     isActive: { type: Boolean, default: false },
     otp: {
