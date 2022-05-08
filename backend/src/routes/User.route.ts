@@ -27,9 +27,11 @@ import {
   getUsersByWalletId,
 } from '../controllers/User.controller';
 
-import { isAuth } from '../middlewares';
+import { isAuth, uploadFile } from '../middlewares';
 
 const router = express.Router();
+
+router.use(uploadFile);
 
 // @Route   POST api/user/register
 // @desc    Register new user from webapp

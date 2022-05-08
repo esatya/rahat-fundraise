@@ -17,7 +17,9 @@ export const registerUser = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const user: IUser = new User<IUser>(req.body);
+    const imageUrl = req.file ? `/images/users/${req.file.filename}` : null;
+
+    const user: IUser = new User<IUser>({ ...req.body, image: imageUrl });
 
     const savedUser: IUser = await user.save();
 
