@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { secret } from '../config/keys';
 import { INext, IRequest, IResponse } from '../interfaces/vendors';
@@ -17,7 +17,7 @@ const isAuth = (req: IRequest, res: IResponse, next: INext) => {
       throw new Error('Empty Token');
     }
 
-    const decodedToken = jwt.verify(jwtToken, secret);
+    const decodedToken = jwt.verify(jwtToken, secret) as JwtPayload;
 
     req.userId = decodedToken['id'];
   } catch (error) {
