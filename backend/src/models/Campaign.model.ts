@@ -1,20 +1,23 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
+import { ICampaign } from '../interfaces/models';
 import { CAMPAIGN_OPTIONS } from '../config/constants';
-import { ICampaign } from '../interfaces/models/Campaign';
 
 const CampaignModel = new mongoose.Schema<ICampaign>(
   {
     title: { type: String, minLength: 5, required: true },
     excerpt: { type: String, maxLength: 100, required: true },
     story: { type: String },
+    featured_image: { type: String },
     fundRaiser: { type: String },
-    // Majale bujna paryo business team sanga
-    wallet: { type: String, required: true },
-    // Target amount
+    wallet: [
+      {
+        name: { type: String, required: true },
+        walletAddress: { type: String, required: true },
+      },
+    ],
     target: { type: Number, required: true },
-    // Collected amount
     amount: { type: Number, required: true },
     status: {
       type: String,
@@ -22,7 +25,11 @@ const CampaignModel = new mongoose.Schema<ICampaign>(
       enum: CAMPAIGN_OPTIONS,
       default: 'DRAFT',
     },
-
+    creator: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
     expiryDate: { type: Number, required: true, default: Date.now() },
   },
   {

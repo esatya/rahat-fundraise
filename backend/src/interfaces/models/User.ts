@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export interface IUser extends mongoose.Document {
+interface IUser extends mongoose.Document {
   bio?: string;
   name: string;
   email: string;
@@ -16,4 +16,8 @@ export interface IUser extends mongoose.Document {
     number: number;
     expiry: number;
   };
+  createdDate?: number;
+  updatedDate?: number;
 }
+
+export default IUser;

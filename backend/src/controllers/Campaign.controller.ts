@@ -1,58 +1,72 @@
 import { validationResult } from 'express-validator';
 
+import { TCampaign } from '../types';
 import Campaign from '../models/Campaign.model';
+
+import { ICampaign } from '../interfaces/models';
 import { IRequest, IResponse } from '../interfaces/vendors';
 
 export const getCampaigns = async (req: IRequest, res: IResponse) => {
   try {
-    const campaigns = await Campaign.find();
+    const campaigns = await Campaign.find({ status: 'PUBLISHED' });
+
     if (!campaigns) {
       throw new Error('Campaigns not found.');
     }
+
     return res.json({
       ok: true,
-      msg: 'Campaign Route Reached',
+      msg: 'Campaigns found.',
       data: campaigns,
     });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ ok: true, msg: error.message || 'Campaign Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'Campaign Route Error' });
   }
 };
 
 export const addCampaign = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    console.log(req.body);
-    // Add Campaign
-    const campaign = new Campaign(req.body);
 
-    const savedCampaign = await campaign.save();
+    const campaign: ICampaign = new Campaign({
+      ...req.body,
+      creator: req.userId,
+    });
+
+    const savedCampaign: ICampaign = await campaign.save();
 
     return res.json({
       ok: true,
-      msg: 'Campaign Route Reached',
+      msg: 'Campaign Added',
       data: savedCampaign,
     });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Campaign Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'Campaign Route Error' });
   }
 };
 
-export const updatedCampaign = async (req: IRequest, res: IResponse) => {
+export const updateCampaign = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { id, ...updatedData } = req.body;
+    const campaignId: string = req.params.campaignId;
+    const { ...updatedData } = req.body;
 
     if (Object.keys(updatedData).length === 0) {
       return res.status(400).json({
@@ -60,42 +74,23 @@ export const updatedCampaign = async (req: IRequest, res: IResponse) => {
       });
     }
 
-    const updatedCampaign = await Campaign.findByIdAndUpdate(id, updatedData, {
-      runValidators: true,
-      new: true,
-    });
+    const campaign: TCampaign = await Campaign.findById(campaignId);
 
-    if (!updatedCampaign) {
+    if (!campaign) {
       return res.status(400).json({
         error: 'Campaign does not exist',
       });
     }
 
-    return res.json({
-      ok: true,
-      msg: 'Campaign Updated',
-      data: updatedCampaign,
-    });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Campaign Route Error' });
-  }
-};
-
-export const updateCampaignStatus = async (req: IRequest, res: IResponse) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+    if (req.userId !== campaign.creator._id.toString()) {
+      return res.status(401).json({
+        error: 'You are not authorized to update this campaign',
+      });
     }
 
-    const { id, status } = req.body;
-
-    const updatedCampaign = await Campaign.findByIdAndUpdate(
-      id,
-      { status },
+    const updatedCampaign: TCampaign = await Campaign.findByIdAndUpdate(
+      campaignId,
+      updatedData,
       {
         runValidators: true,
         new: true,
@@ -114,9 +109,56 @@ export const updateCampaignStatus = async (req: IRequest, res: IResponse) => {
       data: updatedCampaign,
     });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Campaign Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'Campaign Route Error' });
+  }
+};
+
+export const updateCampaignStatus = async (req: IRequest, res: IResponse) => {
+  try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const campaignId: string = req.params.campaignId;
+    const { status } = req.body;
+
+    const campaign: TCampaign = await Campaign.findById(campaignId);
+
+    if (!campaign) {
+      return res.status(400).json({
+        error: 'Campaign does not exist',
+      });
+    }
+
+    if (req.userId !== campaign.creator._id.toString()) {
+      return res.status(401).json({
+        error: 'You are not authorized to update this campaign',
+      });
+    }
+
+    campaign.status = status;
+
+    const updatedCampaign = await campaign.save({
+      validateModifiedOnly: true,
+    });
+
+    return res.json({
+      ok: true,
+      msg: 'Campaign Status Updated',
+      data: updatedCampaign,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'Campaign Route Error' });
   }
 };
 
@@ -126,17 +168,25 @@ export const extendCampaignExpiryDate = async (
 ) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { id, extendBy } = req.body;
+    const campaignId: string = req.params.campaignId;
+    const { extendBy } = req.body;
 
-    const campaign = await Campaign.findById(id);
+    const campaign: TCampaign = await Campaign.findById(campaignId);
 
     if (!campaign) {
       return res.status(400).json({
         error: 'Campaign does not exist',
+      });
+    }
+
+    if (req.userId !== campaign.creator._id.toString()) {
+      return res.status(401).json({
+        error: 'You are not authorized to update this campaign',
       });
     }
 
@@ -154,22 +204,25 @@ export const extendCampaignExpiryDate = async (
       data: updatedCampaign,
     });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Campaign Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'Campaign Route Error' });
   }
 };
 
 export const removeCampaign = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { id } = req.body;
+    const campaignId = req.params.campaignId;
 
-    const campaign = await Campaign.findByIdAndDelete(id);
+    const campaign: TCampaign = await Campaign.findById(campaignId);
 
     if (!campaign) {
       return res.status(400).json({
@@ -177,29 +230,35 @@ export const removeCampaign = async (req: IRequest, res: IResponse) => {
       });
     }
 
-    // Delete Success. No Content Success
+    if (req.userId !== campaign.creator._id.toString()) {
+      return res.status(401).json({
+        error: 'You are not authorized to update this campaign',
+      });
+    }
+
+    await Campaign.findByIdAndDelete(campaignId);
+
     return res.status(200).json({ ok: true, msg: 'Campaign deleted' });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Campaign Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'Campaign Route Error' });
   }
 };
 
 export const archiveCampaign = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { id } = req.body;
+    const campaignId = req.params.campaignId;
 
-    const campaign = await Campaign.findByIdAndUpdate(
-      id,
-      { status: 'ARCHIVE' },
-      { runValidators: true, new: true },
-    );
+    const campaign: TCampaign = await Campaign.findById(campaignId);
 
     if (!campaign) {
       return res.status(400).json({
@@ -207,32 +266,44 @@ export const archiveCampaign = async (req: IRequest, res: IResponse) => {
       });
     }
 
+    if (req.userId !== campaign.creator._id.toString()) {
+      return res.status(401).json({
+        error: 'You are not authorized to update this campaign',
+      });
+    }
+
+    campaign.status = 'ARCHIVE';
+
+    const updatedCampaign: ICampaign = await campaign.save({
+      validateModifiedOnly: true,
+    });
+
     return res.json({
       ok: true,
       msg: 'Campaign Updated',
-      data: campaign,
+      data: updatedCampaign,
     });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Campaign Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'Campaign Route Error' });
   }
 };
 
 export const updateCampaignAmount = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { id, amount } = req.body;
+    const { campaignId } = req.params;
+    const amount: number = req.body.amount;
 
-    const campaign = await Campaign.findByIdAndUpdate(
-      id,
-      { amount },
-      { runValidators: true, new: true },
-    );
+    const campaign: TCampaign = await Campaign.findById(campaignId);
 
     if (!campaign) {
       return res.status(400).json({
@@ -240,41 +311,60 @@ export const updateCampaignAmount = async (req: IRequest, res: IResponse) => {
       });
     }
 
+    if (req.userId !== campaign.creator._id.toString()) {
+      return res.status(401).json({
+        error: 'You are not authorized to update this campaign',
+      });
+    }
+
+    const updatedCampaign: TCampaign = await Campaign.findByIdAndUpdate(
+      campaignId,
+      { amount },
+      { runValidators: true, new: true },
+    );
+
     return res.json({
       ok: true,
       msg: 'Campaign Updated',
-      data: campaign,
+      data: updatedCampaign,
     });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Campaign Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'Campaign Route Error' });
   }
 };
 
 export const getCampaignById = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ ok: false, errors: errors.array() });
     }
-    const { id } = req.body;
-    const campaign = await Campaign.findById(id);
+
+    const campaignId = req.params.campaignId;
+    const campaign = await Campaign.findOne({
+      _id: campaignId,
+      status: 'PUBLISHED',
+    });
 
     if (!campaign) {
       throw new Error(`Campaign not found.`);
     }
+
     return res.json({
       ok: true,
       msg: 'Campaign Found.',
       data: campaign,
     });
   } catch (error) {
-    if (error.name === 'CastError') {
-      return res.status(400).send({ error: 'malformatted id' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
     }
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Campaign Route Error' });
+
+    return res.status(401).json({ ok: false, msg: 'Campaign Route Error' });
   }
 };
