@@ -75,9 +75,11 @@ export const addDonation = async (req: IRequest, res: IResponse) => {
     });
   } catch (error) {
     console.log(error);
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Donation Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'User Route Error' });
   }
 };
 
@@ -104,9 +106,11 @@ export const sendReceiptToEmail = async (req: IRequest, res: IResponse) => {
       data: receipt,
     });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Donation Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'User Route Error' });
   }
 };
 
@@ -133,9 +137,11 @@ export const verifyDonation = async (req: IRequest, res: IResponse) => {
       data: donation,
     });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Donation Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'User Route Error' });
   }
 };
 
@@ -162,8 +168,10 @@ export const approveDonation = async (req: IRequest, res: IResponse) => {
       data: donation,
     });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ ok: false, msg: error.message || 'Donation Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
+
+    return res.status(401).json({ ok: false, msg: 'User Route Error' });
   }
 };

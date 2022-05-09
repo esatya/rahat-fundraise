@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
-import { IUser } from '../interfaces/models/User';
+import { IUser } from '../interfaces/models';
 
 const UserSchema = new mongoose.Schema<IUser>(
   {

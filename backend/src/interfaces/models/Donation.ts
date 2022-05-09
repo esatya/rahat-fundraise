@@ -1,6 +1,6 @@
 import mongoose, { PopulatedDoc } from 'mongoose';
 
-import { ICampaign } from '../../interfaces/models/Campaign';
+import ICampaign from './Campaign';
 
 interface Donor {
   firstName: string;
@@ -13,12 +13,15 @@ interface Donor {
   zip: string;
 }
 
-export interface IDonation extends mongoose.Document {
+interface IDonation extends mongoose.Document {
   transactionId: string;
   campaignId: PopulatedDoc<ICampaign>;
+  walletAddress: string;
   donor: Donor;
   isAnonymous: boolean;
   emailReceipt?: string;
   isVerified: boolean;
   amount: number;
 }
+
+export default IDonation;
