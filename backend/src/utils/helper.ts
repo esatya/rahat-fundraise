@@ -1,11 +1,12 @@
 import mongoose from 'mongoose';
+import { IUser } from '../interfaces/models';
 
-export const convertUserData = (user) => {
-  const { updatedDate, createdDate, ...newUser } = user;
+export const convertUserData = (user: IUser) => {
+  const { updatedDate, createdDate, ...newUser } = user.toJSON();
   return newUser;
 };
 
-export const isObjectIdValidator = (value) => {
+export const isObjectIdValidator = (value: string) => {
   if (mongoose.isValidObjectId(value)) {
     return true;
   }

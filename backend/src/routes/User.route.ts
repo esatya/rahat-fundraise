@@ -66,7 +66,7 @@ router.get('/get-my-profile', isAuth, getProfile);
 // @Route   GET api/user/get-by-id
 // @desc    Get User By ID - Google
 // @access  Public
-router.get('/get-by-id/:id', getByIdValidationRules, getUserById);
+router.get('/get-by-id/:id', isAuth, getByIdValidationRules, getUserById);
 
 // @Route   POST api/user/add
 // @desc    Add User by admin

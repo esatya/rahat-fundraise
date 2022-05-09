@@ -1,7 +1,8 @@
 import jsonwebtoken from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
 
-import { IUser } from '../interfaces/models/User';
+import { TUser } from '../types';
+import { IUser } from '../interfaces/models';
 import { IRequest, IResponse } from '../interfaces/vendors';
 
 import User from '../models/User.model';
@@ -19,14 +20,14 @@ export const registerUser = async (req: IRequest, res: IResponse) => {
 
     const imageUrl = req.file ? `/images/users/${req.file.filename}` : null;
 
-    const user: IUser = new User<IUser>({ ...req.body, image: imageUrl });
+    const user: TUser = new User<IUser>({ ...req.body, image: imageUrl });
 
     const savedUser: IUser = await user.save();
 
     return res.json({
       ok: true,
       msg: 'User Registered Successfully',
-      data: convertUserData(savedUser?.toJSON()),
+      data: convertUserData(savedUser),
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -46,7 +47,7 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
     }
 
     const email: string = req.body.email;
-    const user: IUser = await User.findOne({ email });
+    const user: TUser = await User.findOne({ email });
 
     if (!user) {
       throw new Error(`User with ${email} not found.`);
@@ -78,7 +79,7 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
 
     const email: string = req.body.email;
 
-    const user: IUser = await User.findOne({ email: email });
+    const user: TUser = await User.findOne({ email: email });
 
     if (!user) {
       throw new Error(`User with ${email} not found.`);
@@ -93,8 +94,10 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
       text: `Your Login OTP is ${OTP}. Do not share it with others.`,
     };
 
-    user.otp.number = OTP;
-    user.otp.expiry = Date.now() + 5 * 60000;
+    user.otp = {
+      expiry: Date.now() + 5 * 60000,
+      number: OTP,
+    };
 
     await user.save({ validateModifiedOnly: true });
 
@@ -135,7 +138,7 @@ export const verifyOTP = async (req: IRequest, res: IResponse) => {
       });
     }
 
-    const { number, expiry } = user.otp;
+    const { number, expiry } = user.otp!;
 
     if (number !== otpNumber || expiry < Date.now()) {
       throw new Error(`Invalid/Expired OTP.`);
@@ -197,7 +200,7 @@ export const addUser = async (req: IRequest, res: IResponse) => {
     const alias: string = req.body.alias;
 
     // Unique validation
-    const userWithEmail: IUser = await User.findOne({
+    const userWithEmail: TUser = await User.findOne({
       email: email,
     });
 
@@ -207,7 +210,7 @@ export const addUser = async (req: IRequest, res: IResponse) => {
       });
     }
 
-    const userWithAlias: IUser = await User.findOne({
+    const userWithAlias: TUser = await User.findOne({
       alias: alias,
     });
 
@@ -250,7 +253,7 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       });
     }
 
-    const updatedUser: IUser = await User.findByIdAndUpdate(
+    const updatedUser: TUser = await User.findByIdAndUpdate(
       req.userId,
       updatedData,
       {
@@ -287,7 +290,7 @@ export const addWallet = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ ok: false, errors: errors.array() });
     }
 
-    const user: IUser = await User.findById(req.userId);
+    const user: TUser = await User.findById(req.userId);
 
     if (!user) {
       throw new Error(`User does not exist.`);
@@ -301,7 +304,7 @@ export const addWallet = async (req: IRequest, res: IResponse) => {
     return res.json({
       ok: true,
       msg: 'Wallet Added',
-      data: convertUserData(updatedUser?.toJSON()),
+      data: convertUserData(updatedUser),
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -314,12 +317,16 @@ export const addWallet = async (req: IRequest, res: IResponse) => {
 
 export const getProfile = async (req: IRequest, res: IResponse) => {
   try {
-    const user: IUser = await User.findById(req.userId);
+    const user: TUser = await User.findById(req.userId);
+
+    if (!user) {
+      throw new Error(`User does not exist.`);
+    }
 
     return res.json({
       ok: true,
       msg: 'Login Successful',
-      data: convertUserData(user.toJSON()),
+      data: convertUserData(user),
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -339,7 +346,7 @@ export const socialLogin = async (req: IRequest, res: IResponse) => {
     }
 
     const { email, social } = req.body;
-    const user: IUser = await User.findOne({
+    const user: TUser = await User.findOne({
       email,
       social: { $in: [social] },
     });
@@ -350,7 +357,7 @@ export const socialLogin = async (req: IRequest, res: IResponse) => {
     return res.json({
       ok: true,
       msg: 'Login successful',
-      data: convertUserData(user?.toJSON()),
+      data: convertUserData(user),
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -371,7 +378,7 @@ export const getUserById = async (req: IRequest, res: IResponse) => {
     }
 
     const { id } = req.params;
-    const user: IUser = await User.findById(id);
+    const user: IUser | null = await User.findById(id);
 
     if (!user) {
       throw new Error(`User not found.`);
@@ -400,7 +407,7 @@ export const getUsersByWalletId = async (req: IRequest, res: IResponse) => {
 
     const { walletId } = req.params;
 
-    const user: IUser = await User.findOne({ wallet: walletId });
+    const user: IUser | null = await User.findOne({ wallet: walletId });
 
     if (!user) {
       throw new Error(`User with wallet address ${walletId} not found.`);
@@ -409,7 +416,7 @@ export const getUsersByWalletId = async (req: IRequest, res: IResponse) => {
     return res.json({
       ok: true,
       msg: 'User Found.',
-      data: convertUserData(user?.toJSON()),
+      data: convertUserData(user),
     });
   } catch (error) {
     if (error instanceof Error) {

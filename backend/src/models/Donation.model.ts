@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
-import { IDonation } from '../interfaces/models/Donation';
+import { IDonation } from '../interfaces/models';
 
 const DonationSchema = new mongoose.Schema<IDonation>(
   {
@@ -11,6 +11,7 @@ const DonationSchema = new mongoose.Schema<IDonation>(
       required: true,
       ref: 'Campaign',
     },
+    walletAddress: { type: String, required: true },
     donor: {
       firstName: { type: String, required: true },
       lastName: { type: String, required: true },

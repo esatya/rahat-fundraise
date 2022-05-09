@@ -1,13 +1,24 @@
-import { Document } from 'mongoose';
+import { Document, PopulatedDoc } from 'mongoose';
 
-export interface ICampaign extends Document {
+import IUser from './User';
+
+interface WalletOptions {
+  name: string;
+  walletAddress: string;
+}
+
+interface ICampaign extends Document {
   title: string;
   excerpt: string;
   story?: string;
+  featured_image: string;
   fundRaiser?: string;
-  wallet: string;
+  wallet: WalletOptions[];
   target: number;
   amount: number;
   status: string;
   expiryDate: number;
+  creator: PopulatedDoc<IUser>;
 }
+
+export default ICampaign;
