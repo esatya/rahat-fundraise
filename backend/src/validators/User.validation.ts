@@ -1,4 +1,4 @@
-import { body, ValidationChain } from 'express-validator';
+import { body, param, ValidationChain } from 'express-validator';
 
 import { isObjectIdValidator } from '../utils/helper';
 
@@ -12,8 +12,7 @@ export const newUserValidationRules: ValidationChain[] = [
   body('social.*').isString(),
   body('image').isString().optional(),
   body('alias').isString(),
-  body('wallet').isArray().optional(),
-  body('wallet.*').isString(),
+  body('wallet').isString().optional(),
   body('bio').isString().optional(),
   body('isActive').toBoolean(true).optional(),
 ];
@@ -28,8 +27,7 @@ export const updateUserValidationRules: ValidationChain[] = [
   body('social.*').isString(),
   body('image').isString().optional(),
   body('alias').isString().optional(),
-  body('wallet').isArray().optional(),
-  body('wallet.*').isString(),
+  body('wallet').isString().optional(),
   body('bio').isString().optional(),
   body('isActive').toBoolean(true).optional(),
 ];
@@ -46,9 +44,18 @@ export const socialLoginValidationRules: ValidationChain[] = [
 ];
 
 export const getByIdValidationRules: ValidationChain[] = [
-  body('id').exists().isString().custom(isObjectIdValidator),
+  param('id').exists().isString().custom(isObjectIdValidator),
 ];
 
 export const getByWalletIdValidationRules: ValidationChain[] = [
-  body('walletId').exists().isString(),
+  param('walletId').exists().isString(),
+];
+
+export const sendOTPValidationRules: ValidationChain[] = [
+  body('email').isEmail().normalizeEmail(),
+];
+
+export const verifyOTPValidationRules: ValidationChain[] = [
+  body('email').isEmail().normalizeEmail(),
+  body('otpNumber').isNumeric().isLength({ min: 6, max: 6 }),
 ];

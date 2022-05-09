@@ -9,7 +9,7 @@ export interface IUser extends mongoose.Document {
   alias: string;
   address: string;
   social?: string[];
-  wallet?: string[];
+  wallet?: string;
   isActive: boolean;
   emailVerified: boolean;
   otp?: {
