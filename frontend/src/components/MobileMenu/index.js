@@ -67,12 +67,12 @@ const menus = [
     {
         id: 4,
         title: 'Event',
-        link: '/event',
+        link: '/fundraise',
         submenu: [
             {
                 id: 41,
                 title: 'Event',
-                link: '/event'
+                link: '/fundraise'
             },
             {
                 id: 42,
