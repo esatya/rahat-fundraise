@@ -49,8 +49,8 @@ const Footer = (props) =>{
                             </div>
                             <ul>
                                 <li><Link onClick={ClickHandler} to="/#">Home</Link></li>
-                                <li><Link onClick={ClickHandler} to="/#">Fundraiser</Link></li>
-                                <li><Link onClick={ClickHandler} to="/#">Donate</Link></li>
+                                <li><Link onClick={ClickHandler} to="/fundraise">Fundraiser</Link></li>
+                                {/* <li><Link onClick={ClickHandler} to="/#">Donate</Link></li> */}
                             </ul>
                         </div>
                     </div>
@@ -60,9 +60,9 @@ const Footer = (props) =>{
                                 <h3>Resources </h3>
                             </div>
                             <ul>
-                                <li><Link onClick={ClickHandler} to="https://rahat.io/">Rahat Website</Link></li>
-                                <li><Link onClick={ClickHandler} to="https://docs.rahat.io/">Documentation</Link></li>
-                                <li><Link onClick={ClickHandler} to="https://github.com/esatya">GitHub</Link></li>
+                                <li><a href="https://rahat.io/" target="_blank">Rahat Website</a></li>
+                                <li><a href="https://docs.rahat.io/" target="_blank">Documentation</a></li>
+                                <li><a href="https://github.com/esatya" target="_blank"> GitHub</a></li>
                             </ul>
                         </div>
                     </div>
