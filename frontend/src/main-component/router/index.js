@@ -15,11 +15,11 @@ const AllRoute = () => {
        <Router>
           <Switch>
             <Route exact path='/' component={Homepage}/>
-            <Route path='/event' component={EventPage}/>
-            <Route path='/project/:id' component={ProjectPage}/>
+            <Route path='/fundraise' component={EventPage}/>
+            <Route path='/fundraise/:id' component={ProjectPage}/>
             <Route path='/login' component={LoginPage}/>
             <Route path='/signup' component={SignUpPage}/>
-            <Route path='/FundraiseRegister' component={FundraiseRegisterPage}/>
+            <Route path='/fundraise/register' component={FundraiseRegisterPage}/>
             <Route path='/404' component={ErrorPage}/> 
           </Switch>
       </Router>
