@@ -174,7 +174,7 @@ export const extendCampaignExpiryDate = async (
     }
 
     const campaignId: string = req.params.campaignId;
-    const { extendBy } = req.body;
+    const extendBy: number = req.body.extendBy;
 
     const campaign: TCampaign = await Campaign.findById(campaignId);
 
@@ -190,9 +190,11 @@ export const extendCampaignExpiryDate = async (
       });
     }
 
-    const expiryDate = new Date(campaign.expiryDate);
+    const expiryDate = new Date(campaign.expiryDate).getTime();
 
-    campaign.expiryDate = expiryDate.setDate(expiryDate.getDate() + extendBy);
+    const newExpiryDate = expiryDate + extendBy * 24 * 60 * 60 * 1000;
+
+    campaign.expiryDate = new Date(newExpiryDate).toISOString();
 
     const updatedCampaign = await campaign.save({
       validateModifiedOnly: true,
