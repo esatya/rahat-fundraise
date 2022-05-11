@@ -13,30 +13,14 @@ const DonationSchema = new mongoose.Schema<IDonation>(
     },
     walletAddress: { type: String, required: true },
     donor: {
-      firstName: { type: String, required: true },
-      lastName: { type: String, required: true },
-
-      country: { type: String, required: true },
-      state: {
-        type: String,
-        required: true,
-      },
-      address1: {
-        type: String,
-        required: true,
-      },
-      address2: {
-        type: String,
-        required: true,
-      },
-      contact: {
-        type: String,
-        required: true,
-      },
-      zip: {
-        type: String,
-        required: true,
-      },
+      firstName: String,
+      lastName: String,
+      country: String,
+      state: String,
+      address1: String,
+      address2: String,
+      contact: String,
+      zip: String,
     },
     isAnonymous: { type: Boolean, required: true, default: false },
     emailReceipt: { type: String },
