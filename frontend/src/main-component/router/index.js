@@ -22,7 +22,7 @@ const AllRoute = () => {
           <Route path="/fundraise" component={EventPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/signup" component={SignUpPage} />
-          <Route path="/fundraise/register" component={FundraiseRegisterPage} />
+          <Route path="/campaign/register" component={FundraiseRegisterPage} />
           <Route path="/404" component={ErrorPage} />
         </Switch>
       </Router>
