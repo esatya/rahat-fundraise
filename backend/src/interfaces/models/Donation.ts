@@ -17,7 +17,7 @@ interface IDonation extends mongoose.Document {
   transactionId: string;
   campaignId: PopulatedDoc<ICampaign>;
   walletAddress: string;
-  donor: Donor;
+  donor?: Donor;
   isAnonymous: boolean;
   emailReceipt?: string;
   isVerified: boolean;

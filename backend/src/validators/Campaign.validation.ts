@@ -8,12 +8,12 @@ export const addNewCampaignValidationRules: ValidationChain[] = [
   body('excerpt').isString().isLength({ max: 100 }),
   body('story').isString().optional(),
   body('fundRaiser').isString().optional(),
-  //   body('wallet').isArray().optional(),
-  //   body('wallet.*').isString(),
+  body('wallet').isArray().optional(),
+  body('wallet.*.*').isString(),
   body('target').isNumeric().toFloat(),
   body('amount').isNumeric().toFloat(),
   body('status').isString().toUpperCase().isIn(CAMPAIGN_OPTIONS).optional(),
-  //   body('expiryDate').isISO8601({ strict: true }).isAfter(),
+  body('expiryDate').isISO8601({ strict: true }).isAfter(),
 ];
 
 export const updateCampaignValidationRules: ValidationChain[] = [
@@ -22,11 +22,11 @@ export const updateCampaignValidationRules: ValidationChain[] = [
   body('excerpt').isString().isLength({ max: 100 }).optional(),
   body('story').isString().optional(),
   body('fundRaiser').isString().optional(),
-  //   body('wallet').isString().optional(), // TODO: Need to update this validation
+  body('wallet').isArray().optional(),
+  body('wallet.*.*').isString(),
   body('target').isNumeric().toFloat().optional(),
   body('amount').isNumeric().toFloat().optional(),
   body('status').isString().toUpperCase().isIn(CAMPAIGN_OPTIONS).optional(),
-  //   body('expiryDate').isISO8601({ strict: true }).isAfter().optional(), // TODO: ADD VALIDATION FOR THIS FIELD
 ];
 
 export const updateCampaignStatusValidationRules: ValidationChain[] = [

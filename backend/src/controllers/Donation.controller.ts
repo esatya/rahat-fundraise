@@ -1,17 +1,20 @@
-import * as Uuid from 'uuid';
 import { validationResult } from 'express-validator';
 
 import Donation from '../models/Donation.model';
 import Campaign from '../models/Campaign.model';
 
+import { senderEmail } from '../config/keys';
 import { IRequest, IResponse } from '../interfaces/vendors';
+import transporter from '../services/mail.service';
 
 export const getDonations = async (req: IRequest, res: IResponse) => {
   try {
     const donations = await Donation.find();
-    if (!donations) {
+
+    if (!donations.length) {
       throw new Error('Donations not found.');
     }
+
     return res.json({
       ok: true,
       msg: 'Donation Route Reached',
@@ -22,43 +25,50 @@ export const getDonations = async (req: IRequest, res: IResponse) => {
   }
 };
 
-export const getDonationsForCampaign =
-  async (req: IRequest, res: IResponse) =>
-  async (req: IRequest, res: IResponse) => {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-      const { campaignId } = req.body;
-      const donations = await Donation.find({ campaignId });
-      if (!donations) {
-        throw new Error('Donations not found.');
-      }
-      return res.json({
-        ok: true,
-        msg: 'Donation Route Reached',
-        data: donations,
-      });
-    } catch (error) {
-      return res.status(401).json({ ok: true, msg: 'User Route Error' });
+export const getDonationsForCampaign = async (
+  req: IRequest,
+  res: IResponse,
+) => {
+  try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-  };
+
+    const { campaignId } = req.body;
+
+    const donations = await Donation.find({ campaignId });
+
+    if (!donations) {
+      throw new Error('Donations not found.');
+    }
+
+    return res.json({
+      ok: true,
+      msg: 'Donation Route Reached',
+      data: donations,
+    });
+  } catch (error) {
+    return res.status(401).json({ ok: true, msg: 'User Route Error' });
+  }
+};
 
 export const addDonation = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+
     const campaign = await Campaign.findById(req.body.campaignId);
 
     if (!campaign) {
       throw new Error(`Campaign not found.`);
     }
 
-    // Add Donation
-    const donation = new Donation({ ...req.body, transactionId: Uuid.v4() });
+    const donation = new Donation({ ...req.body });
 
     const savedDonation = await donation.save();
 
@@ -70,7 +80,7 @@ export const addDonation = async (req: IRequest, res: IResponse) => {
 
     return res.json({
       ok: true,
-      msg: 'Donation Route Reached',
+      msg: 'Donation Added',
       data: savedDonation,
     });
   } catch (error) {
@@ -86,24 +96,31 @@ export const addDonation = async (req: IRequest, res: IResponse) => {
 export const sendReceiptToEmail = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { id, email } = req.body;
-    // Add Donation
-    const donation = await Donation.findById(id).populate('campaignId');
+    const { donationId, email } = req.body;
+
+    const donation = await Donation.findById(donationId).populate('campaignId');
 
     if (!donation) {
       throw Error('Donation not found');
     }
 
-    const receipt = `Thanks for the donation of ${donation.amount} to "${donation.campaignId.title}"`;
+    const message = {
+      from: senderEmail,
+      to: email,
+      subject: 'Donation Receipt',
+      text: `Thanks for the donation of ${donation.amount} to ${donation.campaignId.title}`,
+    };
+
+    transporter.sendMail(message);
 
     return res.json({
       ok: true,
-      msg: `Email sent to ${email}`,
-      data: receipt,
+      msg: `Receipt sent`,
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -117,12 +134,13 @@ export const sendReceiptToEmail = async (req: IRequest, res: IResponse) => {
 export const verifyDonation = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
     const { id } = req.body;
-    // Add Donation
+
     const donation = await Donation.findByIdAndUpdate(id, {
       isVerified: true,
     });
