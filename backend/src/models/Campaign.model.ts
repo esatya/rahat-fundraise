@@ -13,8 +13,8 @@ const CampaignModel = new mongoose.Schema<ICampaign>(
     fundRaiser: { type: String },
     wallet: [
       {
-        name: { type: String, required: true },
-        walletAddress: { type: String, required: true },
+        name: String,
+        walletAddress: String,
       },
     ],
     target: { type: Number, required: true },
@@ -30,7 +30,7 @@ const CampaignModel = new mongoose.Schema<ICampaign>(
       ref: 'User',
       required: true,
     },
-    expiryDate: { type: Number, required: true, default: Date.now() },
+    expiryDate: { type: String, required: true },
   },
   {
     timestamps: {
