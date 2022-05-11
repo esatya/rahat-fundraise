@@ -1,77 +1,117 @@
-import React, { Fragment } from 'react';
-import Navbar from '../../components/Navbar';
-import PageTitle from '../../components/pagetitle'
-import Footer from '../../components/footer'
-import Scrollbar from '../../components/scrollbar'
-import Logo from '../../images/logo.png'
-import pimg from '../../images/checkout/img-1.png'
-import pimg2 from '../../images/checkout/img-2.png'
-import pimg3 from '../../images/checkout/img-3.png'
-import pimg4 from '../../images/checkout/img-4.png'
+import React, { Fragment } from "react";
+import Navbar from "../../components/Navbar";
+import PageTitle from "../../components/pagetitle";
+import Footer from "../../components/footer";
+import Scrollbar from "../../components/scrollbar";
+import Logo from "../../images/logo.png";
 
+const FundraiseRegisterPage = () => {
+  const SubmitHandler = (e) => {
+    e.preventDefault();
+  };
 
-const DonatePage = () => {
-
-    const SubmitHandler = (e) => {
-        e.preventDefault()
-    }
-
-    return (
-        <Fragment>
-            <Navbar Logo={Logo} />
-            <PageTitle pageTitle={'Register'} pagesub={'Register'} />
-            <div className="wpo-donation-page-area section-padding">
-                <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-lg-8">
-                            <div className="wpo-donate-header">
-                                <h2>Register Here To Organize A Campaign</h2>
-                            </div>
-                            <div id="Donations" className="tab-pane">
-                                <form onSubmit={SubmitHandler}>
-                                    <div className="wpo-donations-amount">
-                                        <h2>Select A Country</h2>
-                                        <select id="inputState" class="form-select">
-                                            <option selected>Choose...</option>
-                                            <option>Nepal</option>
-                                            <option>Nepal</option>
-                                            <option>Nepal</option>
-                                        </select>
-                                    </div>
-                                    <div className="wpo-donations-details">
-                                        <h2>Enter Details Of Your Campaign?</h2>
-                                        <div className="row">
-                                            <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                                                <label for="fname" class="form-label">Enter an amount</label>
-                                                <input type="text" className="form-control" name="name" id="fname" placeholder="" />
-                                            </div>
-                                            <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                                                <label for="fname" class="form-label">Duration of your campaign</label>
-                                                <input type="text" className="form-control" name="name" id="name" placeholder="" />
-                                            </div>
-                                            <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
-                                                <label for="fname" class="form-label">Title</label>
-                                                <input type="text" className="form-control" name="name" id="fname" placeholder="Max 50 words" />
-                                            </div>
-                                            <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
-                                                <label for="fname" class="form-label">Tagline</label>
-                                                <input type="text" className="form-control" name="name" id="fname" placeholder="Max 100 words" />
-                                            </div>
-                                            <div className="col-lg-12 col-12 form-group">
-                                                <label for="fname" class="form-label">Share Your Story</label>
-                                                <textarea className="form-control" name="note" id="note" placeholder="Minimum 200 words"></textarea>
-                                            </div>
-                                            <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
-                                                <label for="formFileSm" class="form-label">Upload photo that best defines your fundraiser campaign</label>
-                                                <input class="form-control form-control-sm" id="formFileSm" type="file"/>
-                                            </div>
-                                            {/* <div class="mb-3">
+  return (
+    <Fragment>
+      <Navbar Logo={Logo} />
+      <PageTitle pageTitle={"Register"} pagesub={"Register"} />
+      <div className="wpo-donation-page-area section-padding">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="wpo-donate-header">
+                <h2>Register Here To Organize A Campaign</h2>
+              </div>
+              <div id="Donations" className="tab-pane">
+                <form onSubmit={SubmitHandler}>
+                  <div className="wpo-donations-amount">
+                    <h2>Select A Country</h2>
+                    <select id="inputState" class="form-select">
+                      <option selected>Choose...</option>
+                      <option>Nepal</option>
+                      <option>Nepal</option>
+                      <option>Nepal</option>
+                    </select>
+                  </div>
+                  <div className="wpo-donations-details">
+                    <h2>Enter Details Of Your Campaign?</h2>
+                    <div className="row">
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                        <label for="fname" class="form-label">
+                          Enter an amount
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="name"
+                          id="fname"
+                          placeholder=""
+                        />
+                      </div>
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                        <label for="fname" class="form-label">
+                          Duration of your campaign
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="name"
+                          id="name"
+                          placeholder=""
+                        />
+                      </div>
+                      <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
+                        <label for="fname" class="form-label">
+                          Title
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="name"
+                          id="fname"
+                          placeholder="Max 50 words"
+                        />
+                      </div>
+                      <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
+                        <label for="fname" class="form-label">
+                          Tagline
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="name"
+                          id="fname"
+                          placeholder="Max 100 words"
+                        />
+                      </div>
+                      <div className="col-lg-12 col-12 form-group">
+                        <label for="fname" class="form-label">
+                          Share Your Story
+                        </label>
+                        <textarea
+                          className="form-control"
+                          name="note"
+                          id="note"
+                          placeholder="Minimum 200 words"
+                        ></textarea>
+                      </div>
+                      <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
+                        <label for="formFileSm" class="form-label">
+                          Upload photo that best defines your fundraiser
+                          campaign
+                        </label>
+                        <input
+                          class="form-control form-control-sm"
+                          id="formFileSm"
+                          type="file"
+                        />
+                      </div>
+                      {/* <div class="mb-3">
                                                 <label for="formFileSm" class="form-label">Small file input example</label>
                                                 <input class="form-control form-control-sm" id="formFileSm" type="file">
                                             </div> */}
-                                        </div>
-                                    </div>
-                                    {/* <div className="wpo-doanation-payment">
+                    </div>
+                  </div>
+                  {/* <div className="wpo-doanation-payment">
                                         <h2>Choose Your Payment Method</h2>
                                         <div className="wpo-payment-area">
                                             <div className="row">
@@ -130,19 +170,20 @@ const DonatePage = () => {
                                             </div>
                                         </div>
                                     </div> */}
-                                    <div className="submit-area">
-                                        <button type="submit" className="theme-btn submit-btn">Register</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                  <div className="submit-area">
+                    <button type="submit" className="theme-btn submit-btn">
+                      Register
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-            <Footer />
-            <Scrollbar />
-        </Fragment>
-    )
+          </div>
+        </div>
+      </div>
+      <Footer />
+      <Scrollbar />
+    </Fragment>
+  );
 };
-export default DonatePage;
-
+export default FundraiseRegisterPage;
