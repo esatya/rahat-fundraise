@@ -10,19 +10,14 @@ export const newDonationValidationRules: ValidationChain[] = [
   body('donor').isObject(),
   body('amount').isNumeric().toFloat(),
   body('isAnonymous').toBoolean(true).optional(),
-  body('donor.zip').isString().isLength({ min: 1 }),
-  body('donor.state').isString().isLength({ min: 1 }),
-  body('donor.contact').isString().isLength({ min: 1 }),
-  body('donor.country').isString().isLength({ min: 1 }),
-  body('donor.address2').isString().isLength({ min: 1 }),
-  body('donor.address1').isString().isLength({ min: 1 }),
-  body('donor.lastName').isString().isLength({ min: 1 }),
-  body('donor.firstName').isString().isLength({ min: 1 }),
+  body('donor.*.').isString().isLength({ min: 1 }).optional(),
+  body('transactionId').notEmpty().isString(),
   body('campaignId').isString().custom(isObjectIdValidator),
+  body('walletAddress').notEmpty().isString(),
 ];
 
 export const sendReceiptToEmailValidationRules: ValidationChain[] = [
-  body('id').isString().custom(isObjectIdValidator),
+  body('donationId').isString().custom(isObjectIdValidator),
   body('email').isEmail().normalizeEmail(),
 ];
 

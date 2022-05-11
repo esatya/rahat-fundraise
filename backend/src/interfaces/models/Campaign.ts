@@ -17,7 +17,7 @@ interface ICampaign extends Document {
   target: number;
   amount: number;
   status: string;
-  expiryDate: number;
+  expiryDate: string;
   creator: PopulatedDoc<IUser>;
 }
 
