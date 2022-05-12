@@ -15,7 +15,7 @@ const CtaSection = (props) => {
                             <div className="wpo-cta-content">
                                 <h3>Decentralized and Transparent Crowdfunding Platform</h3>
                                 <div className="volunteer-img"></div>
-                                <Link to="/volunteer">Donate Here</Link>
+                                <Link to="/fundraise">Donate Here</Link>
                             </div>
                             <div className="shape"><img src={shape} alt="" /></div>
                         </div>

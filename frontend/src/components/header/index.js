@@ -45,7 +45,7 @@ export default class Header extends Component {
                                                 <Link onClick={ClickHandler} to="/">Home</Link>
                                             </li>
                                             <li className="menu-item-has-children">
-                                                <Link to="/event">Donate</Link>
+                                                <Link to="/fundraise">Donate</Link>
                                             </li>
                                             <li className="menu-item-has-children">
                                                 <Link to="/">Fundraiser</Link>
@@ -57,7 +57,7 @@ export default class Header extends Component {
                                 <div className="col-lg-3 col-md-2 col-2">
                                     <div className="header-right">
                                         <div className="close-form">
-                                            <Link onClick={ClickHandler} className="theme-btn" to="/donate">Connect Wallet</Link>
+                                            <Link onClick={ClickHandler} className="theme-btn" to="/login">Sign In</Link>
                                         </div>
                                     </div>
                                 </div>

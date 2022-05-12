@@ -51,7 +51,7 @@ const CauseSection = (props) => {
                                                         <span><img src={Cause.authorImg} alt=""/></span>
                                                         <span><Link onClick={ClickHandler} to={`/cause-single/${Cause.id}`}>{Cause.authorName}</Link></span>
                                                     </li>
-                                                    <li><Link onClick={ClickHandler} className="e-btn" to="/donate">Donate Now</Link></li>
+                                                    <li><Link onClick={ClickHandler} className="e-btn" to="/fundraise/1">Donate Now</Link></li>
                                                 </ul>
                                             </div>
                                         </div>
