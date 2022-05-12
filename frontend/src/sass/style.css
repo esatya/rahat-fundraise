@@ -2777,7 +2777,7 @@ h2.hidden {
   .wpo-hero-section-6,
   .wpo-hero-section-7 {
     height: 500px;
-    background: #217ec2;
+    background: #0877c71c;
     border-bottom: 0;
   }
 }
@@ -2807,7 +2807,7 @@ h2.hidden {
   width: 986px;
   height: 986px;
   content: "";
-  background: #0172c2b0;
+  background: #0877c74f;
   border-radius: 50%;
   z-index: -1;
 }
