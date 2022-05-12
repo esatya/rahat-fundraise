@@ -18,7 +18,7 @@ const CampaignModel = new mongoose.Schema<ICampaign>(
       },
     ],
     target: { type: Number, required: true },
-    amount: { type: Number, required: true },
+    amount: { type: Number, default: 0 },
     status: {
       type: String,
       required: true,

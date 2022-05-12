@@ -10,8 +10,8 @@ export const addNewCampaignValidationRules: ValidationChain[] = [
   body('fundRaiser').isString().optional(),
   body('wallet').isArray().optional(),
   body('wallet.*.*').isString(),
-  body('target').isNumeric().toFloat(),
-  body('amount').isNumeric().toFloat(),
+  body('target').isFloat().toFloat(),
+  body('amount').isFloat().toFloat().optional(),
   body('status').isString().toUpperCase().isIn(CAMPAIGN_OPTIONS).optional(),
   body('expiryDate').isISO8601({ strict: true }).isAfter(),
 ];
