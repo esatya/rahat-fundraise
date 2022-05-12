@@ -8,7 +8,9 @@ import { IRequest, IResponse } from '../interfaces/vendors';
 
 export const getCampaigns = async (req: IRequest, res: IResponse) => {
   try {
-    const campaigns = await Campaign.find({ status: 'PUBLISHED' });
+    const campaigns = await Campaign.find({ status: 'PUBLISHED' }).populate(
+      'creator',
+    );
 
     if (!campaigns) {
       throw new Error('Campaigns not found.');

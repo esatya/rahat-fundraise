@@ -296,9 +296,9 @@ export const addWallet = async (req: IRequest, res: IResponse) => {
       throw new Error(`User does not exist.`);
     }
 
-    const wallet: string = req.body.wallet;
+    const walletId: string = req.body.walletId;
 
-    user.wallet = wallet;
+    user.walletId = walletId;
     const updatedUser: IUser = await user.save({ validateModifiedOnly: true });
 
     return res.json({
