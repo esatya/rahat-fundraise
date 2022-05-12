@@ -2,6 +2,7 @@
 .DS_STORE
 sandbox
 play
+build/
 
 # Logs
 logs
