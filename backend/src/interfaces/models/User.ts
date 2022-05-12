@@ -2,16 +2,16 @@ import mongoose from 'mongoose';
 
 interface IUser extends mongoose.Document {
   bio?: string;
-  name: string;
+  name?: string;
   email: string;
-  phone: string;
-  image: string;
+  phone?: string;
+  image?: string;
   alias: string;
-  address: string;
+  address?: string;
   social?: string[];
-  wallet?: string;
-  isActive: boolean;
-  emailVerified: boolean;
+  walletId?: string;
+  isActive?: boolean;
+  emailVerified?: boolean;
   otp?: {
     number: number;
     expiry: number;
