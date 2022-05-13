@@ -76,13 +76,7 @@ const LoginPage = (props) => {
       });
       validator.hideMessages();
 
-      // const userRegex = /^user+.*/gm;
-      // const email = value.email;
-
-      // if (email.match(userRegex)) {
-      toast.success("You successfully Login on charitio !");
-      props.history.push("/home");
-      // }
+      props.history.push("/otp", { email: value.email });
     } else {
       validator.showMessages();
       toast.error("Empty field is not allowed!");
