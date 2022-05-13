@@ -8,9 +8,7 @@ import { IRequest, IResponse } from '../interfaces/vendors';
 
 export const getCampaigns = async (req: IRequest, res: IResponse) => {
   try {
-    const campaigns = await Campaign.find({ status: 'PUBLISHED' }).populate(
-      'creator',
-    );
+    const campaigns = await Campaign.find().populate('creator');
 
     if (!campaigns) {
       throw new Error('Campaigns not found.');
@@ -38,8 +36,11 @@ export const addCampaign = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
+    const imageUrl = req.file ? `/images/campaigns/${req.file.filename}` : null;
+
     const campaign: ICampaign = new Campaign({
       ...req.body,
+      image: imageUrl,
       creator: req.userId,
     });
 
