@@ -8,7 +8,7 @@ const App = () => {
   return (
     <div className="App" id="scrool">
       <AllRoute />
-      <ToastContainer />
+      <ToastContainer position="bottom-right" autoClose={5000} />
     </div>
   );
 };

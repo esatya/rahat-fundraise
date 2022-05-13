@@ -9,6 +9,7 @@ import SignUpPage from "../SignUpPage";
 import FundraiseRegisterPage from "../FundraiseRegister";
 import SettingSection from "../SettingsPage";
 import ErrorPage from "../ErrorPage";
+import OtpPage from "../OtpPage";
 
 const AllRoute = () => {
   return (
@@ -24,6 +25,7 @@ const AllRoute = () => {
           <Route path="/signup" component={SignUpPage} />
           <Route path="/campaign/register" component={FundraiseRegisterPage} />
           <Route path="/404" component={ErrorPage} />
+          <Route path="/otp" component={OtpPage} />
         </Switch>
       </Router>
     </div>
