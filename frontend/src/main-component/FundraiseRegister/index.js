@@ -15,22 +15,37 @@ const FundraiseRegisterPage = (props) => {
     expiryDate: "",
   });
 
+  const [image, setImage] = useState(null);
+
   const changeHandler = (e) => {
     setValue({ ...value, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (event) => {
+    setImage(event.target.files[0]);
   };
 
   const SubmitHandler = async (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    formData.append("title", value.title);
+    formData.append("excerpt", value.excerpt);
+    formData.append("story", value.story);
+    formData.append("target", value.target);
+    formData.append("expiryDate", value.expiryDate);
+    formData.append("image", image);
+
     try {
       const resData = await fetch("http://localhost:8080/api/campaign/add", {
         method: "POST",
-        body: JSON.stringify(value),
+        body: formData,
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzkzOTc0OWRhNDNiZDk2NTUxODlmYyIsImVtYWlsIjoicGViZXNpNTE0MkAzZG1hc3RpLmNvbSIsImFsaWFzIjoicGViZXNpNTE0MiIsImlhdCI6MTY1MjExMTc2OH0.Ih1ZAxa40vOycsm5MyHpyXClWZykmLk_pjOupheECzA`,
         },
       }).then((res) => res.json());
+
+      props.history.push("/fundraise");
 
       console.log({ resData });
     } catch (error) {
@@ -127,7 +142,7 @@ const FundraiseRegisterPage = (props) => {
                           onChange={changeHandler}
                         ></textarea>
                       </div>
-                      {/* <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
+                      <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
                         <label for="formFileSm" class="form-label">
                           Upload photo that best defines your fundraiser
                           campaign
@@ -136,8 +151,9 @@ const FundraiseRegisterPage = (props) => {
                           class="form-control form-control-sm"
                           id="formFileSm"
                           type="file"
+                          onChange={handleFileChange}
                         />
-                      </div> */}
+                      </div>
                       {/* <div class="mb-3">
                                                 <label for="formFileSm" class="form-label">Small file input example</label>
                                                 <input class="form-control form-control-sm" id="formFileSm" type="file">

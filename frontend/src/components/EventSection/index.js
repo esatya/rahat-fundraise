@@ -46,7 +46,11 @@ const EventSection = (props) => {
                 <div className="wpo-campaign-single">
                   <div className="wpo-campaign-item">
                     <div className="wpo-campaign-img">
-                      <img src={cimg} alt="" />
+                      <img
+                        height={175}
+                        src={`http://localhost:8080${Cause.image}`}
+                        alt=""
+                      />
                       {/* <span className="thumb">{Cause.thumb}</span> */}
                     </div>
                     <div className="wpo-campaign-content">
