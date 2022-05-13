@@ -24,7 +24,7 @@ const FundraiseRegisterPage = () => {
               <div id="Donations" className="tab-pane">
                 <form onSubmit={SubmitHandler}>
                   <div className="wpo-donations-amount">
-                    <h2>Select A Country</h2>
+                    <h2>Select a country</h2>
                     <select id="inputState" class="form-select">
                       <option selected>Choose...</option>
                       <option>Nepal</option>
@@ -33,7 +33,7 @@ const FundraiseRegisterPage = () => {
                     </select>
                   </div>
                   <div className="wpo-donations-details">
-                    <h2>Enter Details Of Your Campaign?</h2>
+                    <h2>Enter details of your campaign?</h2>
                     <div className="row">
                       <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                         <label for="fname" class="form-label">
