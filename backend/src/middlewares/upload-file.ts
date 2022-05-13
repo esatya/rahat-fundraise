@@ -1,26 +1,6 @@
-import path from 'path';
-import multer, { FileFilterCallback } from 'multer';
+import multer, { FileFilterCallback, StorageEngine } from 'multer';
 
 import { IRequest } from '../interfaces/vendors';
-import { DestinationCallback, FileNameCallback } from '../interfaces/multer';
-
-const fileStorage = multer.diskStorage({
-  destination: (
-    req: IRequest,
-    file: Express.Multer.File,
-    cb: DestinationCallback,
-  ) => {
-    cb(null, path.join(__dirname, '../../images/users'));
-  },
-
-  filename: (
-    req: IRequest,
-    file: Express.Multer.File,
-    cb: FileNameCallback,
-  ) => {
-    cb(null, `${Date.now()}_${file.originalname}`);
-  },
-});
 
 const fileFilter = (
   req: IRequest,
@@ -38,9 +18,10 @@ const fileFilter = (
   cb(null, false);
 };
 
-const uploadFile = multer({
-  storage: fileStorage,
-  fileFilter: fileFilter,
-}).single('image');
+const uploadFile = (fileStorage: StorageEngine) =>
+  multer({
+    storage: fileStorage,
+    fileFilter: fileFilter,
+  }).single('image');
 
 export default uploadFile;

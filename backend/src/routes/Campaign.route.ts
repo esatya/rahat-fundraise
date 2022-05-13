@@ -1,6 +1,7 @@
-import { Router } from 'express';
+import path from 'path';
+import multer from 'multer';
+import express from 'express';
 
-import { isAuth } from '../middlewares';
 import {
   addCampaign,
   getCampaigns,
@@ -12,6 +13,7 @@ import {
   updateCampaignAmount,
   extendCampaignExpiryDate,
 } from '../controllers/Campaign.controller';
+
 import {
   addNewCampaignValidationRules,
   removeCampaignValidationRules,
@@ -23,7 +25,32 @@ import {
   extendCampaignExpiryDateValidationRules,
 } from '../validators/Campaign.validation';
 
-const router = Router();
+import { isAuth, uploadFile } from '../middlewares';
+
+import { IRequest } from '../interfaces/vendors';
+import { DestinationCallback, FileNameCallback } from '../interfaces/multer';
+
+const fileStorage = multer.diskStorage({
+  destination: (
+    req: IRequest,
+    file: Express.Multer.File,
+    cb: DestinationCallback,
+  ) => {
+    cb(null, path.join(__dirname, '../../images/campaigns'));
+  },
+
+  filename: (
+    req: IRequest,
+    file: Express.Multer.File,
+    cb: FileNameCallback,
+  ) => {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+});
+
+const router = express.Router();
+
+router.use(uploadFile(fileStorage));
 
 // @Route   GET api/campaign
 // @desc    Ping campaign
