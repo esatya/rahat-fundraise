@@ -1,10 +1,13 @@
 import React, { Component, useState } from "react";
 
 const Step1 = (props) => {
-  const [inputValues, setinputValues] = useState({
-    firstName: "",
-    lastName: "",
-  });
+  const handleChange = (e) => {
+    props.updateStore({
+      ...props.getStore(),
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <div className="step step3">
       <div className="row">
@@ -19,9 +22,7 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={(e) => {
-                  setinputValues({ ...inputValues, firstName: e.target.value });
-                }}
+                onChange={handleChange}
               />
             </div>
             <label className="control-label col-md-6">Lastname</label>
@@ -33,9 +34,7 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={(e) => {
-                  setinputValues({ ...inputValues, firstName: e.target.value });
-                }}
+                onChange={handleChange}
               />
             </div>
             <label className="control-label col-md-6">Email</label>
@@ -47,9 +46,7 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={(e) => {
-                  setinputValues({ ...inputValues, firstName: e.target.value });
-                }}
+                onChange={handleChange}
               />
             </div>
             <label className="control-label col-md-6">Country</label>
@@ -61,9 +58,7 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={(e) => {
-                  setinputValues({ ...inputValues, firstName: e.target.value });
-                }}
+                onChange={handleChange}
               />
             </div>
             <label className="control-label col-md-6">State</label>
@@ -75,9 +70,7 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={(e) => {
-                  setinputValues({ ...inputValues, firstName: e.target.value });
-                }}
+                onChange={handleChange}
               />
             </div>
             <label className="control-label col-md-6">Address</label>
@@ -89,9 +82,7 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={(e) => {
-                  setinputValues({ ...inputValues, firstName: e.target.value });
-                }}
+                onChange={handleChange}
               />
             </div>
             <label className="control-label col-md-6">City</label>
@@ -103,9 +94,7 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={(e) => {
-                  setinputValues({ ...inputValues, firstName: e.target.value });
-                }}
+                onChange={handleChange}
               />
             </div>
             <label className="control-label col-md-6">Zip Code</label>
@@ -117,9 +106,7 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={(e) => {
-                  setinputValues({ ...inputValues, firstName: e.target.value });
-                }}
+                onChange={handleChange}
               />
             </div>
           </div>

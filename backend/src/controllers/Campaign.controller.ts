@@ -1,14 +1,15 @@
 import { validationResult } from 'express-validator';
 
-import { TCampaign } from '../types';
+import User from '../models/User.model';
 import Campaign from '../models/Campaign.model';
 
+import { TCampaign, TUser } from '../types';
 import { ICampaign } from '../interfaces/models';
 import { IRequest, IResponse } from '../interfaces/vendors';
 
 export const getCampaigns = async (req: IRequest, res: IResponse) => {
   try {
-    const campaigns = await Campaign.find({ status: 'PUBLISHED' });
+    const campaigns = await Campaign.find().populate('creator');
 
     if (!campaigns) {
       throw new Error('Campaigns not found.');
@@ -36,12 +37,35 @@ export const addCampaign = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
+    const imageUrl = req.file ? `/images/campaigns/${req.file.filename}` : null;
+
     const campaign: ICampaign = new Campaign({
       ...req.body,
+      image: imageUrl,
       creator: req.userId,
     });
 
     const savedCampaign: ICampaign = await campaign.save();
+
+    const user: TUser = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(401).json({
+        ok: false,
+        error: 'You are not authorized to create this campaign',
+      });
+    }
+
+    const updatedCampaigns = [...user.campaigns, campaign];
+
+    const updatedUser: TUser = await User.findByIdAndUpdate(
+      req.userId,
+      { campaigns: updatedCampaigns },
+      {
+        runValidators: true,
+        new: true,
+      },
+    );
 
     return res.json({
       ok: true,
@@ -350,7 +374,7 @@ export const getCampaignById = async (req: IRequest, res: IResponse) => {
     const campaignId = req.params.campaignId;
     const campaign = await Campaign.findOne({
       _id: campaignId,
-      status: 'PUBLISHED',
+      //   status: 'PUBLISHED',
     });
 
     if (!campaign) {

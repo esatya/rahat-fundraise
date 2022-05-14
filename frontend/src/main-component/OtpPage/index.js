@@ -1,11 +1,42 @@
+import { toast } from "react-toastify";
 import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+
 import Grid from "@material-ui/core/Grid";
-import { Link, withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
 const OtpPage = (props) => {
-  const handleOtp = () => {
-    props.history.push("/");
+  const [value, setValue] = useState({
+    otpNumber: "",
+  });
+
+  const handleChange = (e) => {
+    setValue({ [e.target.name]: e.target.value });
+  };
+
+  const email = props.location?.state?.email;
+
+  const handleOtp = async () => {
+    try {
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/user/otp/verify`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            otpNumber: parseInt(value.otpNumber),
+          }),
+        }
+      ).then((res) => res.json());
+
+      sessionStorage.setItem("token", resData.token);
+      props.history.push("/profile");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -17,7 +48,7 @@ const OtpPage = (props) => {
           address.
         </p>
         <p>
-          <input type="text" />
+          <input type="text" name="otpNumber" onChange={handleChange} />
         </p>
         <Grid className="d-flex justify-content-center">
           <Button className="cBtnTheme" onClick={handleOtp}>

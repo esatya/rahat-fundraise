@@ -1,10 +1,13 @@
-import React, { Component, useState } from "react";
+import React from "react";
 
 const Step1 = (props) => {
-  const [inputValues, setinputValues] = useState({
-    firstName: "",
-    lastName: "",
-  });
+  const handleChange = (e) => {
+    props.updateStore({
+      ...props.getStore(),
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <div className="step step3">
       <div className="row">
@@ -14,7 +17,12 @@ const Step1 = (props) => {
               Select Your Crypto
             </label>
             <div className="mt-2">
-              <select id="crypto" name="crypto">
+              <select
+                id="crypto"
+                name="wallet"
+                value={props.getStore().wallet}
+                onChange={handleChange}
+              >
                 <option value="BTC">BTC</option>
                 <option value="ETH">ETH</option>
               </select>

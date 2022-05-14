@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import SimpleReactValidator from "simple-react-validator";
 import { toast } from "react-toastify";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import React, { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
+
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
+import TextField from "@material-ui/core/TextField";
+import SimpleReactValidator from "simple-react-validator";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import "./style.scss";
 
 const LoginPage = (props) => {
   const [value, setValue] = useState({
-    email: "user@gmail.com",
-    password: "123456",
+    email: "",
     remember: false,
   });
 
@@ -32,9 +32,50 @@ const LoginPage = (props) => {
     })
   );
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
     if (validator.allValid()) {
+      try {
+        const resData = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/user/login`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              email: value.email,
+            }),
+
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        ).then((res) => res.json());
+
+        console.log({ resData });
+
+        if (resData.data.email) {
+          const email = resData.data.email;
+
+          const otpRes = await fetch(
+            `${process.env.REACT_APP_API_BASE_URL}/api/user/otp`,
+            {
+              method: "POST",
+              body: JSON.stringify({
+                email: email,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          ).then((res) => res.json());
+
+          if (otpRes.ok) {
+            toast.success("OTP has been sent to your email");
+          }
+        }
+      } catch (error) {
+        toast.error(error.message);
+      }
+
       setValue({
         email: "",
         password: "",
@@ -42,14 +83,7 @@ const LoginPage = (props) => {
       });
       validator.hideMessages();
 
-      const userRegex = /^user+.*/gm;
-      const email = value.email;
-
-      if (email.match(userRegex)) {
-        // toast.success("You successfully Login on charitio !");
-        props.history.push("/otp");
-        localStorage.setItem("isLogIn", true);
-      }
+      props.history.push("/otp", { email: value.email });
     } else {
       validator.showMessages();
       toast.error("Empty field is not allowed!");
@@ -115,11 +149,11 @@ const LoginPage = (props) => {
                   Login
                 </Button>
               </Grid>
-              <Grid className="loginWithSocial">
+              {/* <Grid className="loginWithSocial">
                 <Button className="google">
                   <i className="fa fa-google mr-4"></i> Sign up using google
                 </Button>
-              </Grid>
+              </Grid> */}
               <p className="noteHelp">
                 Don't have an account?{" "}
                 <Link to="/signup">Create free account</Link>

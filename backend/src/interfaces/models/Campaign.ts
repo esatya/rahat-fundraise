@@ -11,11 +11,11 @@ interface ICampaign extends Document {
   title: string;
   excerpt: string;
   story?: string;
-  featured_image: string;
+  image: string;
   fundRaiser?: string;
-  wallet: WalletOptions[];
+  wallet?: WalletOptions[];
   target: number;
-  amount: number;
+  amount?: number;
   status: string;
   expiryDate: string;
   creator: PopulatedDoc<IUser>;

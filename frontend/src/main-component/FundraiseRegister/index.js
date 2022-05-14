@@ -1,13 +1,60 @@
-import React, { Fragment } from "react";
-import Navbar from "../../components/Navbar";
-import PageTitle from "../../components/pagetitle";
-import Footer from "../../components/footer";
-import Scrollbar from "../../components/scrollbar";
-import Logo from "../../images/logo.png";
+import { toast } from "react-toastify";
+import React, { useState, Fragment } from "react";
 
-const FundraiseRegisterPage = () => {
-  const SubmitHandler = (e) => {
+import Logo from "../../images/logo.png";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/footer";
+import PageTitle from "../../components/pagetitle";
+import Scrollbar from "../../components/scrollbar";
+
+const FundraiseRegisterPage = (props) => {
+  const [value, setValue] = useState({
+    title: "",
+    excerpt: "",
+    story: "",
+    target: "",
+    expiryDate: "",
+  });
+
+  const [image, setImage] = useState(null);
+
+  const changeHandler = (e) => {
+    setValue({ ...value, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (event) => {
+    setImage(event.target.files[0]);
+  };
+
+  const SubmitHandler = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", value.title);
+    formData.append("excerpt", value.excerpt);
+    formData.append("story", value.story);
+    formData.append("target", value.target);
+    formData.append("expiryDate", value.expiryDate);
+    formData.append("image", image);
+
+    try {
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/campaign/add`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      ).then((res) => res.json());
+
+      props.history.push("/profile");
+
+      console.log({ resData });
+    } catch (error) {
+      return toast.error(error.message);
+    }
   };
 
   return (
@@ -23,6 +70,8 @@ const FundraiseRegisterPage = () => {
               </div>
               <div id="Donations" className="tab-pane">
                 <form onSubmit={SubmitHandler}>
+                  {/* <div className="wpo-donations-amount">
+                    <h2>Select A Country</h2>
                   <div className="wpo-donations-amount">
                     <h2>Select a country</h2>
                     <select id="inputState" class="form-select">
@@ -31,7 +80,7 @@ const FundraiseRegisterPage = () => {
                       <option>Nepal</option>
                       <option>Nepal</option>
                     </select>
-                  </div>
+                  </div> */}
                   <div className="wpo-donations-details">
                     <h2>Enter details of your campaign?</h2>
                     <div className="row">
@@ -42,9 +91,10 @@ const FundraiseRegisterPage = () => {
                         <input
                           type="text"
                           className="form-control"
-                          name="name"
+                          name="target"
                           id="fname"
                           placeholder=""
+                          onChange={changeHandler}
                         />
                       </div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
@@ -54,9 +104,10 @@ const FundraiseRegisterPage = () => {
                         <input
                           type="text"
                           className="form-control"
-                          name="name"
+                          name="expiryDate"
                           id="name"
                           placeholder=""
+                          onChange={changeHandler}
                         />
                       </div>
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
@@ -66,9 +117,10 @@ const FundraiseRegisterPage = () => {
                         <input
                           type="text"
                           className="form-control"
-                          name="name"
+                          name="title"
                           id="fname"
                           placeholder="Max 50 words"
+                          onChange={changeHandler}
                         />
                       </div>
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
@@ -78,9 +130,10 @@ const FundraiseRegisterPage = () => {
                         <input
                           type="text"
                           className="form-control"
-                          name="name"
+                          name="excerpt"
                           id="fname"
                           placeholder="Max 100 words"
+                          onChange={changeHandler}
                         />
                       </div>
                       <div className="col-lg-12 col-12 form-group">
@@ -89,9 +142,10 @@ const FundraiseRegisterPage = () => {
                         </label>
                         <textarea
                           className="form-control"
-                          name="note"
+                          name="story"
                           id="note"
                           placeholder="Minimum 200 words"
+                          onChange={changeHandler}
                         ></textarea>
                       </div>
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
@@ -103,6 +157,7 @@ const FundraiseRegisterPage = () => {
                           class="form-control form-control-sm"
                           id="formFileSm"
                           type="file"
+                          onChange={handleFileChange}
                         />
                       </div>
                       {/* <div class="mb-3">

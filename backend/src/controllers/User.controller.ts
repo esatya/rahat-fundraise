@@ -101,7 +101,7 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
 
     await user.save({ validateModifiedOnly: true });
 
-    await transporter.sendMail(message);
+    transporter.sendMail(message);
 
     res.json({
       ok: true,
@@ -245,6 +245,8 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
+    const imageUrl = req.file ? `/images/users/${req.file.filename}` : null;
+
     const { ...updatedData } = req.body;
 
     if (Object.keys(updatedData).length === 0) {
@@ -255,7 +257,7 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
 
     const updatedUser: TUser = await User.findByIdAndUpdate(
       req.userId,
-      updatedData,
+      { ...updatedData, image: imageUrl },
       {
         runValidators: true,
         new: true,
@@ -296,9 +298,9 @@ export const addWallet = async (req: IRequest, res: IResponse) => {
       throw new Error(`User does not exist.`);
     }
 
-    const wallet: string = req.body.wallet;
+    const walletId: string = req.body.walletId;
 
-    user.wallet = wallet;
+    user.walletId = walletId;
     const updatedUser: IUser = await user.save({ validateModifiedOnly: true });
 
     return res.json({
@@ -317,7 +319,7 @@ export const addWallet = async (req: IRequest, res: IResponse) => {
 
 export const getProfile = async (req: IRequest, res: IResponse) => {
   try {
-    const user: TUser = await User.findById(req.userId);
+    const user: TUser = await User.findById(req.userId).populate('campaigns');
 
     if (!user) {
       throw new Error(`User does not exist.`);
@@ -325,7 +327,7 @@ export const getProfile = async (req: IRequest, res: IResponse) => {
 
     return res.json({
       ok: true,
-      msg: 'Login Successful',
+      msg: 'User Data',
       data: convertUserData(user),
     });
   } catch (error) {

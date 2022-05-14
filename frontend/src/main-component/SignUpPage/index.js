@@ -1,17 +1,16 @@
-import React, { useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import SimpleReactValidator from "simple-react-validator";
 import { toast } from "react-toastify";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import React, { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
+
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import SimpleReactValidator from "simple-react-validator";
 
 const SignUpPage = (props) => {
   const [value, setValue] = useState({
     email: "",
-    full_name: "",
-    password: "",
-    confirm_password: "",
+    alias: "",
   });
 
   const changeHandler = (e) => {
@@ -28,11 +27,21 @@ const SignUpPage = (props) => {
   const submitForm = (e) => {
     e.preventDefault();
     if (validator.allValid()) {
+      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/register`, {
+        method: "POST",
+        body: JSON.stringify({
+          email: value.email,
+          alias: value.alias,
+        }),
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
       setValue({
         email: "",
-        full_name: "",
-        password: "",
-        confirm_password: "",
+        alias: "",
       });
       validator.hideMessages();
       toast.success("Registration Complete successfully!");
@@ -42,10 +51,11 @@ const SignUpPage = (props) => {
       toast.error("Empty field is not allowed!");
     }
   };
+
   return (
     <Grid className="loginWrapper">
       <Grid className="loginForm">
-        <h2>Sign Up</h2>
+        <h2>Signup</h2>
         <p>Signup your account</p>
         <form onSubmit={submitForm}>
           <Grid container spacing={3}>
@@ -54,9 +64,9 @@ const SignUpPage = (props) => {
                 className="inputOutline"
                 fullWidth
                 placeholder="Full Name"
-                value={value.full_name}
+                value={value.alias}
                 variant="outlined"
-                name="full_name"
+                name="alias"
                 label="Name"
                 InputLabelProps={{
                   shrink: true,
@@ -64,11 +74,7 @@ const SignUpPage = (props) => {
                 onBlur={(e) => changeHandler(e)}
                 onChange={(e) => changeHandler(e)}
               />
-              {validator.message(
-                "full name",
-                value.full_name,
-                "required|alpha"
-              )}
+              {validator.message("full name", value.alias, "required|alpha")}
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -103,8 +109,8 @@ const SignUpPage = (props) => {
                 onChange={(e) => changeHandler(e)}
               />
               {validator.message("password", value.password, "required")}
-            </Grid>
-            <Grid item xs={12}>
+            </Grid> */}
+            {/* <Grid item xs={12}>
               <TextField
                 className="inputOutline"
                 fullWidth
@@ -135,7 +141,7 @@ const SignUpPage = (props) => {
                   Sign Up
                 </Button>
               </Grid>
-              <Grid className="loginWithSocial">
+              {/* <Grid className="loginWithSocial">
                 <Button className="facebook">
                   <i className="fa fa-facebook"></i>
                 </Button>
@@ -145,7 +151,7 @@ const SignUpPage = (props) => {
                 <Button className="linkedin">
                   <i className="fa fa-linkedin"></i>
                 </Button>
-              </Grid>
+              </Grid> */}
               <p className="noteHelp">
                 Already have an account?{" "}
                 <Link to="/login">Return to Sign In</Link>
