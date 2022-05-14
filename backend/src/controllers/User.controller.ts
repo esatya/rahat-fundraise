@@ -245,6 +245,8 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
+    const imageUrl = req.file ? `/images/users/${req.file.filename}` : null;
+
     const { ...updatedData } = req.body;
 
     if (Object.keys(updatedData).length === 0) {
@@ -255,7 +257,7 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
 
     const updatedUser: TUser = await User.findByIdAndUpdate(
       req.userId,
-      updatedData,
+      { ...updatedData, image: imageUrl },
       {
         runValidators: true,
         new: true,

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Tab,
   Row,
@@ -13,14 +13,18 @@ import { toast } from "react-toastify";
 import SimpleReactValidator from "simple-react-validator";
 
 function SettingsPage(props) {
+  const [image, setImage] = useState(null);
   const [user, setUser] = React.useState({
-    full_name: "",
+    name: "",
     phone: "",
     address: "",
     bio: "",
+    image: image,
   });
 
-  console.log({ user });
+  const handleFileChange = (event) => {
+    setImage(event.target.files[0]);
+  };
 
   const fetchUser = async () => {
     try {
@@ -39,6 +43,7 @@ function SettingsPage(props) {
         phone: resData.data.phone,
         address: resData.data.address,
         bio: resData.data.bio,
+        image: resData.data.image,
       });
     } catch (error) {
       return toast.error(error.message);
@@ -60,21 +65,39 @@ function SettingsPage(props) {
     validator.showMessages();
   };
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
     if (validator.allValid()) {
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/update-by-id`, {
-        method: "POST",
-        body: JSON.stringify(user),
+      const formData = new FormData();
 
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-      });
+      formData.append("name", user.name);
+      formData.append("phone", user.phone);
+      formData.append("address", user.address);
+      formData.append("bio", user.bio);
+      formData.append("image", image);
 
-      validator.hideMessages();
-      toast.success("Profile Updated successfully!");
+      try {
+        const updatedUser = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/user/update-by-id`,
+          {
+            method: "POST",
+            body: formData,
+
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        ).then((res) => res.json());
+
+        console.log({ updatedUser });
+
+        setUser(updatedUser.data);
+
+        validator.hideMessages();
+        toast.success("Profile Updated successfully!");
+      } catch (error) {
+        toast.error("Something went wrong");
+      }
     } else {
       validator.showMessages();
       toast.error("Empty field is not allowed!");
@@ -199,10 +222,10 @@ function SettingsPage(props) {
                               controlId="exampleForm.ControlInput1"
                             >
                               <label className="mr-3">
-                                <small>Upload your Profile picture</small>
+                                {/* <small>Upload your Profile picture</small> */}
                                 <div className="text-center">
                                   <img
-                                    src="https://assets.rumsan.com/rumsan-group/zoonft-adoption-6.jpg"
+                                    src={`${process.env.REACT_APP_API_BASE_URL}${user.image}`}
                                     alt=""
                                     style={{
                                       objectFit: "cover",
@@ -215,15 +238,25 @@ function SettingsPage(props) {
                                   />
                                 </div>
                               </label>
-                              <input className="d-none" type="file" />
-                              <Button
-                                style={{
-                                  fontSize: "14px",
-                                  padding: "10px 20px",
-                                }}
-                              >
-                                Upload
-                              </Button>
+                              <label for="profile-upload">
+                                <div
+                                  style={{
+                                    fontSize: "14px",
+                                    padding: "10px 20px",
+                                    background: "#0d6efd",
+                                    color: "white",
+                                    borderRadius: "5px",
+                                  }}
+                                >
+                                  Choose Profile
+                                </div>
+                              </label>
+                              <input
+                                id="profile-upload"
+                                className="d-none"
+                                type="file"
+                                onChange={handleFileChange}
+                              />
                             </Form.Group>
                           </Col>
                           {/* <Col>
