@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import { Link, withRouter } from "react-router-dom";
-import Button from "@material-ui/core/Button";
 import { toast } from "react-toastify";
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 
 const OtpPage = (props) => {
   const [value, setValue] = useState({
@@ -15,26 +16,27 @@ const OtpPage = (props) => {
 
   const email = props.location?.state?.email;
 
-  console.log({ props });
-  //   console.log({ email });
-
   const handleOtp = async () => {
     try {
-      const resData = await fetch(`http://localhost:8080/api/user/otp/verify`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          otpNumber: parseInt(value.otpNumber),
-        }),
-      }).then((res) => res.json());
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/user/otp/verify`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            otpNumber: parseInt(value.otpNumber),
+          }),
+        }
+      ).then((res) => res.json());
+
+      sessionStorage.setItem("token", resData.token);
+      props.history.push("/profile");
     } catch (error) {
       toast.error(error.message);
     }
-
-    // props.history.push("/");
   };
 
   return (

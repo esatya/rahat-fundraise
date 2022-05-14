@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import SimpleReactValidator from "simple-react-validator";
 import { toast } from "react-toastify";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import React, { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
+
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
+import TextField from "@material-ui/core/TextField";
+import SimpleReactValidator from "simple-react-validator";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import "./style.scss";
 
@@ -35,31 +36,37 @@ const LoginPage = (props) => {
     e.preventDefault();
     if (validator.allValid()) {
       try {
-        const resData = await fetch("http://localhost:8080/api/user/login", {
-          method: "POST",
-          body: JSON.stringify({
-            email: value.email,
-          }),
+        const resData = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/user/login`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              email: value.email,
+            }),
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((res) => res.json());
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        ).then((res) => res.json());
 
         console.log({ resData });
 
         if (resData.data.email) {
           const email = resData.data.email;
 
-          const otpRes = await fetch("http://localhost:8080/api/user/otp", {
-            method: "POST",
-            body: JSON.stringify({
-              email: email,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }).then((res) => res.json());
+          const otpRes = await fetch(
+            `${process.env.REACT_APP_API_BASE_URL}/api/user/otp`,
+            {
+              method: "POST",
+              body: JSON.stringify({
+                email: email,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          ).then((res) => res.json());
 
           if (otpRes.ok) {
             toast.success("OTP has been sent to your email");

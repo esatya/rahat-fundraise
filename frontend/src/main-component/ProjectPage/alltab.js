@@ -1,16 +1,16 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import {
-  TabContent,
-  TabPane,
+  Col,
   Nav,
+  Row,
+  TabPane,
   NavItem,
   NavLink,
-  Row,
-  Col,
+  TabContent,
 } from "reactstrap";
 import classnames from "classnames";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
 
 import cmt1 from "../../images/blog-details/comments-author/img-1.jpg";
 import cmt2 from "../../images/blog-details/comments-author/img-2.jpg";
@@ -26,10 +26,6 @@ const CauseTabs = ({ campaign }) => {
   const SubmitHandler = (e) => {
     e.preventDefault();
   };
-
-  const { id } = useParams();
-
-  //   const CauseDetails = Causes[0];
 
   return (
     <div>

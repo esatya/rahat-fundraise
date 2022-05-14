@@ -1,10 +1,11 @@
-import React, { useState, Fragment } from "react";
-import Navbar from "../../components/Navbar";
-import PageTitle from "../../components/pagetitle";
-import Footer from "../../components/footer";
-import Scrollbar from "../../components/scrollbar";
-import Logo from "../../images/logo.png";
 import { toast } from "react-toastify";
+import React, { useState, Fragment } from "react";
+
+import Logo from "../../images/logo.png";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/footer";
+import PageTitle from "../../components/pagetitle";
+import Scrollbar from "../../components/scrollbar";
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
@@ -37,15 +38,18 @@ const FundraiseRegisterPage = (props) => {
     formData.append("image", image);
 
     try {
-      const resData = await fetch("http://localhost:8080/api/campaign/add", {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzkzOTc0OWRhNDNiZDk2NTUxODlmYyIsImVtYWlsIjoicGViZXNpNTE0MkAzZG1hc3RpLmNvbSIsImFsaWFzIjoicGViZXNpNTE0MiIsImlhdCI6MTY1MjExMTc2OH0.Ih1ZAxa40vOycsm5MyHpyXClWZykmLk_pjOupheECzA`,
-        },
-      }).then((res) => res.json());
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/campaign/add`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      ).then((res) => res.json());
 
-      props.history.push("/fundraise");
+      props.history.push("/profile");
 
       console.log({ resData });
     } catch (error) {

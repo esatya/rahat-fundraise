@@ -1,26 +1,23 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import Causes from "../../api/cause";
+import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
 
 const CauseSection = (props) => {
-  const ClickHandler = () => {
-    window.scrollTo(10, 0);
-  };
-
   const [featuredCampaigns, setFeaturedCampaigns] = React.useState([]);
 
-  useEffect(async () => {
+  const fetchFeatureCampaigns = async () => {
     try {
-      const resData = await fetch("http://localhost:8080/api/campaign").then(
-        (res) => res.json()
-      );
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/campaign`
+      ).then((res) => res.json());
 
       setFeaturedCampaigns(resData.data);
     } catch (error) {
       return toast.error(error.message);
     }
-  }, []);
+  };
+
+  useEffect(fetchFeatureCampaigns, []);
 
   return (
     <div className={`wpo-campaign-area ${props.CmClass}`}>
@@ -43,7 +40,10 @@ const CauseSection = (props) => {
                 <div className="wpo-campaign-single">
                   <div className="wpo-campaign-item">
                     <div className="wpo-campaign-img">
-                      <img src={Causes[0].cImg} alt="" />
+                      <img
+                        src={`${process.env.REACT_APP_API_BASE_URL}${Cause.image}`}
+                        alt=""
+                      />
                       {/* <span className="thumb">{Cause.thumb}</span> */}
                     </div>
                     <div className="wpo-campaign-content">
@@ -93,7 +93,7 @@ const CauseSection = (props) => {
                                 <img
                                   width={45}
                                   height={45}
-                                  src={`http://localhost:8080${Cause.creator.image}`}
+                                  src={`${process.env.REACT_APP_API_BASE_URL}${Cause.creator.image}`}
                                   alt=""
                                 />
                               </span>

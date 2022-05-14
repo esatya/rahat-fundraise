@@ -1,28 +1,23 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import cimg from "../../images/campaign/1.jpg";
+import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
 
 const EventSection = (props) => {
-  const ClickHandler = () => {
-    window.scrollTo(10, 0);
-  };
-
   const [campaigns, setCampaigns] = React.useState([]);
 
-  console.log({ campaigns });
-
-  useEffect(async () => {
+  const fetchCampaigns = async () => {
     try {
-      const resData = await fetch("http://localhost:8080/api/campaign").then(
-        (res) => res.json()
-      );
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/campaign`
+      ).then((res) => res.json());
 
       setCampaigns(resData.data);
     } catch (error) {
       return toast.error(error.message);
     }
-  }, []);
+  };
+
+  useEffect(fetchCampaigns, []);
 
   return (
     <div className={`wpo-campaign-area section-padding ${props.CmClass}`}>
@@ -48,7 +43,7 @@ const EventSection = (props) => {
                     <div className="wpo-campaign-img">
                       <img
                         height={175}
-                        src={`http://localhost:8080${Cause.image}`}
+                        src={`${process.env.REACT_APP_API_BASE_URL}${Cause.image}`}
                         alt=""
                       />
                       {/* <span className="thumb">{Cause.thumb}</span> */}
@@ -99,7 +94,7 @@ const EventSection = (props) => {
                                 <img
                                   width={45}
                                   height={45}
-                                  src={`http://localhost:8080${Cause.creator.image}`}
+                                  src={`${process.env.REACT_APP_API_BASE_URL}${Cause.creator.image}`}
                                   alt=""
                                 />
                               </span>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Tab,
   Row,
@@ -9,8 +9,78 @@ import {
   FormControl,
   FloatingLabel,
 } from "react-bootstrap";
+import { toast } from "react-toastify";
+import SimpleReactValidator from "simple-react-validator";
 
-function SettingsPage() {
+function SettingsPage(props) {
+  const [user, setUser] = React.useState({
+    full_name: "",
+    phone: "",
+    address: "",
+    bio: "",
+  });
+
+  console.log({ user });
+
+  const fetchUser = async () => {
+    try {
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      ).then((res) => res.json());
+
+      setUser({
+        name: resData.data.name,
+        phone: resData.data.phone,
+        address: resData.data.address,
+        bio: resData.data.bio,
+      });
+    } catch (error) {
+      return toast.error(error.message);
+    }
+  };
+
+  useEffect(() => fetchUser(), []);
+
+  console.log("setting", { user });
+
+  const [validator] = React.useState(
+    new SimpleReactValidator({
+      className: "errorMessage",
+    })
+  );
+
+  const changeHandler = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+    validator.showMessages();
+  };
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (validator.allValid()) {
+      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/update-by-id`, {
+        method: "POST",
+        body: JSON.stringify(user),
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      });
+
+      validator.hideMessages();
+      toast.success("Profile Updated successfully!");
+    } else {
+      validator.showMessages();
+      toast.error("Empty field is not allowed!");
+    }
+  };
+
   return (
     <>
       <section className="mt-5 mb-5">
@@ -33,20 +103,22 @@ function SettingsPage() {
                         <Tab.Content className="ml-3">
                           <Tab.Pane eventKey="profile">
                             <h3 className="mb-4">Profile Settings</h3>
-                            <Form>
+                            <Form onSubmit={submitForm}>
                               <Row>
                                 <Col>
                                   <Form.Group className="mb-3">
-                                    <Form.Label>Username</Form.Label>
+                                    <Form.Label>Full Name</Form.Label>
                                     <FormControl
-                                      placeholder="Enter Your Username"
+                                      placeholder="Full Name"
                                       aria-label="Username"
                                       aria-describedby="basic-addon2"
-                                      name="username"
+                                      name="name"
+                                      value={user.name}
+                                      onChange={changeHandler}
                                     />
                                   </Form.Group>
                                 </Col>
-                                <Col>
+                                {/* <Col>
                                   <Form.Group
                                     className="mb-3"
                                     controlId="exampleForm.ControlInput1"
@@ -58,7 +130,7 @@ function SettingsPage() {
                                       placeholder="name@example.com"
                                     />
                                   </Form.Group>
-                                </Col>
+                                </Col> */}
                               </Row>
                               <Row>
                                 <Col>
@@ -69,6 +141,8 @@ function SettingsPage() {
                                       aria-label="phone"
                                       aria-describedby="basic-addon2"
                                       name="phone"
+                                      onChange={changeHandler}
+                                      value={user.phone}
                                     />
                                   </Form.Group>
                                 </Col>
@@ -83,6 +157,8 @@ function SettingsPage() {
                                       aria-label="Address"
                                       aria-describedby="basic-addon2"
                                       name="address"
+                                      value={user.address}
+                                      onChange={changeHandler}
                                     />
                                   </Form.Group>
                                 </Col>
@@ -95,6 +171,8 @@ function SettingsPage() {
                                   placeholder="Enter Your Bio Here. "
                                   style={{ height: "100px" }}
                                   name="bio"
+                                  onChange={changeHandler}
+                                  value={user.bio}
                                 />
                               </FloatingLabel>
 
@@ -148,7 +226,7 @@ function SettingsPage() {
                               </Button>
                             </Form.Group>
                           </Col>
-                          <Col>
+                          {/* <Col>
                             <Form.Group
                               className="my-3 text-center"
                               controlId="exampleForm.ControlInput1"
@@ -180,7 +258,7 @@ function SettingsPage() {
                                 Upload
                               </Button>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
                         </Row>
                       </Col>
                     </Row>
