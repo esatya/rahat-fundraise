@@ -1,4 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose, { PopulatedDoc } from 'mongoose';
+
+import ICampaign from './Campaign';
 
 interface IUser extends mongoose.Document {
   bio?: string;
@@ -16,6 +18,7 @@ interface IUser extends mongoose.Document {
     number: number;
     expiry: number;
   };
+  campaigns: PopulatedDoc<ICampaign>[];
   createdDate?: number;
   updatedDate?: number;
 }

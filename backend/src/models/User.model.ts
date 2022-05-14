@@ -20,6 +20,12 @@ const UserSchema = new mongoose.Schema<IUser>(
       expiry: { type: Number },
       number: { type: Number },
     },
+    campaigns: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Campaign',
+      },
+    ],
   },
   {
     timestamps: {
