@@ -1,3 +1,5 @@
+import path from 'path';
+import multer from 'multer';
 import express from 'express';
 
 import {
@@ -29,9 +31,30 @@ import {
 
 import { isAuth, uploadFile } from '../middlewares';
 
+import { IRequest } from '../interfaces/vendors';
+import { DestinationCallback, FileNameCallback } from '../interfaces/multer';
+
+const fileStorage = multer.diskStorage({
+  destination: (
+    req: IRequest,
+    file: Express.Multer.File,
+    cb: DestinationCallback,
+  ) => {
+    cb(null, path.join(__dirname, '../../images/users'));
+  },
+
+  filename: (
+    req: IRequest,
+    file: Express.Multer.File,
+    cb: FileNameCallback,
+  ) => {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+});
+
 const router = express.Router();
 
-router.use(uploadFile);
+router.use(uploadFile(fileStorage));
 
 // @Route   POST api/user/register
 // @desc    Register new user from webapp

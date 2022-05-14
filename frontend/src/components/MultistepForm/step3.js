@@ -1,10 +1,6 @@
 import React, { Component, useState } from "react";
 
 const Step1 = (props) => {
-  const [inputValues, setinputValues] = useState({
-    firstName: "",
-    lastName: "",
-  });
   const copyAddress = () => {
     const copyText = document.getElementById("wallet");
     const textArea = document.createElement("textarea");
@@ -14,6 +10,7 @@ const Step1 = (props) => {
     navigator.clipboard.writeText(textArea.value);
     textArea.remove();
   };
+
   return (
     <div className="step step7">
       <div className="row">
@@ -31,7 +28,7 @@ const Step1 = (props) => {
             copyAddress();
           }}
         >
-          walletaddress:lksflkasdlgkasdg
+          walletaddress:Wallet Address
         </p>
       </div>
     </div>

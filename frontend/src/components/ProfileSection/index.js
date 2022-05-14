@@ -1,36 +1,51 @@
-import React, { useState } from "react";
-import {
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  Col,
-} from "reactstrap";
+import React, { useEffect, useState } from "react";
+import { Nav, NavItem, NavLink } from "reactstrap";
 import { Badge } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import Causes from "../../api/cause";
+import { toast } from "react-toastify";
 
 const CauseTabs = (props) => {
   const [activeTab, setActiveTab] = useState("1");
 
+  const [user, setUser] = React.useState({
+    alias: "alias",
+    campaigns: [],
+    email: "email",
+  });
+
+  console.log("profile", { user });
+
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
-  };
-
-  const SubmitHandler = (e) => {
-    e.preventDefault();
   };
 
   const ClickHandler = () => {
     window.scrollTo(10, 0);
   };
 
-  const { id } = useParams();
+  console.log("token", sessionStorage.getItem("token"));
+
+  const fetchUser = async () => {
+    try {
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      ).then((res) => res.json());
+
+      setUser(resData.data);
+    } catch (error) {
+      return toast.error(error.message);
+    }
+  };
+
+  useEffect(() => fetchUser(), []);
 
   return (
     <>
@@ -54,7 +69,7 @@ const CauseTabs = (props) => {
             />
           </Form.Group>
           <div className="text-center" style={{ marginTop: "-25px" }}>
-            <h2>Test Network</h2>
+            <h2>{user.name}</h2>
             <Badge
               className="mb-2"
               bg="warning"
@@ -64,7 +79,7 @@ const CauseTabs = (props) => {
               Wallet Address:12334245
             </Badge>
           </div>
-          <p className="text-center">Joined Date: Aug 2022</p>
+          <p className="text-center">Joined Date: {user.createdDate}</p>
         </div>
       </div>
 
@@ -121,13 +136,16 @@ const CauseTabs = (props) => {
         <div className="container">
           <div className="wpo-campaign-wrap">
             <div className="row">
-              {Causes.slice(0, 3).map((Cause, citem) => (
+              {user.campaigns.map((Cause, citem) => (
                 <div className="col-lg-4 col-md-6 col-12" key={citem}>
                   <div className="wpo-campaign-single">
                     <div className="wpo-campaign-item">
                       <div className="wpo-campaign-img">
-                        <img src={Cause.cImg} alt="" />
-                        <span className="thumb">{Cause.thumb}</span>
+                        <img
+                          src={`${process.env.REACT_APP_API_BASE_URL}${Cause.image}`}
+                          alt=""
+                        />
+                        {/* <span className="thumb">{Cause.thumb}</span> */}
                       </div>
                       <div className="wpo-campaign-content">
                         <div className="wpo-campaign-text-top">
@@ -136,7 +154,7 @@ const CauseTabs = (props) => {
                               onClick={ClickHandler}
                               to={`/cause-single/${Cause.id}`}
                             >
-                              {Cause.cTitle}
+                              {Cause.title}
                             </Link>
                           </h2>
                           <div className="progress-section">
@@ -144,10 +162,20 @@ const CauseTabs = (props) => {
                               <div className="progress">
                                 <div
                                   className="progress-bar"
-                                  style={{ width: `${Cause.process}%` }}
+                                  style={{
+                                    width: `${
+                                      (Cause.amount / Cause.target) * 100
+                                    }%`,
+                                  }}
                                 >
                                   <div className="progress-value">
-                                    <span>{Cause.process}</span>%
+                                    <span>
+                                      {(
+                                        (Cause.amount / Cause.target) *
+                                        100
+                                      ).toFixed(2)}
+                                    </span>
+                                    %
                                   </div>
                                 </div>
                               </div>
@@ -155,24 +183,24 @@ const CauseTabs = (props) => {
                           </div>
                           <ul>
                             <li>
-                              <span>Goal:</span> ${Cause.Goal}
+                              <span>Goal:</span> ${Cause.target}
                             </li>
                             <li>
-                              <span>Raised:</span> ${Cause.Raised}
+                              <span>Raised:</span> ${Cause.amount}
                             </li>
                           </ul>
                           <div className="campaign-btn">
                             <ul>
                               <li>
                                 <span>
-                                  <img src={Cause.authorImg} alt="" />
+                                  <img src={user.image} alt="" />
                                 </span>
                                 <span>
                                   <Link
                                     onClick={ClickHandler}
-                                    to={`/cause-single/${Cause.id}`}
+                                    to={`/fundraise/${Cause.id}`}
                                   >
-                                    {Cause.authorName}
+                                    {user.name}
                                   </Link>
                                 </span>
                               </li>
@@ -180,7 +208,7 @@ const CauseTabs = (props) => {
                                 <Link
                                   onClick={ClickHandler}
                                   className="e-btn"
-                                  to="/donate"
+                                  to={`/fundraise/${Cause.id}`}
                                 >
                                   Donate Now
                                 </Link>
