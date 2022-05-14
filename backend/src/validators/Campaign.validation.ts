@@ -55,3 +55,7 @@ export const updateCampaignAmountValidationRules: ValidationChain[] = [
 export const getCampaignByIdValidationRules: ValidationChain[] = [
   param('campaignId').isString().custom(isObjectIdValidator),
 ];
+
+export const getCampaignsByUserValidationRules: ValidationChain[] = [
+  param('userId').isString().custom(isObjectIdValidator),
+];
