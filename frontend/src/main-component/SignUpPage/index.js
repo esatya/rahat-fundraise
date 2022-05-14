@@ -1,17 +1,16 @@
-import React, { useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import SimpleReactValidator from "simple-react-validator";
 import { toast } from "react-toastify";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import React, { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
+
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import SimpleReactValidator from "simple-react-validator";
 
 const SignUpPage = (props) => {
   const [value, setValue] = useState({
     email: "",
-    full_name: "",
-    // password: '',
-    // confirm_password: '',
+    alias: "",
   });
 
   const changeHandler = (e) => {
@@ -28,12 +27,11 @@ const SignUpPage = (props) => {
   const submitForm = (e) => {
     e.preventDefault();
     if (validator.allValid()) {
-      fetch("http://localhost:8080/api/user/register", {
+      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/register`, {
         method: "POST",
         body: JSON.stringify({
           email: value.email,
-          alias: value.full_name,
-          //   password: value.password,
+          alias: value.alias,
         }),
 
         headers: {
@@ -43,9 +41,7 @@ const SignUpPage = (props) => {
 
       setValue({
         email: "",
-        full_name: "",
-        // password: "",
-        // confirm_password: "",
+        alias: "",
       });
       validator.hideMessages();
       toast.success("Registration Complete successfully!");
@@ -68,9 +64,9 @@ const SignUpPage = (props) => {
                 className="inputOutline"
                 fullWidth
                 placeholder="Full Name"
-                value={value.full_name}
+                value={value.alias}
                 variant="outlined"
-                name="full_name"
+                name="alias"
                 label="Name"
                 InputLabelProps={{
                   shrink: true,
@@ -78,11 +74,7 @@ const SignUpPage = (props) => {
                 onBlur={(e) => changeHandler(e)}
                 onChange={(e) => changeHandler(e)}
               />
-              {validator.message(
-                "full name",
-                value.full_name,
-                "required|alpha"
-              )}
+              {validator.message("full name", value.alias, "required|alpha")}
             </Grid>
             <Grid item xs={12}>
               <TextField
