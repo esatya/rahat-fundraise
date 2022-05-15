@@ -1,17 +1,21 @@
 import React, { Component, useState } from "react";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const Step1 = (props) => {
-  const handleChange = (e) => {
-    props.updateStore({
-      ...props.getStore(),
-      [e.target.name]: e.target.value,
-    });
-  };
-
+  const [inputValues, setinputValues] = useState({
+    firstName: "",
+    lastName: "",
+  });
   return (
     <div className="step step3">
       <div className="row">
         <form id="Form" className="form-horizontal">
+          <FormControlLabel
+            className="mb-2"
+            control={<Checkbox />}
+            label="Donate anonymously"
+          />
           <div className="form-group content form-block-holder mb-4">
             <label className="control-label col-md-6">Firstname</label>
             <div>
@@ -22,7 +26,9 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setinputValues({ ...inputValues, firstName: e.target.value });
+                }}
               />
             </div>
             <label className="control-label col-md-6">Lastname</label>
@@ -34,7 +40,9 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setinputValues({ ...inputValues, firstName: e.target.value });
+                }}
               />
             </div>
             <label className="control-label col-md-6">Email</label>
@@ -46,7 +54,9 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setinputValues({ ...inputValues, firstName: e.target.value });
+                }}
               />
             </div>
             <label className="control-label col-md-6">Country</label>
@@ -58,7 +68,9 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setinputValues({ ...inputValues, firstName: e.target.value });
+                }}
               />
             </div>
             <label className="control-label col-md-6">State</label>
@@ -70,7 +82,9 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setinputValues({ ...inputValues, firstName: e.target.value });
+                }}
               />
             </div>
             <label className="control-label col-md-6">Address</label>
@@ -82,7 +96,9 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setinputValues({ ...inputValues, firstName: e.target.value });
+                }}
               />
             </div>
             <label className="control-label col-md-6">City</label>
@@ -94,7 +110,9 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setinputValues({ ...inputValues, firstName: e.target.value });
+                }}
               />
             </div>
             <label className="control-label col-md-6">Zip Code</label>
@@ -106,7 +124,9 @@ const Step1 = (props) => {
                 className="form-control"
                 required
                 defaultValue={""}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setinputValues({ ...inputValues, firstName: e.target.value });
+                }}
               />
             </div>
           </div>

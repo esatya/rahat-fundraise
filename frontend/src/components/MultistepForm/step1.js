@@ -1,4 +1,5 @@
 import React from "react";
+import TextField from "@material-ui/core/TextField";
 
 const Step1 = (props) => {
   const handleChange = (e) => {
@@ -26,6 +27,9 @@ const Step1 = (props) => {
                 <option value="BTC">BTC</option>
                 <option value="ETH">ETH</option>
               </select>
+              <div className="mt-4">
+                <TextField type="number" label="Donate Amount" />
+              </div>
             </div>
           </div>
         </form>
