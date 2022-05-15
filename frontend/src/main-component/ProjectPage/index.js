@@ -8,6 +8,7 @@ import Scrollbar from "../../components/scrollbar";
 import CauseTabs from "./alltab";
 import CauseSidebar from "./sidebar";
 import Logo from "../../images/logo.png";
+import { Link } from "react-router-dom";
 
 const CauseSinglePage = (props) => {
   const [campaign, setCampaign] = React.useState({});
@@ -44,6 +45,8 @@ const CauseSinglePage = (props) => {
                     src={`${process.env.REACT_APP_API_BASE_URL}${campaign.image}`}
                     alt=""
                   />
+
+                  <Link to={`/fundraise/${id}/edit`}>Edit</Link>
                 </div>
                 <CauseTabs campaign={campaign} />
               </div>
