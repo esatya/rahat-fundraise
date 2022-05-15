@@ -26,31 +26,32 @@ function SettingsPage(props) {
     setImage(event.target.files[0]);
   };
 
-  const fetchUser = async () => {
-    try {
-      const resData = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        }
-      ).then((res) => res.json());
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const resData = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        ).then((res) => res.json());
 
-      setUser({
-        name: resData.data.name,
-        phone: resData.data.phone,
-        address: resData.data.address,
-        bio: resData.data.bio,
-        image: resData.data.image,
-      });
-    } catch (error) {
-      return toast.error(error.message);
-    }
-  };
-
-  useEffect(() => fetchUser(), []);
+        setUser({
+          name: resData.data.name,
+          phone: resData.data.phone,
+          address: resData.data.address,
+          bio: resData.data.bio,
+          image: resData.data.image,
+        });
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    fetchUser();
+  }, []);
 
   console.log("setting", { user });
 

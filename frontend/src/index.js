@@ -1,12 +1,14 @@
-import "bootstrap/dist/css/bootstrap.css";
 import React from "react";
 import ReactDOM from "react-dom";
+import "bootstrap/dist/css/bootstrap.css";
+
 import "./index.css";
+import "./css/flaticon.css";
+import "./css/themify-icons.css";
+import "./css/font-awesome.min.css";
+
 import App from "./main-component/App/App";
 import * as serviceWorker from "./serviceWorker";
-import "./css/font-awesome.min.css";
-import "./css/themify-icons.css";
-import "./css/flaticon.css";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
