@@ -10,13 +10,20 @@ import Scrollbar from "../../components/scrollbar";
 const EditFundraise = (props) => {
   const [campaign, setCampaign] = React.useState({});
 
+  const [wallets, setWallets] = useState({});
+
+  console.log("updatedwallets", wallets);
+
   const [value, setValue] = useState({
     title: campaign?.title,
     excerpt: campaign?.excerpt,
     story: campaign?.story,
     target: campaign?.target,
     expiryDate: campaign?.expiryDate,
+    wallets: campaign?.wallets || [],
   });
+
+  console.log({ value });
 
   const campaignId = props.match.params.id;
 
@@ -35,6 +42,7 @@ const EditFundraise = (props) => {
           story: resData.data.story,
           target: resData.data.target,
           expiryDate: resData.data.expiryDate,
+          wallets: resData.data.wallets,
         });
       } catch (error) {
         toast.error(error.message);
@@ -138,6 +146,96 @@ const EditFundraise = (props) => {
                           placeholder=""
                           value={value.expiryDate}
                           onChange={changeHandler}
+                        />
+                      </div>
+                      <div className=" form-group d-flex">
+                        <label
+                          for="fname"
+                          class="form-label"
+                          style={{ width: "inherit" }}
+                        >
+                          Bitcoin Address
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="bitCoinWalletAddress"
+                          id="bitcoin"
+                          placeholder=""
+                          value={
+                            value.wallets?.find(
+                              (wallet) => wallet.name === "bitcoin"
+                            )?.walletAddress
+                          }
+                          onChange={(e) =>
+                            setWallets({
+                              ...wallets,
+                              bitcoin: {
+                                name: "bitcoin",
+                                walletAddress: e.target.value,
+                              },
+                            })
+                          }
+                        />
+                      </div>
+                      <div className=" col-12 form-group d-flex">
+                        <label
+                          for="fname"
+                          class="form-label"
+                          style={{ width: "inherit" }}
+                        >
+                          Etherium Address
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="etheriumWalletAddress"
+                          id="etherium"
+                          placeholder=""
+                          value={
+                            value.wallets?.find(
+                              (wallet) => wallet.name === "etherium"
+                            )?.walletAddress
+                          }
+                          onChange={(e) =>
+                            setWallets({
+                              ...wallets,
+                              ethereum: {
+                                name: "etherium",
+                                walletAddress: e.target.value,
+                              },
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="col-12 form-group d-flex">
+                        <label
+                          for="fname"
+                          class="form-label"
+                          style={{ width: "inherit" }}
+                        >
+                          Another Crypto
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="anotherWalletAddress"
+                          id="another"
+                          placeholder=""
+                          value={
+                            value.wallets?.find(
+                              (wallet) => wallet.name === "litecoin"
+                            )?.walletAddress
+                          }
+                          onChange={(e) =>
+                            setWallets({
+                              ...wallets,
+                              litecoin: {
+                                name: "litecoin",
+                                walletAddress: e.target.value,
+                              },
+                            })
+                          }
                         />
                       </div>
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
