@@ -14,19 +14,21 @@ const CauseSinglePage = (props) => {
 
   const id = props.match.params.id;
 
-  const fetchSingleCampaign = async () => {
-    try {
-      const resData = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/campaign/get-by-id/${id}`
-      ).then((res) => res.json());
+  useEffect(() => {
+    const fetchSingleCampaign = async () => {
+      try {
+        const resData = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/campaign/get-by-id/${id}`
+        ).then((res) => res.json());
 
-      setCampaign(resData.data);
-    } catch (error) {
-      return toast.error(error.message);
-    }
-  };
+        setCampaign(resData.data);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
 
-  useEffect(() => fetchSingleCampaign(), []);
+    fetchSingleCampaign();
+  }, [id]);
 
   return (
     <Fragment>

@@ -1,23 +1,26 @@
+import React, { useEffect, useState } from "react";
+
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
 
 const CauseSection = (props) => {
-  const [featuredCampaigns, setFeaturedCampaigns] = React.useState([]);
+  const [featuredCampaigns, setFeaturedCampaigns] = useState([]);
 
-  const fetchFeatureCampaigns = async () => {
-    try {
-      const resData = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/campaign`
-      ).then((res) => res.json());
+  useEffect(() => {
+    const fetchFeatureCampaigns = async () => {
+      try {
+        const resData = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/campaign`
+        ).then((res) => res.json());
 
-      setFeaturedCampaigns(resData.data);
-    } catch (error) {
-      return toast.error(error.message);
-    }
-  };
+        setFeaturedCampaigns(resData.data);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
 
-  useEffect(fetchFeatureCampaigns, []);
+    fetchFeatureCampaigns();
+  }, []);
 
   return (
     <div className={`wpo-campaign-area ${props.CmClass}`}>
@@ -49,7 +52,7 @@ const CauseSection = (props) => {
                     <div className="wpo-campaign-content">
                       <div className="wpo-campaign-text-top">
                         <h2>
-                          <Link to={`/cause-single/${Cause.id}`}>
+                          <Link to={`/fundraise/${Cause.id}`}>
                             {Cause.title}
                           </Link>
                         </h2>
