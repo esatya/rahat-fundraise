@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 const CauseSection = (props) => {
   const [featuredCampaigns, setFeaturedCampaigns] = useState([]);
 
+  console.log({ featuredCampaigns });
+
   useEffect(() => {
     const fetchFeatureCampaigns = async () => {
       try {
@@ -13,7 +15,9 @@ const CauseSection = (props) => {
           `${process.env.REACT_APP_API_BASE_URL}/api/campaign`
         ).then((res) => res.json());
 
-        setFeaturedCampaigns(resData.data);
+        console.log({ resData });
+
+        setFeaturedCampaigns(resData?.data || []);
       } catch (error) {
         toast.error(error.message);
       }
@@ -38,7 +42,7 @@ const CauseSection = (props) => {
         </div>
         <div className="wpo-campaign-wrap">
           <div className="row">
-            {featuredCampaigns.slice(0, 3).map((Cause, citem) => (
+            {featuredCampaigns?.slice(0, 3).map((Cause, citem) => (
               <div className="col-lg-4 col-md-6 col-12" key={citem}>
                 <div className="wpo-campaign-single">
                   <div className="wpo-campaign-item">
