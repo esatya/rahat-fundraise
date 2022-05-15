@@ -27,25 +27,26 @@ const CauseTabs = (props) => {
 
   console.log("token", sessionStorage.getItem("token"));
 
-  const fetchUser = async () => {
-    try {
-      const resData = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        }
-      ).then((res) => res.json());
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const resData = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        ).then((res) => res.json());
 
-      setUser(resData.data);
-    } catch (error) {
-      return toast.error(error.message);
-    }
-  };
-
-  useEffect(() => fetchUser(), []);
+        setUser(resData.data);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    fetchUser();
+  }, []);
 
   return (
     <>

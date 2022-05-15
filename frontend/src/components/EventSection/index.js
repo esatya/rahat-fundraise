@@ -5,19 +5,20 @@ import React, { useEffect } from "react";
 const EventSection = (props) => {
   const [campaigns, setCampaigns] = React.useState([]);
 
-  const fetchCampaigns = async () => {
-    try {
-      const resData = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/campaign`
-      ).then((res) => res.json());
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      try {
+        const resData = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/campaign`
+        ).then((res) => res.json());
 
-      setCampaigns(resData.data);
-    } catch (error) {
-      return toast.error(error.message);
-    }
-  };
-
-  useEffect(fetchCampaigns, []);
+        setCampaigns(resData.data);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    fetchCampaigns();
+  }, []);
 
   return (
     <div className={`wpo-campaign-area section-padding ${props.CmClass}`}>
