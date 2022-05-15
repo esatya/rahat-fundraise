@@ -46,7 +46,9 @@ export const addCampaign = async (req: IRequest, res: IResponse) => {
       });
     }
 
-    const imageUrl = req.file ? `/images/campaigns/${req.file.filename}` : null;
+    const imageUrl = req.file
+      ? `/uploads/campaigns/${req.file.filename}`
+      : null;
 
     const campaign: ICampaign = new Campaign({
       ...req.body,
@@ -112,9 +114,13 @@ export const updateCampaign = async (req: IRequest, res: IResponse) => {
       });
     }
 
+    const imageUrl = req.file
+      ? `/uploads/campaigns/${req.file.filename}`
+      : null;
+
     const updatedCampaign: TCampaign = await Campaign.findByIdAndUpdate(
       campaignId,
-      updatedData,
+      { ...updatedData, image: imageUrl },
       {
         runValidators: true,
         new: true,

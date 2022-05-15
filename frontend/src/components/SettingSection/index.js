@@ -19,7 +19,6 @@ function SettingsPage(props) {
     phone: "",
     address: "",
     bio: "",
-    image: image,
   });
 
   const handleFileChange = (event) => {
@@ -52,8 +51,6 @@ function SettingsPage(props) {
     };
     fetchUser();
   }, []);
-
-  console.log("setting", { user });
 
   const [validator] = React.useState(
     new SimpleReactValidator({
