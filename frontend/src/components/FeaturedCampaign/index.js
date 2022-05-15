@@ -6,16 +6,12 @@ import { Link } from "react-router-dom";
 const CauseSection = (props) => {
   const [featuredCampaigns, setFeaturedCampaigns] = useState([]);
 
-  console.log({ featuredCampaigns });
-
   useEffect(() => {
     const fetchFeatureCampaigns = async () => {
       try {
         const resData = await fetch(
           `${process.env.REACT_APP_API_BASE_URL}/api/campaign`
         ).then((res) => res.json());
-
-        console.log({ resData });
 
         setFeaturedCampaigns(resData?.data || []);
       } catch (error) {
