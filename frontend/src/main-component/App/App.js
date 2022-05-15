@@ -1,9 +1,10 @@
 import React from "react";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
+import AllRoute from "../router";
 
 import "../../sass/style.scss";
-import AllRoute from "../router";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (

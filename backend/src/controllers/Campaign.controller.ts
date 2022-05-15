@@ -37,6 +37,15 @@ export const addCampaign = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
+    const user: TUser = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(401).json({
+        ok: false,
+        error: 'You are not authorized to create this campaign',
+      });
+    }
+
     const imageUrl = req.file ? `/images/campaigns/${req.file.filename}` : null;
 
     const campaign: ICampaign = new Campaign({
@@ -47,18 +56,9 @@ export const addCampaign = async (req: IRequest, res: IResponse) => {
 
     const savedCampaign: ICampaign = await campaign.save();
 
-    const user: TUser = await User.findById(req.userId);
-
-    if (!user) {
-      return res.status(401).json({
-        ok: false,
-        error: 'You are not authorized to create this campaign',
-      });
-    }
-
     const updatedCampaigns = [...user.campaigns, campaign];
 
-    const updatedUser: TUser = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       req.userId,
       { campaigns: updatedCampaigns },
       {
