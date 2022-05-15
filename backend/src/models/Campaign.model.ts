@@ -11,7 +11,7 @@ const CampaignModel = new mongoose.Schema<ICampaign>(
     story: String,
     image: { type: String, required: true },
     fundRaiser: String,
-    wallet: [
+    wallets: [
       {
         name: String,
         walletAddress: String,

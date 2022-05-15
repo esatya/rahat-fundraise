@@ -46,6 +46,8 @@ export const addCampaign = async (req: IRequest, res: IResponse) => {
       });
     }
 
+    const wallets = JSON.parse(req.body?.wallets) || [];
+
     const imageUrl = req.file
       ? `/uploads/campaigns/${req.file.filename}`
       : null;
@@ -53,6 +55,7 @@ export const addCampaign = async (req: IRequest, res: IResponse) => {
     const campaign: ICampaign = new Campaign({
       ...req.body,
       image: imageUrl,
+      wallets: wallets,
       creator: req.userId,
     });
 

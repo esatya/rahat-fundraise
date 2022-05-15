@@ -6,6 +6,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
 import PageTitle from "../../components/pagetitle";
 import Scrollbar from "../../components/scrollbar";
+import { isObjEmpty } from "../../helper/helper";
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
@@ -15,6 +16,12 @@ const FundraiseRegisterPage = (props) => {
     target: "",
     expiryDate: "",
   });
+
+  const [wallets, setWallets] = useState({});
+
+  console.log("wallet", wallets);
+
+  console.log({ value });
 
   const [image, setImage] = useState(null);
 
@@ -29,6 +36,18 @@ const FundraiseRegisterPage = (props) => {
   const SubmitHandler = async (e) => {
     e.preventDefault();
 
+    const walletList = [];
+
+    for (const walletKey in wallets) {
+      console.log("key", walletKey);
+
+      if (!isObjEmpty(wallets[walletKey])) {
+        walletList.push(wallets[walletKey]);
+      }
+    }
+
+    console.log("list", walletList);
+
     const formData = new FormData();
     formData.append("title", value.title);
     formData.append("excerpt", value.excerpt);
@@ -36,6 +55,7 @@ const FundraiseRegisterPage = (props) => {
     formData.append("target", value.target);
     formData.append("expiryDate", value.expiryDate);
     formData.append("image", image);
+    formData.append("wallets", JSON.stringify(walletList));
 
     try {
       const resData = await fetch(
@@ -108,6 +128,81 @@ const FundraiseRegisterPage = (props) => {
                           id="name"
                           placeholder=""
                           onChange={changeHandler}
+                        />
+                      </div>
+                      <div className=" form-group d-flex">
+                        <label
+                          for="fname"
+                          class="form-label"
+                          style={{ width: "inherit" }}
+                        >
+                          Bitcoin Address
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="bitCoinWalletAddress"
+                          id="bitcoin"
+                          placeholder=""
+                          onChange={(e) =>
+                            setWallets({
+                              ...wallets,
+                              bitcoin: {
+                                name: "bitcoin",
+                                walletAddress: e.target.value,
+                              },
+                            })
+                          }
+                        />
+                      </div>
+                      <div className=" col-12 form-group d-flex">
+                        <label
+                          for="fname"
+                          class="form-label"
+                          style={{ width: "inherit" }}
+                        >
+                          Etherium Address
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="etheriumWalletAddress"
+                          id="etherium"
+                          placeholder=""
+                          onChange={(e) =>
+                            setWallets({
+                              ...wallets,
+                              ethereum: {
+                                name: "etherium",
+                                walletAddress: e.target.value,
+                              },
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="col-12 form-group d-flex">
+                        <label
+                          for="fname"
+                          class="form-label"
+                          style={{ width: "inherit" }}
+                        >
+                          Another Crypto
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="anotherWalletAddress"
+                          id="another"
+                          placeholder=""
+                          onChange={(e) =>
+                            setWallets({
+                              ...wallets,
+                              litecoin: {
+                                name: "litecoin",
+                                walletAddress: e.target.value,
+                              },
+                            })
+                          }
                         />
                       </div>
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
