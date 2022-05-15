@@ -102,7 +102,7 @@ const CauseSection = (props) => {
                               </span>
                               <span>
                                 <Link to={`/fundraise/${Cause.id}`}>
-                                  {Cause.creator.name}
+                                  {Cause.creator?.name}
                                 </Link>
                               </span>
                             </li>
