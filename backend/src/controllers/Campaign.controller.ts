@@ -117,13 +117,15 @@ export const updateCampaign = async (req: IRequest, res: IResponse) => {
       });
     }
 
+    const wallets = JSON.parse(req.body?.wallets) || [];
+
     const imageUrl = req.file
       ? `/uploads/campaigns/${req.file.filename}`
-      : null;
+      : campaign?.image;
 
     const updatedCampaign: TCampaign = await Campaign.findByIdAndUpdate(
       campaignId,
-      { ...updatedData, image: imageUrl },
+      { ...updatedData, image: imageUrl, wallets: wallets },
       {
         runValidators: true,
         new: true,
