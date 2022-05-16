@@ -37,16 +37,6 @@ export const addCampaign = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const imageUrl = req.file ? `/images/campaigns/${req.file.filename}` : null;
-
-    const campaign: ICampaign = new Campaign({
-      ...req.body,
-      image: imageUrl,
-      creator: req.userId,
-    });
-
-    const savedCampaign: ICampaign = await campaign.save();
-
     const user: TUser = await User.findById(req.userId);
 
     if (!user) {
@@ -56,9 +46,24 @@ export const addCampaign = async (req: IRequest, res: IResponse) => {
       });
     }
 
+    const wallets = JSON.parse(req.body?.wallets) || [];
+
+    const imageUrl = req.file
+      ? `/uploads/campaigns/${req.file.filename}`
+      : null;
+
+    const campaign: ICampaign = new Campaign({
+      ...req.body,
+      image: imageUrl,
+      wallets: wallets,
+      creator: req.userId,
+    });
+
+    const savedCampaign: ICampaign = await campaign.save();
+
     const updatedCampaigns = [...user.campaigns, campaign];
 
-    const updatedUser: TUser = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       req.userId,
       { campaigns: updatedCampaigns },
       {
@@ -112,9 +117,15 @@ export const updateCampaign = async (req: IRequest, res: IResponse) => {
       });
     }
 
+    const wallets = JSON.parse(req.body?.wallets) || [];
+
+    const imageUrl = req.file
+      ? `/uploads/campaigns/${req.file.filename}`
+      : campaign?.image;
+
     const updatedCampaign: TCampaign = await Campaign.findByIdAndUpdate(
       campaignId,
-      updatedData,
+      { ...updatedData, image: imageUrl, wallets: wallets },
       {
         runValidators: true,
         new: true,

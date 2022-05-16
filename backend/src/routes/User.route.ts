@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 import multer from 'multer';
 import express from 'express';
@@ -40,7 +41,9 @@ const fileStorage = multer.diskStorage({
     file: Express.Multer.File,
     cb: DestinationCallback,
   ) => {
-    cb(null, path.join(__dirname, '../../images/users'));
+    const uploadPath = path.join(__dirname, '../../uploads/users');
+    fs.mkdirSync(uploadPath, { recursive: true });
+    cb(null, uploadPath);
   },
 
   filename: (

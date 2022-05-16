@@ -52,7 +52,7 @@ const EventSection = (props) => {
                     <div className="wpo-campaign-content">
                       <div className="wpo-campaign-text-top">
                         <h2>
-                          <Link to={`/cause-single/${Cause.id}`}>
+                          <Link to={`/fundraise/${Cause.id}`}>
                             {Cause.title}
                           </Link>
                         </h2>
@@ -100,7 +100,7 @@ const EventSection = (props) => {
                                 />
                               </span>
                               <span>
-                                <Link to={`/cause-single/${Cause.id}`}>
+                                <Link to={`/fundraise/${Cause.id}`}>
                                   {Cause.creator.name}
                                 </Link>
                               </span>

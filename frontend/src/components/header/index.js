@@ -90,7 +90,7 @@ export default class Header extends Component {
                         <Link to="/fundraise">Donate</Link>
                       </li>
                       <li className="menu-item-has-children">
-                        <Link to="/">Fundraiser</Link>
+                        <Link to="/myfundraise">Fundraiser</Link>
                       </li>
                     </ul>
                   </div>
