@@ -465,3 +465,21 @@ margin-top: 0;
 border-top: 1px solid #ebebeb;
 padding: 60px 0;
 }
+
+
+.company-logo img {
+    margin-top: 1rem;
+    width: auto;
+    height: 3rem;
+    margin-right: auto;
+    margin-left: auto;
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms;
+  }
+
+  @media(max-width: 765px) {
+      .button-increment {
+          margin-top: -12px !important;
+      }
+  }
+

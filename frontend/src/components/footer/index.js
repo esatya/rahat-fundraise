@@ -11,7 +11,7 @@ const Footer = (props) => {
       <div className="wpo-upper-footer">
         <div className="container">
           <div className="row">
-            <div className="col col-lg-3 col-md-6 col-sm-12 col-12">
+            <div className="col col-lg-4 col-md-6 col-sm-12 col-12">
               <div className="widget about-widget">
                 <div className="logo widget-title">
                   <img
@@ -23,34 +23,54 @@ const Footer = (props) => {
                   />
                 </div>
                 <p>
-                  Welcome and open yourself to your truest love this year with
-                  us! With the Release Process
+                  Rumsan is a blockchain-focused digital innovation company. We
+                  envision creating societal impact through frontier
+                  technologies. We support and invest in promising ideas and
+                  innovators to make a bigger impact.
                 </p>
-                <ul>
-                  <li>
-                    <Link to="/">
-                      <i className="ti-facebook"></i>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/">
-                      <i className="ti-twitter-alt"></i>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/">
-                      <i className="ti-instagram"></i>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/">
-                      <i className="ti-google"></i>
-                    </Link>
-                  </li>
-                </ul>
+
+                <div className="company-logo">
+                  <Link href="https://hamrolifebank.com/">
+                    <a target="_blank">
+                      <img src="https://assets.rumsan.com/esatya/hlb-blk-rumsan.png" />
+                    </a>
+                  </Link>
+                  <Link href="https://askbhunte.com/">
+                    <a target="_blank">
+                      <img
+                        src="https://assets.rumsan.com/askbhunte/assets/askbhunte-sq.png"
+                        alt=""
+                      />
+                    </a>
+                  </Link>
+                  <Link href="https://agriclear.io/">
+                    <a target="_blank">
+                      <img
+                        src="https://assets.rumsan.com/esatya/agriclear-sq.png"
+                        alt=""
+                      />
+                    </a>
+                  </Link>
+                  <Link href="https://esatya.io/">
+                    <a target="_blank">
+                      <img
+                        src="https://assets.rumsan.com/esatya/esatya-square-logo-500x500.png"
+                        alt=""
+                      />
+                    </a>
+                  </Link>
+                  <Link href="https://lonetreenepal.com/">
+                    <a target="_blank">
+                      <img
+                        src="https://assets.rumsan.com/rumsan-test/lonetree-100x100.png"
+                        alt=""
+                      />
+                    </a>
+                  </Link>
+                </div>
               </div>
             </div>
-            <div className="col col-lg-3 col-md-6 col-sm-12 col-12">
+            <div className="col col-lg-2 col-md-6 col-sm-12 col-12">
               <div className="widget link-widget">
                 <div className="widget-title">
                   <h3>Navigation </h3>
@@ -74,7 +94,7 @@ const Footer = (props) => {
                 </ul>
               </div>
             </div>
-            <div className="col col-lg-3 col-md-6 col-sm-12 col-12">
+            <div className="col col-lg-2 col-md-6 col-sm-12 col-12">
               <div className="widget link-widget">
                 <div className="widget-title">
                   <h3>Resources </h3>
@@ -99,7 +119,7 @@ const Footer = (props) => {
                 </ul>
               </div>
             </div>
-            <div className="col col-lg-3 col-md-6 col-sm-12 col-12">
+            <div className="col col-lg-4 col-md-6 col-sm-12 col-12">
               <div className="widget wpo-service-link-widget">
                 <div className="widget-title">
                   <h3>Contact </h3>
@@ -115,6 +135,25 @@ const Footer = (props) => {
                     </li>
                     <li>
                       <i className="fi flaticon-mail"></i>team@rahat.io
+                    </li>
+                  </ul>
+                </div>
+                <div className="widget about-widget">
+                  <ul>
+                    <li>
+                      <Link to="https://www.linkedin.com/company/esatya/">
+                        <i className="ti-linkedin"></i>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="https://twitter.com/rahataid">
+                        <i className="ti-twitter-alt"></i>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="https://discord.com/invite/yxefF8pwxv">
+                        <i className="ti-themify-favicon"></i>
+                      </Link>
                     </li>
                   </ul>
                 </div>

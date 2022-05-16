@@ -2,12 +2,12 @@
 
 .wpo-breadcumb-area {
     background: #2876B3 no-repeat center top / cover;
-    min-height: 250px;
+    min-height: 300px;
     position: relative;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    z-index: 1;
+    // z-index: 1;
 
 	@media(max-width: 767px) {
 		min-height: 250px;
