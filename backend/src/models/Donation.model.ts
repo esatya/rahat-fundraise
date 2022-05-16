@@ -15,10 +15,11 @@ const DonationSchema = new mongoose.Schema<IDonation>(
     donor: {
       firstName: String,
       lastName: String,
+      email: String,
       country: String,
       state: String,
-      address1: String,
-      address2: String,
+      address: String,
+      city: String,
       contact: String,
       zip: String,
     },

@@ -51,7 +51,7 @@ const CauseSinglePage = (props) => {
                 <CauseTabs campaign={campaign} />
               </div>
             </div>
-            <CauseSidebar />
+            <CauseSidebar campaign={campaign} />
           </div>
         </div>
       </div>
