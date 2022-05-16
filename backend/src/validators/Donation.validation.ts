@@ -7,8 +7,9 @@ export const getDonationsValidationRules: ValidationChain[] = [
 ];
 
 export const newDonationValidationRules: ValidationChain[] = [
-  body('donor').isObject(),
+  body('donor').isObject().optional(),
   body('amount').isNumeric().toFloat(),
+  body('email').isEmail().normalizeEmail().optional(),
   body('isAnonymous').toBoolean(true).optional(),
   body('donor.*.').isString().isLength({ min: 1 }).optional(),
   body('transactionId').notEmpty().isString(),

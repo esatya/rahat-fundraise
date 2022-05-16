@@ -6,9 +6,10 @@ interface Donor {
   firstName: string;
   lastName: string;
   country: string;
+  email: string;
   state: string;
-  address1: string;
-  address2: string;
+  address: string;
+  city: string;
   contact: string;
   zip: string;
 }
