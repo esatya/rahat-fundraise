@@ -243,7 +243,7 @@ const FundraiseRegisterPage = (props) => {
                           onChange={changeHandler}
                         ></textarea>
                       </div>
-                      <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-12 form-group">
                         <label for="formFileSm" class="form-label">
                           Upload photo that best defines your fundraiser
                           campaign
@@ -255,6 +255,65 @@ const FundraiseRegisterPage = (props) => {
                           onChange={handleFileChange}
                         />
                       </div>
+
+                      <div className="row">
+                        <div className="col-lg-5 col-md-5 col-sm-5 col-5">
+                          <select id="inputState" class="form-select">
+                            <option selected>Bitcoin</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                          </select>
+                        </div>
+                        <div className="col-lg-5 col-md-5 col-sm-5 col-5">
+                          <input
+                            style={{ height: "37px" }}
+                            type="text"
+                            placeholder="Wallet Address"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="col-lg-5 col-md-5 col-sm-5 col-5">
+                          <select id="inputState" class="form-select">
+                            <option selected>Ethereum</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                          </select>
+                        </div>
+                        <div className="col-lg-5 col-md-5 col-sm-5 col-5">
+                          <input
+                            style={{ height: "37px" }}
+                            type="text"
+                            placeholder="Wallet Address"
+                          />
+                        </div>
+                        <div className="col-lg-2 col-md-2 col-sm-2 col-2">
+                          <button
+                            type="submit"
+                            className="theme-btn submit-btn"
+                            style={{
+                              height: "35px",
+                              width: "30px",
+                              borderRadius: "15%",
+                            }}
+                          >
+                            <img
+                              className="button-increment"
+                              src="https://assets.rumsan.com/rumsan-group/rahat-crowdfunding-increment.png"
+                              style={{
+                                marginTop: "-18px",
+                                width: "20px",
+                                marginLeft: "-9px",
+                              }}
+                              alt=""
+                            />
+                          </button>
+                        </div>
+                      </div>
+
                       {/* <div class="mb-3">
                                                 <label for="formFileSm" class="form-label">Small file input example</label>
                                                 <input class="form-control form-control-sm" id="formFileSm" type="file">
