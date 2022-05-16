@@ -50,7 +50,7 @@ const CauseTabs = (props) => {
     <>
       <div
         className="row d-flex justify-content-center"
-        style={{ height: "200px" }}
+        style={{ height: "150px" }}
       >
         <div className="profile-pic">
           <Form.Group className="my-3 text-center">
@@ -59,7 +59,7 @@ const CauseTabs = (props) => {
               alt=""
               style={{
                 objectFit: "cover",
-                marginTop: -15,
+                marginTop: -10,
                 marginBottom: 20,
                 height: 150,
                 width: 150,
@@ -87,9 +87,6 @@ const CauseTabs = (props) => {
           <div className="row">
             <div className="col-12">
               <div className="wpo-case-details-wrap">
-                <div className="wpo-case-details-img">
-                  <img src="" alt="" />
-                </div>
                 <div>
                   <div className="wpo-case-details-tab">
                     <Nav tabs>

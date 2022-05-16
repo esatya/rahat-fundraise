@@ -4414,7 +4414,7 @@ h2.hidden {
   .wpo-campaign-area-s2,
   .wpo-campaign-area-s3,
   .wpo-campaign-area-s4 {
-    padding-bottom: 70px;
+    padding-bottom: 30px;
   }
 }
 
@@ -11390,4 +11390,8 @@ input[type=checkbox]:checked:disabled + label:before {
 .error-404-section .error-message p {
   margin-bottom: 1.8em;
 }
+
+
+
+
 /*# sourceMappingURL=style.css.map */
