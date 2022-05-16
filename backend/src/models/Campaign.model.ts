@@ -9,7 +9,7 @@ const CampaignModel = new mongoose.Schema<ICampaign>(
     title: { type: String, minLength: 5, required: true },
     excerpt: { type: String, maxLength: 100, required: true },
     story: String,
-    image: { type: String, required: true },
+    image: String,
     fundRaiser: String,
     wallets: [
       {

@@ -8,11 +8,11 @@ import PageTitle from "../../components/pagetitle";
 import Scrollbar from "../../components/scrollbar";
 
 const EditFundraise = (props) => {
-  const [campaign, setCampaign] = React.useState({});
+  const [campaign, setCampaign] = useState({});
 
-  const [wallets, setWallets] = useState({});
-
-  console.log("updatedwallets", wallets);
+  const [bitcoin, setBitcoin] = useState("");
+  const [ethereum, setEthereum] = useState("");
+  const [litecoin, setLitecoin] = useState("");
 
   const [value, setValue] = useState({
     title: campaign?.title,
@@ -22,8 +22,6 @@ const EditFundraise = (props) => {
     expiryDate: campaign?.expiryDate,
     wallets: campaign?.wallets || [],
   });
-
-  console.log({ value });
 
   const campaignId = props.match.params.id;
 
@@ -42,8 +40,21 @@ const EditFundraise = (props) => {
           story: resData.data.story,
           target: resData.data.target,
           expiryDate: resData.data.expiryDate,
-          wallets: resData.data.wallets,
+          wallets: resData.data.wallets || [],
         });
+
+        setBitcoin(
+          resData?.data?.wallets?.find((wallet) => wallet.name === "bitcoin")
+            ?.walletAddress
+        );
+        setEthereum(
+          resData?.data?.wallets?.find((wallet) => wallet.name === "ethereum")
+            ?.walletAddress
+        );
+        setLitecoin(
+          resData?.data?.wallets?.find((wallet) => wallet.name === "litecoin")
+            ?.walletAddress
+        );
       } catch (error) {
         toast.error(error.message);
       }
@@ -65,6 +76,12 @@ const EditFundraise = (props) => {
   const SubmitHandler = async (e) => {
     e.preventDefault();
 
+    const walletList = [];
+
+    bitcoin && walletList.push({ name: "bitcoin", walletAddress: bitcoin });
+    ethereum && walletList.push({ name: "ethereum", walletAddress: ethereum });
+    litecoin && walletList.push({ name: "litecoin", walletAddress: litecoin });
+
     const formData = new FormData();
     formData.append("title", value.title);
     formData.append("excerpt", value.excerpt);
@@ -72,6 +89,7 @@ const EditFundraise = (props) => {
     formData.append("target", value.target);
     formData.append("expiryDate", value.expiryDate);
     formData.append("image", image);
+    formData.append("wallets", JSON.stringify(walletList));
 
     try {
       const resData = await fetch(
@@ -162,20 +180,11 @@ const EditFundraise = (props) => {
                           name="bitCoinWalletAddress"
                           id="bitcoin"
                           placeholder=""
-                          value={
-                            value.wallets?.find(
-                              (wallet) => wallet.name === "bitcoin"
-                            )?.walletAddress
-                          }
-                          onChange={(e) =>
-                            setWallets({
-                              ...wallets,
-                              bitcoin: {
-                                name: "bitcoin",
-                                walletAddress: e.target.value,
-                              },
-                            })
-                          }
+                          value={bitcoin}
+                          onChange={(e) => {
+                            console.log(e);
+                            setBitcoin(e.target.value);
+                          }}
                         />
                       </div>
                       <div className=" col-12 form-group d-flex">
@@ -192,20 +201,8 @@ const EditFundraise = (props) => {
                           name="etheriumWalletAddress"
                           id="etherium"
                           placeholder=""
-                          value={
-                            value.wallets?.find(
-                              (wallet) => wallet.name === "etherium"
-                            )?.walletAddress
-                          }
-                          onChange={(e) =>
-                            setWallets({
-                              ...wallets,
-                              ethereum: {
-                                name: "etherium",
-                                walletAddress: e.target.value,
-                              },
-                            })
-                          }
+                          value={ethereum}
+                          onChange={(e) => setEthereum(e.target.value)}
                         />
                       </div>
                       <div className="col-12 form-group d-flex">
@@ -219,23 +216,9 @@ const EditFundraise = (props) => {
                         <input
                           type="text"
                           className="form-control"
-                          name="anotherWalletAddress"
                           id="another"
-                          placeholder=""
-                          value={
-                            value.wallets?.find(
-                              (wallet) => wallet.name === "litecoin"
-                            )?.walletAddress
-                          }
-                          onChange={(e) =>
-                            setWallets({
-                              ...wallets,
-                              litecoin: {
-                                name: "litecoin",
-                                walletAddress: e.target.value,
-                              },
-                            })
-                          }
+                          value={litecoin}
+                          onChange={(e) => setLitecoin(e.target.value)}
                         />
                       </div>
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
