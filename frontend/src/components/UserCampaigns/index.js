@@ -1,29 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Nav, NavItem, NavLink } from "reactstrap";
-import { Badge } from "react-bootstrap";
-import { Form } from "react-bootstrap";
-import classnames from "classnames";
+
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const CauseTabs = (props) => {
-  const [activeTab, setActiveTab] = useState("1");
-
-  const [user, setUser] = React.useState({
-    alias: "alias",
-    campaigns: [],
-    email: "email",
-  });
-
-  const toggle = (tab) => {
-    if (activeTab !== tab) setActiveTab(tab);
-  };
+const UserCampaigns = (props) => {
+  const [user, setUser] = useState({});
 
   const ClickHandler = () => {
     window.scrollTo(10, 0);
   };
-
-  console.log("token", sessionStorage.getItem("token"));
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -48,40 +33,6 @@ const CauseTabs = (props) => {
 
   return (
     <>
-      <div
-        className="row d-flex justify-content-center"
-        style={{ height: "200px" }}
-      >
-        <div className="profile-pic">
-          <Form.Group className="my-3 text-center">
-            <img
-              src="https://assets.rumsan.com/rumsan-group/zoonft-adoption-6.jpg"
-              alt=""
-              style={{
-                objectFit: "cover",
-                marginTop: -15,
-                marginBottom: 20,
-                height: 150,
-                width: 150,
-                borderRadius: "50%",
-              }}
-            />
-          </Form.Group>
-          <div className="text-center" style={{ marginTop: "-25px" }}>
-            <h2>{user.name}</h2>
-            <Badge
-              className="mb-2"
-              bg="warning"
-              text="dark"
-              style={{ cursor: "pointer" }}
-            >
-              Wallet Address:12334245
-            </Badge>
-          </div>
-          <p className="text-center">Joined Date: {user.createdDate}</p>
-        </div>
-      </div>
-
       <div className="wpo-case-details-area">
         <div className="container">
           <div className="row">
@@ -89,42 +40,6 @@ const CauseTabs = (props) => {
               <div className="wpo-case-details-wrap">
                 <div className="wpo-case-details-img">
                   <img src="" alt="" />
-                </div>
-                <div>
-                  <div className="wpo-case-details-tab">
-                    <Nav tabs>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({ active: activeTab === "1" })}
-                          onClick={() => {
-                            toggle("1");
-                          }}
-                        >
-                          My Fundraiser
-                        </NavLink>
-                      </NavItem>
-                      {/* <NavItem>
-                        <NavLink
-                          className={classnames({ active: activeTab === "2" })}
-                          onClick={() => {
-                            toggle("2");
-                          }}
-                        >
-                          Donations
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({ active: activeTab === "3" })}
-                          onClick={() => {
-                            toggle("3");
-                          }}
-                        >
-                          Comments
-                        </NavLink>
-                      </NavItem> */}
-                    </Nav>
-                  </div>
                 </div>
               </div>
             </div>
@@ -135,7 +50,7 @@ const CauseTabs = (props) => {
         <div className="container">
           <div className="wpo-campaign-wrap">
             <div className="row">
-              {user.campaigns.map((Cause, citem) => (
+              {user.campaigns?.map((Cause, citem) => (
                 <div className="col-lg-4 col-md-6 col-12" key={citem}>
                   <div className="wpo-campaign-single">
                     <div className="wpo-campaign-item">
@@ -228,4 +143,4 @@ const CauseTabs = (props) => {
   );
 };
 
-export default CauseTabs;
+export default UserCampaigns;

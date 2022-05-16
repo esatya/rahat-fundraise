@@ -7,7 +7,7 @@ import Step2 from "../../components/MultistepForm/step2";
 import Step3 from "../../components/MultistepForm/step3";
 
 const CauseSidebar = (props) => {
-  const [sampleStore, setSampleStore] = useState({ wallet: "BTC" });
+  const [sampleStore, setSampleStore] = useState({});
 
   const getStore = () => {
     return sampleStore;
@@ -20,7 +20,13 @@ const CauseSidebar = (props) => {
   const steps = [
     {
       name: "Pledge",
-      component: <Step1 getStore={getStore} updateStore={updateStore} />,
+      component: (
+        <Step1
+          getStore={getStore}
+          updateStore={updateStore}
+          campaign={props.campaign}
+        />
+      ),
     },
     {
       name: "Info",

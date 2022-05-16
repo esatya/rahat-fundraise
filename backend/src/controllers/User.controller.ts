@@ -18,7 +18,7 @@ export const registerUser = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const imageUrl = req.file ? `/images/users/${req.file.filename}` : null;
+    const imageUrl = req.file ? `/uploads/users/${req.file.filename}` : null;
 
     const user: TUser = new User<IUser>({ ...req.body, image: imageUrl });
 
@@ -245,7 +245,7 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const imageUrl = req.file ? `/images/users/${req.file.filename}` : null;
+    const imageUrl = req.file ? `/uploads/users/${req.file.filename}` : null;
 
     const { ...updatedData } = req.body;
 

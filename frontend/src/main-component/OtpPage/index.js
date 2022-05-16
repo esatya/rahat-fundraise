@@ -32,7 +32,15 @@ const OtpPage = (props) => {
         }
       ).then((res) => res.json());
 
-      sessionStorage.setItem("token", resData.token);
+      const token = resData.token;
+
+      sessionStorage.setItem("token", token);
+
+      if (!token) {
+        props.history.push("/login");
+        return toast.error("Invalid/Expired OTP");
+      }
+
       props.history.push("/profile");
     } catch (error) {
       toast.error(error.message);

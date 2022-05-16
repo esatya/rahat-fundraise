@@ -1,4 +1,6 @@
-import React, { Component, useState } from "react";
+import React from "react";
+
+import QRCode from "react-qr-code";
 
 const Step1 = (props) => {
   const copyAddress = () => {
@@ -11,6 +13,10 @@ const Step1 = (props) => {
     textArea.remove();
   };
 
+  const handleSubmit = (e) => {
+    console.log("Donated");
+  };
+
   return (
     <div className="step step7">
       <div className="row">
@@ -21,6 +27,18 @@ const Step1 = (props) => {
         <div className="text-center">
           <img src="https://assets.rumsan.com/esatya/eth-icon.png" />
         </div>
+        <div
+          style={{
+            background: "white",
+            padding: "16px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <QRCode
+            value={props.getStore().walletAddress || "Wallet not selected"}
+          />
+        </div>
         <p
           className="text-center"
           id="wallet"
@@ -28,8 +46,29 @@ const Step1 = (props) => {
             copyAddress();
           }}
         >
-          walletaddress:Wallet Address
+          walletAddress: {props.getStore().walletAddress}
         </p>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <button
+          onClick={handleSubmit}
+          style={{
+            background: "#0d6efd",
+            borderRadius: "5px",
+            color: "white",
+            position: "absolute",
+            padding: "0.5rem 1rem",
+            fontSize: "1.25rem",
+            border: "none",
+          }}
+        >
+          Donate
+        </button>
       </div>
     </div>
   );

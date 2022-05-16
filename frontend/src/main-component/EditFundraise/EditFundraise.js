@@ -1,27 +1,67 @@
 import { toast } from "react-toastify";
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 
 import Logo from "../../images/logo.png";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
 import PageTitle from "../../components/pagetitle";
 import Scrollbar from "../../components/scrollbar";
-import { isObjEmpty } from "../../helper/helper";
 
-const FundraiseRegisterPage = (props) => {
+const EditFundraise = (props) => {
+  const [campaign, setCampaign] = useState({});
+
+  const [bitcoin, setBitcoin] = useState("");
+  const [ethereum, setEthereum] = useState("");
+  const [litecoin, setLitecoin] = useState("");
+
   const [value, setValue] = useState({
-    title: "",
-    excerpt: "",
-    story: "",
-    target: "",
-    expiryDate: "",
+    title: campaign?.title,
+    excerpt: campaign?.excerpt,
+    story: campaign?.story,
+    target: campaign?.target,
+    expiryDate: campaign?.expiryDate,
+    wallets: campaign?.wallets || [],
   });
 
-  const [wallets, setWallets] = useState({});
+  const campaignId = props.match.params.id;
 
-  console.log("wallet", wallets);
+  useEffect(() => {
+    const fetchSingleCampaign = async () => {
+      try {
+        const resData = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/campaign/get-by-id/${campaignId}`
+        ).then((res) => res.json());
 
-  console.log({ value });
+        setCampaign(resData.data);
+
+        setValue({
+          title: resData.data.title,
+          excerpt: resData.data.excerpt,
+          story: resData.data.story,
+          target: resData.data.target,
+          expiryDate: resData.data.expiryDate,
+          wallets: resData.data.wallets || [],
+        });
+
+        setBitcoin(
+          resData?.data?.wallets?.find((wallet) => wallet.name === "bitcoin")
+            ?.walletAddress
+        );
+        setEthereum(
+          resData?.data?.wallets?.find((wallet) => wallet.name === "ethereum")
+            ?.walletAddress
+        );
+        setLitecoin(
+          resData?.data?.wallets?.find((wallet) => wallet.name === "litecoin")
+            ?.walletAddress
+        );
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+
+    fetchSingleCampaign();
+  }, [campaignId]);
 
   const [image, setImage] = useState(null);
 
@@ -38,15 +78,9 @@ const FundraiseRegisterPage = (props) => {
 
     const walletList = [];
 
-    for (const walletKey in wallets) {
-      console.log("key", walletKey);
-
-      if (!isObjEmpty(wallets[walletKey])) {
-        walletList.push(wallets[walletKey]);
-      }
-    }
-
-    console.log("list", walletList);
+    bitcoin && walletList.push({ name: "bitcoin", walletAddress: bitcoin });
+    ethereum && walletList.push({ name: "ethereum", walletAddress: ethereum });
+    litecoin && walletList.push({ name: "litecoin", walletAddress: litecoin });
 
     const formData = new FormData();
     formData.append("title", value.title);
@@ -59,7 +93,7 @@ const FundraiseRegisterPage = (props) => {
 
     try {
       const resData = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/campaign/add`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/campaign/${campaignId}/update`,
         {
           method: "POST",
           body: formData,
@@ -69,9 +103,9 @@ const FundraiseRegisterPage = (props) => {
         }
       ).then((res) => res.json());
 
-      props.history.push("/profile");
-
       console.log({ resData });
+
+      props.history.push(`/fundraise/${campaignId}`);
     } catch (error) {
       return toast.error(error.message);
     }
@@ -80,13 +114,13 @@ const FundraiseRegisterPage = (props) => {
   return (
     <Fragment>
       <Navbar Logo={Logo} />
-      <PageTitle pageTitle={"Register"} pagesub={"Register"} />
+      <PageTitle pageTitle={"Edit Campaign"} pagesub={"Edit Campaign"} />
       <div className="wpo-donation-page-area section-padding">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-8">
               <div className="wpo-donate-header">
-                <h2>Register Here To Organize A Campaign</h2>
+                <h2>Edit your campaign</h2>
               </div>
               <div id="Donations" className="tab-pane">
                 <form onSubmit={SubmitHandler}>
@@ -114,6 +148,7 @@ const FundraiseRegisterPage = (props) => {
                           name="target"
                           id="fname"
                           placeholder=""
+                          value={value.target}
                           onChange={changeHandler}
                         />
                       </div>
@@ -127,6 +162,7 @@ const FundraiseRegisterPage = (props) => {
                           name="expiryDate"
                           id="name"
                           placeholder=""
+                          value={value.expiryDate}
                           onChange={changeHandler}
                         />
                       </div>
@@ -144,15 +180,11 @@ const FundraiseRegisterPage = (props) => {
                           name="bitCoinWalletAddress"
                           id="bitcoin"
                           placeholder=""
-                          onChange={(e) =>
-                            setWallets({
-                              ...wallets,
-                              bitcoin: {
-                                name: "bitcoin",
-                                walletAddress: e.target.value,
-                              },
-                            })
-                          }
+                          value={bitcoin}
+                          onChange={(e) => {
+                            console.log(e);
+                            setBitcoin(e.target.value);
+                          }}
                         />
                       </div>
                       <div className=" col-12 form-group d-flex">
@@ -169,15 +201,8 @@ const FundraiseRegisterPage = (props) => {
                           name="etheriumWalletAddress"
                           id="etherium"
                           placeholder=""
-                          onChange={(e) =>
-                            setWallets({
-                              ...wallets,
-                              ethereum: {
-                                name: "etherium",
-                                walletAddress: e.target.value,
-                              },
-                            })
-                          }
+                          value={ethereum}
+                          onChange={(e) => setEthereum(e.target.value)}
                         />
                       </div>
                       <div className="col-12 form-group d-flex">
@@ -191,18 +216,9 @@ const FundraiseRegisterPage = (props) => {
                         <input
                           type="text"
                           className="form-control"
-                          name="anotherWalletAddress"
                           id="another"
-                          placeholder=""
-                          onChange={(e) =>
-                            setWallets({
-                              ...wallets,
-                              litecoin: {
-                                name: "litecoin",
-                                walletAddress: e.target.value,
-                              },
-                            })
-                          }
+                          value={litecoin}
+                          onChange={(e) => setLitecoin(e.target.value)}
                         />
                       </div>
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
@@ -215,6 +231,7 @@ const FundraiseRegisterPage = (props) => {
                           name="title"
                           id="fname"
                           placeholder="Max 50 words"
+                          value={value.title}
                           onChange={changeHandler}
                         />
                       </div>
@@ -228,6 +245,7 @@ const FundraiseRegisterPage = (props) => {
                           name="excerpt"
                           id="fname"
                           placeholder="Max 100 words"
+                          value={value.excerpt}
                           onChange={changeHandler}
                         />
                       </div>
@@ -240,8 +258,17 @@ const FundraiseRegisterPage = (props) => {
                           name="story"
                           id="note"
                           placeholder="Minimum 200 words"
+                          value={value.story}
                           onChange={changeHandler}
                         ></textarea>
+                      </div>
+                      <div>
+                        <img
+                          height={200}
+                          width="auto"
+                          src={`${process.env.REACT_APP_API_BASE_URL}${campaign.image}`}
+                          alt="campaign"
+                        />
                       </div>
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
                         <label for="formFileSm" class="form-label">
@@ -322,7 +349,7 @@ const FundraiseRegisterPage = (props) => {
                                     </div> */}
                   <div className="submit-area">
                     <button type="submit" className="theme-btn submit-btn">
-                      Register
+                      Save
                     </button>
                   </div>
                 </form>
@@ -336,4 +363,4 @@ const FundraiseRegisterPage = (props) => {
     </Fragment>
   );
 };
-export default FundraiseRegisterPage;
+export default EditFundraise;

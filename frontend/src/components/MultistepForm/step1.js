@@ -20,15 +20,27 @@ const Step1 = (props) => {
             <div className="mt-2">
               <select
                 id="crypto"
-                name="wallet"
+                name="walletAddress"
                 value={props.getStore().wallet}
                 onChange={handleChange}
+                defaultValue="Select"
               >
-                <option value="BTC">BTC</option>
-                <option value="ETH">ETH</option>
+                <option value="">Select Wallet</option>
+                {props.campaign?.wallets?.map((wallet, index) => {
+                  return (
+                    <option key={index} value={wallet.walletAddress}>
+                      {wallet.name}
+                    </option>
+                  );
+                })}
               </select>
               <div className="mt-4">
-                <TextField type="number" label="Donate Amount" />
+                <TextField
+                  type="number"
+                  name="amount"
+                  label="Donate Amount"
+                  onChange={handleChange}
+                />
               </div>
             </div>
           </div>

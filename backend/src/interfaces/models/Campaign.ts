@@ -13,7 +13,7 @@ interface ICampaign extends Document {
   story?: string;
   image: string;
   fundRaiser?: string;
-  wallet?: WalletOptions[];
+  wallets?: WalletOptions[];
   target: number;
   amount?: number;
   status: string;
