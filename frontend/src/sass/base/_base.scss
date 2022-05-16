@@ -85,6 +85,14 @@ h2.hidden{
     }
 }
 
+.section-padding-2 {
+    padding: 80px 0;
+
+    @include media-query( 767px ) {
+        padding: 50px 0;
+    }
+}
+
 
 /*** contact form error handling ***/
 .contact-validation-active {

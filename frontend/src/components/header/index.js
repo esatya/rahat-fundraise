@@ -150,7 +150,7 @@ export default class Header extends Component {
                                       <i
                                         className="fa fa-pencil fa-sm"
                                         style={{ paddingLeft: "7px" }}
-                                      ></i>{" "}
+                                      ></i>
                                       Edit Profile
                                     </span>
                                   </NavLink>

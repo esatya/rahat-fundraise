@@ -142,7 +142,7 @@ const LoginPage = (props) => {
                   }
                   label="Remember Me"
                 />
-                <Link to="/forgot-password">Forgot Password?</Link>
+                {/* <Link to="/forgot-password">Forgot Password?</Link> */}
               </Grid>
               <Grid className="formFooter">
                 <Button fullWidth className="cBtnTheme" type="submit">
