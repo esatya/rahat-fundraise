@@ -3,7 +3,7 @@ import React from "react";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
-const Step1 = (props) => {
+const Step2 = (props) => {
   const handleChange = (e) => {
     props.updateStore({
       ...props.getStore(),
@@ -135,4 +135,4 @@ const Step1 = (props) => {
     </div>
   );
 };
-export default Step1;
+export default Step2;
