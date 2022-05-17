@@ -36,7 +36,7 @@ export const getDonationsForCampaign = async (
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { campaignId } = req.body;
+    const { campaignId } = req.params;
 
     const donations = await Donation.find({ campaignId });
 

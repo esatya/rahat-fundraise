@@ -1,9 +1,9 @@
-import { body, ValidationChain } from 'express-validator';
+import { body, param, ValidationChain } from 'express-validator';
 
 import { isObjectIdValidator } from '../utils/helper';
 
 export const getDonationsValidationRules: ValidationChain[] = [
-  body('campaignId').isString().custom(isObjectIdValidator),
+  param('campaignId').isString().custom(isObjectIdValidator),
 ];
 
 export const newDonationValidationRules: ValidationChain[] = [
