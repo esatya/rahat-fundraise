@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/footer";
@@ -11,7 +11,8 @@ import Logo from "../../images/logo.png";
 import { Link } from "react-router-dom";
 
 const CauseSinglePage = (props) => {
-  const [campaign, setCampaign] = React.useState({});
+  const [campaign, setCampaign] = useState({});
+  const [donated, setDonated] = useState(false);
 
   const id = props.match.params.id;
 
@@ -34,7 +35,7 @@ const CauseSinglePage = (props) => {
   return (
     <Fragment>
       <Navbar Logo={Logo} />
-      <PageTitle pageTitle={campaign.title} pagesub={"Case Single"} />
+      <PageTitle pageTitle={campaign?.title} pagesub={"Case Single"} />
       <div className="wpo-case-details-area section-padding">
         <div className="container">
           <div className="row">
@@ -42,16 +43,20 @@ const CauseSinglePage = (props) => {
               <div className="wpo-case-details-wrap">
                 <div className="wpo-case-details-img">
                   <img
-                    src={`${process.env.REACT_APP_API_BASE_URL}${campaign.image}`}
+                    src={`${process.env.REACT_APP_API_BASE_URL}${campaign?.image}`}
                     alt=""
                   />
 
                   <Link to={`/fundraise/${id}/edit`}>Edit</Link>
                 </div>
-                <CauseTabs campaign={campaign} />
+                <CauseTabs campaign={campaign} donated={donated} />
               </div>
             </div>
-            <CauseSidebar campaign={campaign} />
+            <CauseSidebar
+              campaign={campaign}
+              donated={donated}
+              setDonated={setDonated}
+            />
           </div>
         </div>
       </div>
