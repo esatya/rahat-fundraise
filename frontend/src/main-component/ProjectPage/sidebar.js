@@ -34,7 +34,15 @@ const CauseSidebar = (props) => {
     },
     {
       name: "Donate",
-      component: <Step3 getStore={getStore} updateStore={updateStore} />,
+      component: (
+        <Step3
+          getStore={getStore}
+          updateStore={updateStore}
+          campaign={props.campaign}
+          donated={props.donated}
+          setDonated={props.setDonated}
+        />
+      ),
     },
   ];
 
