@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 import {
@@ -16,8 +18,9 @@ import cmt1 from "../../images/blog-details/comments-author/img-1.jpg";
 import cmt2 from "../../images/blog-details/comments-author/img-2.jpg";
 import cmt3 from "../../images/blog-details/comments-author/img-3.jpg";
 
-const CauseTabs = ({ campaign }) => {
+const CauseTabs = ({ campaign, donated }) => {
   const [activeTab, setActiveTab] = useState("1");
+  const [donations, setDonations] = React.useState([]);
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -26,6 +29,23 @@ const CauseTabs = ({ campaign }) => {
   const SubmitHandler = (e) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    const fetchDonations = async () => {
+      try {
+        const resData = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/donation/campaign/${campaign.id}`
+        ).then((res) => res.json());
+
+        setDonations(resData?.data);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    campaign.id && fetchDonations();
+  }, [campaign?.id, donated]);
+
+  if (!campaign) return <>No Campaign</>;
 
   return (
     <div>
@@ -70,7 +90,7 @@ const CauseTabs = ({ campaign }) => {
               <Col sm="12">
                 <div className="wpo-case-content">
                   <div className="wpo-case-text-top">
-                    <h2>{campaign.title}</h2>
+                    <h2>{campaign?.title}</h2>
                     <div className="progress-sub">
                       <div className="progress-section">
                         <div className="process">
@@ -79,14 +99,14 @@ const CauseTabs = ({ campaign }) => {
                               className="progress-bar"
                               style={{
                                 width: `${
-                                  (campaign.amount / campaign.target) * 100
+                                  (campaign?.amount / campaign?.target) * 100
                                 }%`,
                               }}
                             >
                               <div className="progress-value">
                                 <span>
                                   {(
-                                    (campaign.amount / campaign.target) *
+                                    (campaign?.amount / campaign?.target) *
                                     100
                                   ).toFixed(2)}
                                 </span>
@@ -98,10 +118,10 @@ const CauseTabs = ({ campaign }) => {
                       </div>
                       <ul>
                         <li>
-                          <span>Raised:</span> ${campaign.amount}
+                          <span>Raised:</span> ${campaign?.amount}
                         </li>
                         <li>
-                          <span>Goal:</span> ${campaign.target}
+                          <span>Goal:</span> ${campaign?.target}
                         </li>
                         <li>
                           <span>Donar:</span> 0
@@ -109,7 +129,7 @@ const CauseTabs = ({ campaign }) => {
                       </ul>
                     </div>
                     <div className="case-b-text">
-                      <p>{campaign.story}</p>
+                      <p>{campaign?.story}</p>
                     </div>
                     <div className="case-bb-text">
                       <h3>We want to ensure the education for the kids.</h3>
@@ -148,11 +168,10 @@ const CauseTabs = ({ campaign }) => {
                     <div className="row">
                       <table>
                         <tr>
-                          <th>Profile Picture</th>
                           <th>Wallet Address</th>
-                          <th>Amt</th>
-                          <th>Date</th>
-                          <th>TXN</th>
+                          <th>Amount</th>
+                          <th>Donation Date</th>
+                          <th>Transaction Id</th>
                         </tr>
                         <hr
                           style={{
@@ -161,33 +180,20 @@ const CauseTabs = ({ campaign }) => {
                             color: "#217ec2",
                           }}
                         />
-                        <tr>
-                          <td>
-                            <img src="" />
-                          </td>
-                          <td>195434531234235235</td>
-                          <td>$500</td>
-                          <td>02-May-22</td>
-                          <td>1223</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img src="" />
-                          </td>
-                          <td>195434531234235235</td>
-                          <td>$500</td>
-                          <td>02-May-22</td>
-                          <td>1223</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img src="" />
-                          </td>
-                          <td>195434531234235235</td>
-                          <td>$500</td>
-                          <td>02-May-22</td>
-                          <td>1223</td>
-                        </tr>
+                        {donations?.map((donation) => (
+                          <tr>
+                            <td>{donation.walletAddress}</td>
+                            <td>{`$${donation.amount}`}</td>
+                            <td>
+                              {
+                                new Date(donation.createdDate)
+                                  .toISOString()
+                                  .split("T")[0]
+                              }
+                            </td>
+                            <td>{donation.transactionId}</td>
+                          </tr>
+                        ))}
                       </table>
                     </div>
                   </div>

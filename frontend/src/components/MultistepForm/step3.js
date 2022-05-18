@@ -1,8 +1,11 @@
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import QRCode from "react-qr-code";
+import SimpleReactValidator from "simple-react-validator";
+import { toast } from "react-toastify";
 
-const Step1 = (props) => {
+const Step3 = (props) => {
   const copyAddress = () => {
     const copyText = document.getElementById("wallet");
     const textArea = document.createElement("textarea");
@@ -13,8 +16,42 @@ const Step1 = (props) => {
     textArea.remove();
   };
 
-  const handleSubmit = (e) => {
-    console.log("Donated");
+  const [validator] = React.useState(
+    new SimpleReactValidator({
+      className: "errorMessage",
+    })
+  );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (validator.allValid()) {
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            ...props.getStore(),
+            transactionId: uuidv4(),
+            campaignId: props.campaign.id,
+          }),
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((res) => res.json());
+
+      validator.hideMessages();
+
+      if (resData.data) {
+        props.setDonated(!props.donated);
+        toast.success("Donation Complete successfully!");
+      }
+    } else {
+      validator.showMessages();
+      return toast.error("Empty field is not allowed!");
+    }
   };
 
   return (
@@ -73,4 +110,4 @@ const Step1 = (props) => {
     </div>
   );
 };
-export default Step1;
+export default Step3;
