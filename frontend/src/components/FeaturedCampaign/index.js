@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const CauseSection = (props) => {
   const [featuredCampaigns, setFeaturedCampaigns] = useState([]);
@@ -10,7 +10,7 @@ const CauseSection = (props) => {
     const fetchFeatureCampaigns = async () => {
       try {
         const resData = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/campaign`
+          `${process.env.REACT_APP_API_BASE_URL}/api/campaign`,
         ).then((res) => res.json());
 
         setFeaturedCampaigns(resData?.data || []);
@@ -96,7 +96,7 @@ const CauseSection = (props) => {
                                 <img
                                   width={45}
                                   height={45}
-                                  src={`${process.env.REACT_APP_API_BASE_URL}${Cause.creator.image}`}
+                                  src={`${process.env.REACT_APP_API_BASE_URL}${Cause?.creator?.image}`}
                                   alt=""
                                 />
                               </span>
