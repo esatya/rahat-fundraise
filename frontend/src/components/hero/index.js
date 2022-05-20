@@ -1,8 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
-// import Clients from './client'
-import hero1 from "../../images/slider/right-img2.png";
-import hero3 from "../../images/slider/right-img.png";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
@@ -21,11 +18,18 @@ const Hero = () => {
                 <p>
                   We help you keep track and stay up-to-date with your crypto
                   and non-crypto donations from all around the world for aid
-                  distribution.{" "}
+                  distribution.
                 </p>
               </div>
               <div className="btns">
-                <Link to="/login" className="theme-btn">
+                <Link
+                  to={
+                    sessionStorage.getItem('token')
+                      ? '/campaign/register'
+                      : '/login'
+                  }
+                  className="theme-btn"
+                >
                   Start a Fundraiser
                 </Link>
               </div>

@@ -34,6 +34,7 @@
     "reactstrap": "^8.9.0",
     "simple-react-validator": "^1.5.0",
     "slick-carousel": "^1.8.1",
+    "universal-cookie": "^4.0.4",
     "uuid": "^8.3.2"
   },
   "scripts": {
