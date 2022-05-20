@@ -18,7 +18,6 @@ import OtpPage from '../OtpPage';
 import UserCampaignsPage from '../UserCampaignsPage';
 import EditFundraise from '../EditFundraise/EditFundraise';
 import ProtectedRoute from '../../components/common/ProtectedRoute';
-import Page404 from '../Page404';
 
 const AllRoute = () => {
   return (
@@ -33,7 +32,10 @@ const AllRoute = () => {
           <Route path="/signup" component={SignUpPage} />
           <Route path="/404" component={ErrorPage} />
           <Route path="/otp" component={OtpPage} />
-
+          <ProtectedRoute
+            routeElement={<FundraiseRegisterPage />}
+            path="/campaign/register"
+          />
           <ProtectedRoute
             routeElement={<UserCampaignsPage />}
             path="/myfundraise"
@@ -47,10 +49,6 @@ const AllRoute = () => {
           <ProtectedRoute
             routeElement={<EditFundraise />}
             path="/fundraise/:id/edit"
-          />
-          <ProtectedRoute
-            component={<FundraiseRegisterPage />}
-            path="/campaign/register"
           />
 
           <Route path="*">

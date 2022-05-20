@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import MobileMenu from "../../components/MobileMenu";
-import "./header.scss";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import MobileMenu from '../../components/MobileMenu';
+import './header.scss';
 
 const NavLink = (props) => (
   <Link
@@ -10,7 +10,7 @@ const NavLink = (props) => (
       // the object returned here is passed to the
       // anchor element's props
       return {
-        className: isCurrent ? "active" : "non-active",
+        className: isCurrent ? 'active' : 'non-active',
       };
     }}
   />
@@ -23,7 +23,9 @@ export default class Header extends Component {
   };
 
   closePop = () => {
-    this.state.showpop = false;
+    this.setState({
+      showpop: false,
+    });
   };
 
   searchHandler = () => {
@@ -33,12 +35,13 @@ export default class Header extends Component {
   };
 
   toggleDropdown() {
-    console.log("===========");
+    console.log('===========');
     this.setState({ showpop: !this.state.showpop });
   }
   handleSignOut() {
     localStorage.clear();
-    window.location.replace("/");
+    sessionStorage.clear('token');
+    window.location.replace('/');
   }
 
   render() {
@@ -65,9 +68,9 @@ export default class Header extends Component {
                       to="/"
                     >
                       <img
-                        src={"https://rahat.io/images/logo.png"}
+                        src={'https://rahat.io/images/logo.png'}
                         alt="rahat logo"
-                        style={{ width: "200px" }}
+                        style={{ width: '200px' }}
                       />
                     </Link>
                   </div>
@@ -99,18 +102,18 @@ export default class Header extends Component {
                   <div className="search-toggle-btn">
                     <div
                       className="cart-search-contact"
-                      style={{ textAlign: "right" }}
+                      style={{ textAlign: 'right' }}
                     >
-                      {localStorage.getItem("isLogIn") ? (
+                      {sessionStorage.getItem('token') ? (
                         <div
                           id="de-click-menu-profile"
                           className="de-menu-profile"
                           onClick={() => this.toggleDropdown()}
-                          style={{ marginLeft: "10px" }}
+                          style={{ marginLeft: '10px' }}
                         >
                           <img
                             src="https://assets.rumsan.com/rumsan-group/new-project-1.png"
-                            style={{ width: "50px", height: "50px" }}
+                            style={{ width: '50px', height: '50px' }}
                             alt=""
                           />
 
@@ -121,12 +124,12 @@ export default class Header extends Component {
                               <ul className="de-submenu-profile">
                                 <li>
                                   <NavLink
-                                    to="#"
+                                    to="/myfundraise"
                                     style={{
-                                      background: "none",
-                                      boxShadow: "none",
-                                      padding: "0px",
-                                      margin: "0px",
+                                      background: 'none',
+                                      boxShadow: 'none',
+                                      padding: '0px',
+                                      margin: '0px',
                                     }}
                                   >
                                     <span>
@@ -138,18 +141,18 @@ export default class Header extends Component {
 
                                 <li>
                                   <NavLink
-                                    to="#"
+                                    to="/profile"
                                     style={{
-                                      background: "none",
-                                      boxShadow: "none",
-                                      padding: "0px",
-                                      margin: "0px",
+                                      background: 'none',
+                                      boxShadow: 'none',
+                                      padding: '0px',
+                                      margin: '0px',
                                     }}
                                   >
                                     <span>
                                       <i
                                         className="fa fa-pencil fa-sm"
-                                        style={{ paddingLeft: "7px" }}
+                                        style={{ paddingLeft: '7px' }}
                                       ></i>
                                       Edit Profile
                                     </span>
