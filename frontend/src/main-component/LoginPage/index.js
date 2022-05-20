@@ -1,19 +1,19 @@
-import { toast } from "react-toastify";
-import React, { useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { toast } from 'react-toastify';
+import React, { useState } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
-import TextField from "@material-ui/core/TextField";
-import SimpleReactValidator from "simple-react-validator";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import TextField from '@material-ui/core/TextField';
+import SimpleReactValidator from 'simple-react-validator';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import "./style.scss";
+import './style.scss';
 
 const LoginPage = (props) => {
   const [value, setValue] = useState({
-    email: "",
+    email: '',
     remember: false,
   });
 
@@ -28,8 +28,8 @@ const LoginPage = (props) => {
 
   const [validator] = React.useState(
     new SimpleReactValidator({
-      className: "errorMessage",
-    })
+      className: 'errorMessage',
+    }),
   );
 
   const submitForm = async (e) => {
@@ -39,54 +39,56 @@ const LoginPage = (props) => {
         const resData = await fetch(
           `${process.env.REACT_APP_API_BASE_URL}/api/user/login`,
           {
-            method: "POST",
+            method: 'POST',
             body: JSON.stringify({
               email: value.email,
             }),
 
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
-          }
+          },
         ).then((res) => res.json());
 
-        console.log({ resData });
-
-        if (resData.data.email) {
+        if (resData?.data?.email) {
           const email = resData.data.email;
 
-          const otpRes = await fetch(
+          const otpResult = await fetch(
             `${process.env.REACT_APP_API_BASE_URL}/api/user/otp`,
             {
-              method: "POST",
+              method: 'POST',
               body: JSON.stringify({
                 email: email,
               }),
               headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
               },
-            }
-          ).then((res) => res.json());
+            },
+          );
+          const otpRes = await otpResult.json();
 
           if (otpRes.ok) {
-            toast.success("OTP has been sent to your email");
+            setValue({
+              email: '',
+              password: '',
+              remember: false,
+            });
+            validator.hideMessages();
+            props.history.push('/otp', { email: value.email });
+
+            toast.success('OTP has been sent to your email');
+          } else {
+            throw new Error('Failed to send OTP.');
           }
+        } else {
+          throw new Error(resData?.msg);
         }
       } catch (error) {
         toast.error(error.message);
       }
-
-      setValue({
-        email: "",
-        password: "",
-        remember: false,
-      });
-      validator.hideMessages();
-
-      props.history.push("/otp", { email: value.email });
     } else {
       validator.showMessages();
-      toast.error("Empty field is not allowed!");
+      toast.error('Empty field is not allowed!');
     }
   };
   return (
@@ -111,26 +113,9 @@ const LoginPage = (props) => {
                 onBlur={(e) => changeHandler(e)}
                 onChange={(e) => changeHandler(e)}
               />
-              {validator.message("email", value.email, "required|email")}
+              {validator.message('email', value.email, 'required|email')}
             </Grid>
-            {/* <Grid item xs={12}>
-              <TextField
-                className="inputOutline"
-                fullWidth
-                placeholder="Password"
-                value={value.password}
-                variant="outlined"
-                name="password"
-                type="password"
-                label="Password"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onBlur={(e) => changeHandler(e)}
-                onChange={(e) => changeHandler(e)}
-              />
-              {validator.message("password", value.password, "required")}
-            </Grid> */}
+
             <Grid item xs={12}>
               <Grid className="formAction">
                 <FormControlLabel
@@ -142,7 +127,6 @@ const LoginPage = (props) => {
                   }
                   label="Remember Me"
                 />
-                {/* <Link to="/forgot-password">Forgot Password?</Link> */}
               </Grid>
               <Grid className="formFooter">
                 <Button fullWidth className="cBtnTheme" type="submit">
@@ -155,7 +139,7 @@ const LoginPage = (props) => {
                 </Button>
               </Grid> */}
               <p className="noteHelp">
-                Don't have an account?{" "}
+                Don't have an account?{' '}
                 <Link to="/signup">Create free account</Link>
               </p>
             </Grid>

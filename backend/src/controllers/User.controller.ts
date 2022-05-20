@@ -13,12 +13,27 @@ import { convertUserData, generateOTP } from '../utils/helper';
 export const registerUser = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
     const imageUrl = req.file ? `/uploads/users/${req.file.filename}` : null;
+
+    const email: string = req.body.email;
+    const alias: string = req.body.alias;
+    let existingUser: TUser = await User.findOne({
+      email,
+    });
+    if (existingUser) {
+      throw new Error(`User email already taken.`);
+    }
+
+    existingUser = await User.findOne({
+      alias,
+    });
+    if (existingUser) {
+      throw new Error(`User alias already taken.`);
+    }
 
     const user: TUser = new User<IUser>({ ...req.body, image: imageUrl });
 
@@ -31,6 +46,7 @@ export const registerUser = async (req: IRequest, res: IResponse) => {
     });
   } catch (error) {
     if (error instanceof Error) {
+      console.log(error.message);
       return res.status(401).json({ ok: false, msg: error.message });
     }
 
@@ -101,7 +117,7 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
 
     await user.save({ validateModifiedOnly: true });
 
-    transporter.sendMail(message);
+    const mailResult = await transporter.sendMail(message);
 
     res.json({
       ok: true,

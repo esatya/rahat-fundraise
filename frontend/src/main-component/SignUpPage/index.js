@@ -1,16 +1,16 @@
-import { toast } from "react-toastify";
-import React, { useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { toast } from 'react-toastify';
+import React, { useState } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import SimpleReactValidator from "simple-react-validator";
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import SimpleReactValidator from 'simple-react-validator';
 
 const SignUpPage = (props) => {
   const [value, setValue] = useState({
-    email: "",
-    alias: "",
+    email: '',
+    alias: '',
   });
 
   const changeHandler = (e) => {
@@ -20,35 +20,49 @@ const SignUpPage = (props) => {
 
   const [validator] = React.useState(
     new SimpleReactValidator({
-      className: "errorMessage",
-    })
+      className: 'errorMessage',
+    }),
   );
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
-    if (validator.allValid()) {
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/register`, {
-        method: "POST",
-        body: JSON.stringify({
-          email: value.email,
-          alias: value.alias,
-        }),
+    try {
+      if (validator.allValid()) {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/user/register`,
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              email: value.email?.trim(),
+              alias: value.alias?.trim(),
+            }),
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
 
-      setValue({
-        email: "",
-        alias: "",
-      });
-      validator.hideMessages();
-      toast.success("Registration Complete successfully!");
-      props.history.push("/login");
-    } else {
-      validator.showMessages();
-      toast.error("Empty field is not allowed!");
+        const body = await response.json();
+
+        if (body?.ok) {
+          setValue({
+            email: '',
+            alias: '',
+          });
+          validator.hideMessages();
+          toast.success('Registration Complete successfully!');
+          props.history.push('/login');
+        } else {
+          throw new Error(body?.msg);
+        }
+      } else {
+        validator.showMessages();
+        toast.error('Please check all your input fields.');
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.message || 'Something went wrong');
     }
   };
 
@@ -63,18 +77,20 @@ const SignUpPage = (props) => {
               <TextField
                 className="inputOutline"
                 fullWidth
-                placeholder="Full Name"
+                placeholder="Username"
                 value={value.alias}
                 variant="outlined"
                 name="alias"
-                label="Name"
+                label="Username"
                 InputLabelProps={{
                   shrink: true,
                 }}
                 onBlur={(e) => changeHandler(e)}
                 onChange={(e) => changeHandler(e)}
               />
-              {validator.message("full name", value.alias, "required|alpha")}
+              {validator.message('full name', value.alias, 'required|alpha', {
+                className: 'text-danger',
+              })}
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -91,7 +107,9 @@ const SignUpPage = (props) => {
                 onBlur={(e) => changeHandler(e)}
                 onChange={(e) => changeHandler(e)}
               />
-              {validator.message("email", value.email, "required|email")}
+              {validator.message('email', value.email, 'required|email', {
+                className: 'text-danger',
+              })}
             </Grid>
             {/* <Grid item xs={12}>
               <TextField
@@ -153,7 +171,7 @@ const SignUpPage = (props) => {
                 </Button>
               </Grid> */}
               <p className="noteHelp">
-                Already have an account?{" "}
+                Already have an account?{' '}
                 <Link to="/login">Return to Sign In</Link>
               </p>
             </Grid>
