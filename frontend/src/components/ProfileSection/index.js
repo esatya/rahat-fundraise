@@ -164,10 +164,12 @@ const CauseTabs = (props) => {
                           </div>
                           <ul>
                             <li>
-                              <span>Goal:</span> ${Cause.target}
+                              <span className="pe-1">Goal: </span> $
+                              {Cause.target}
                             </li>
                             <li>
-                              <span>Raised:</span> ${Cause.amount}
+                              <span className="pe-1">Raised: </span> $
+                              {Cause.amount}
                             </li>
                           </ul>
                           <div className="campaign-btn">
