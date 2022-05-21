@@ -57,7 +57,6 @@ const MobileMenu = () => {
 
         <ul className="responsivemenu">
           {menus.map((item) => {
-            console.log(item?.title, item?.requiresUser, user?.isLoggedIn);
             const link = (
               <li key={item.id}>
                 <Link onClick={ClickHandler} to={item.link}>
