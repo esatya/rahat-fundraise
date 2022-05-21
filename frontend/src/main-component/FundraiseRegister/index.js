@@ -1,27 +1,26 @@
-import { toast } from "react-toastify";
-import React, { useState, Fragment } from "react";
+import { toast } from 'react-toastify';
+import React, { useState, Fragment, useContext } from 'react';
 
-import Logo from "../../images/logo.png";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/footer";
-import PageTitle from "../../components/pagetitle";
-import Scrollbar from "../../components/scrollbar";
-import { isObjEmpty } from "../../helper/helper";
+import Logo from '../../images/logo.png';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/footer';
+import PageTitle from '../../components/pagetitle';
+import Scrollbar from '../../components/scrollbar';
+import { isObjEmpty } from '../../helper/helper';
+import UserContext from '../../context/user-context';
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
-    title: "",
-    excerpt: "",
-    story: "",
-    target: "",
-    expiryDate: "",
+    title: '',
+    excerpt: '',
+    story: '',
+    target: '',
+    expiryDate: '',
   });
 
   const [wallets, setWallets] = useState({});
 
-  console.log("wallet", wallets);
-
-  console.log({ value });
+  const { user } = useContext(UserContext);
 
   const [image, setImage] = useState(null);
 
@@ -39,37 +38,35 @@ const FundraiseRegisterPage = (props) => {
     const walletList = [];
 
     for (const walletKey in wallets) {
-      console.log("key", walletKey);
+      console.log('key', walletKey);
 
       if (!isObjEmpty(wallets[walletKey])) {
         walletList.push(wallets[walletKey]);
       }
     }
 
-    console.log("list", walletList);
-
     const formData = new FormData();
-    formData.append("title", value.title);
-    formData.append("excerpt", value.excerpt);
-    formData.append("story", value.story);
-    formData.append("target", value.target);
-    formData.append("expiryDate", value.expiryDate);
-    formData.append("image", image);
-    formData.append("wallets", JSON.stringify(walletList));
+    formData.append('title', value.title);
+    formData.append('excerpt', value.excerpt);
+    formData.append('story', value.story);
+    formData.append('target', value.target);
+    formData.append('expiryDate', value.expiryDate);
+    formData.append('image', image);
+    formData.append('wallets', JSON.stringify(walletList));
 
     try {
       const resData = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/api/campaign/add`,
         {
-          method: "POST",
+          method: 'POST',
           body: formData,
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${user?.data?.token}`,
           },
-        }
+        },
       ).then((res) => res.json());
 
-      props.history.push("/profile");
+      props.history.push('/profile');
 
       console.log({ resData });
     } catch (error) {
@@ -80,7 +77,7 @@ const FundraiseRegisterPage = (props) => {
   return (
     <Fragment>
       <Navbar Logo={Logo} />
-      <PageTitle pageTitle={"Register"} pagesub={"Register"} />
+      <PageTitle pageTitle={'Register'} pagesub={'Register'} />
       <div className="wpo-donation-page-area section-padding">
         <div className="container">
           <div className="row justify-content-center">
@@ -134,7 +131,7 @@ const FundraiseRegisterPage = (props) => {
                         <label
                           for="fname"
                           class="form-label"
-                          style={{ width: "inherit" }}
+                          style={{ width: 'inherit' }}
                         >
                           Bitcoin Address
                         </label>
@@ -148,7 +145,7 @@ const FundraiseRegisterPage = (props) => {
                             setWallets({
                               ...wallets,
                               bitcoin: {
-                                name: "bitcoin",
+                                name: 'bitcoin',
                                 walletAddress: e.target.value,
                               },
                             })
@@ -159,7 +156,7 @@ const FundraiseRegisterPage = (props) => {
                         <label
                           for="fname"
                           class="form-label"
-                          style={{ width: "inherit" }}
+                          style={{ width: 'inherit' }}
                         >
                           Etherium Address
                         </label>
@@ -173,7 +170,7 @@ const FundraiseRegisterPage = (props) => {
                             setWallets({
                               ...wallets,
                               ethereum: {
-                                name: "etherium",
+                                name: 'etherium',
                                 walletAddress: e.target.value,
                               },
                             })
@@ -184,7 +181,7 @@ const FundraiseRegisterPage = (props) => {
                         <label
                           for="fname"
                           class="form-label"
-                          style={{ width: "inherit" }}
+                          style={{ width: 'inherit' }}
                         >
                           Another Crypto
                         </label>
@@ -198,7 +195,7 @@ const FundraiseRegisterPage = (props) => {
                             setWallets({
                               ...wallets,
                               litecoin: {
-                                name: "litecoin",
+                                name: 'litecoin',
                                 walletAddress: e.target.value,
                               },
                             })
@@ -267,7 +264,7 @@ const FundraiseRegisterPage = (props) => {
                         </div>
                         <div className="col-lg-5 col-md-5 col-sm-5 col-5">
                           <input
-                            style={{ height: "37px" }}
+                            style={{ height: '37px' }}
                             type="text"
                             placeholder="Wallet Address"
                           />
@@ -285,7 +282,7 @@ const FundraiseRegisterPage = (props) => {
                         </div>
                         <div className="col-lg-5 col-md-5 col-sm-5 col-5">
                           <input
-                            style={{ height: "37px" }}
+                            style={{ height: '37px' }}
                             type="text"
                             placeholder="Wallet Address"
                           />
@@ -295,18 +292,18 @@ const FundraiseRegisterPage = (props) => {
                             type="submit"
                             className="theme-btn submit-btn"
                             style={{
-                              height: "35px",
-                              width: "30px",
-                              borderRadius: "15%",
+                              height: '35px',
+                              width: '30px',
+                              borderRadius: '15%',
                             }}
                           >
                             <img
                               className="button-increment"
                               src="https://assets.rumsan.com/rumsan-group/rahat-crowdfunding-increment.png"
                               style={{
-                                marginTop: "-18px",
-                                width: "20px",
-                                marginLeft: "-9px",
+                                marginTop: '-18px',
+                                width: '20px',
+                                marginLeft: '-9px',
                               }}
                               alt=""
                             />

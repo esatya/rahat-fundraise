@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Tab,
   Row,
@@ -8,18 +8,20 @@ import {
   Button,
   FormControl,
   FloatingLabel,
-} from "react-bootstrap";
-import { toast } from "react-toastify";
-import SimpleReactValidator from "simple-react-validator";
+} from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import SimpleReactValidator from 'simple-react-validator';
+import UserContext from '../../context/user-context';
 
 function SettingsPage(props) {
   const [image, setImage] = useState(null);
   const [user, setUser] = React.useState({
-    name: "",
-    phone: "",
-    address: "",
-    bio: "",
+    name: '',
+    phone: '',
+    address: '',
+    bio: '',
   });
+  const { user: contextUser } = useContext(UserContext);
 
   const handleFileChange = (event) => {
     setImage(event.target.files[0]);
@@ -31,11 +33,11 @@ function SettingsPage(props) {
         const resData = await fetch(
           `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${contextUser?.data?.token}`,
             },
-          }
+          },
         ).then((res) => res.json());
 
         setUser({
@@ -49,13 +51,15 @@ function SettingsPage(props) {
         toast.error(error.message);
       }
     };
-    fetchUser();
-  }, []);
+    if (contextUser?.loggedIn && contextUser?.data?.token) {
+      fetchUser();
+    }
+  }, [contextUser]);
 
   const [validator] = React.useState(
     new SimpleReactValidator({
-      className: "errorMessage",
-    })
+      className: 'errorMessage',
+    }),
   );
 
   const changeHandler = (e) => {
@@ -68,23 +72,23 @@ function SettingsPage(props) {
     if (validator.allValid()) {
       const formData = new FormData();
 
-      formData.append("name", user.name);
-      formData.append("phone", user.phone);
-      formData.append("address", user.address);
-      formData.append("bio", user.bio);
-      formData.append("image", image);
+      formData.append('name', user.name);
+      formData.append('phone', user.phone);
+      formData.append('address', user.address);
+      formData.append('bio', user.bio);
+      formData.append('image', image);
 
       try {
         const updatedUser = await fetch(
           `${process.env.REACT_APP_API_BASE_URL}/api/user/update-by-id`,
           {
-            method: "POST",
+            method: 'POST',
             body: formData,
 
             headers: {
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${contextUser?.data?.token}`,
             },
-          }
+          },
         ).then((res) => res.json());
 
         console.log({ updatedUser });
@@ -92,13 +96,13 @@ function SettingsPage(props) {
         setUser(updatedUser.data);
 
         validator.hideMessages();
-        toast.success("Profile Updated successfully!");
+        toast.success('Profile Updated successfully!');
       } catch (error) {
-        toast.error("Something went wrong");
+        toast.error('Something went wrong');
       }
     } else {
       validator.showMessages();
-      toast.error("Empty field is not allowed!");
+      toast.error('Empty field is not allowed!');
     }
   };
 
@@ -114,7 +118,7 @@ function SettingsPage(props) {
                     <Row>
                       <Col sm={3}>
                         <Nav variant="pills" className="flex-column">
-                          <Nav.Item style={{ cursor: "pointer" }}>
+                          <Nav.Item style={{ cursor: 'pointer' }}>
                             <Nav.Link eventKey="profile">Profile</Nav.Link>
                           </Nav.Item>
                         </Nav>
@@ -190,7 +194,7 @@ function SettingsPage(props) {
                                 <Form.Control
                                   as="textarea"
                                   placeholder="Enter Your Bio Here. "
-                                  style={{ height: "100px" }}
+                                  style={{ height: '100px' }}
                                   name="bio"
                                   onChange={changeHandler}
                                   value={user.bio}
@@ -226,12 +230,12 @@ function SettingsPage(props) {
                                     src={`${process.env.REACT_APP_API_BASE_URL}${user.image}`}
                                     alt=""
                                     style={{
-                                      objectFit: "cover",
+                                      objectFit: 'cover',
                                       marginTop: 10,
                                       marginBottom: 20,
                                       height: 120,
                                       width: 120,
-                                      borderRadius: "50%",
+                                      borderRadius: '50%',
                                     }}
                                   />
                                 </div>
@@ -239,11 +243,11 @@ function SettingsPage(props) {
                               <label for="profile-upload">
                                 <div
                                   style={{
-                                    fontSize: "14px",
-                                    padding: "10px 20px",
-                                    background: "#0d6efd",
-                                    color: "white",
-                                    borderRadius: "5px",
+                                    fontSize: '14px',
+                                    padding: '10px 20px',
+                                    background: '#0d6efd',
+                                    color: 'white',
+                                    borderRadius: '5px',
                                   }}
                                 >
                                   Choose Profile

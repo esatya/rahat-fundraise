@@ -1,18 +1,19 @@
-import { toast } from "react-toastify";
-import React, { useState, Fragment, useEffect } from "react";
+import { toast } from 'react-toastify';
+import React, { useState, Fragment, useEffect, useContext } from 'react';
 
-import Logo from "../../images/logo.png";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/footer";
-import PageTitle from "../../components/pagetitle";
-import Scrollbar from "../../components/scrollbar";
+import Logo from '../../images/logo.png';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/footer';
+import PageTitle from '../../components/pagetitle';
+import Scrollbar from '../../components/scrollbar';
+import UserContext from '../../context/user-context';
 
 const EditFundraise = (props) => {
   const [campaign, setCampaign] = useState({});
 
-  const [bitcoin, setBitcoin] = useState("");
-  const [ethereum, setEthereum] = useState("");
-  const [litecoin, setLitecoin] = useState("");
+  const [bitcoin, setBitcoin] = useState('');
+  const [ethereum, setEthereum] = useState('');
+  const [litecoin, setLitecoin] = useState('');
 
   const [value, setValue] = useState({
     title: campaign?.title,
@@ -25,11 +26,13 @@ const EditFundraise = (props) => {
 
   const campaignId = props.match.params.id;
 
+  const { user } = useContext(UserContext);
+
   useEffect(() => {
     const fetchSingleCampaign = async () => {
       try {
         const resData = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/campaign/get-by-id/${campaignId}`
+          `${process.env.REACT_APP_API_BASE_URL}/api/campaign/get-by-id/${campaignId}`,
         ).then((res) => res.json());
 
         setCampaign(resData.data);
@@ -44,24 +47,26 @@ const EditFundraise = (props) => {
         });
 
         setBitcoin(
-          resData?.data?.wallets?.find((wallet) => wallet.name === "bitcoin")
-            ?.walletAddress
+          resData?.data?.wallets?.find((wallet) => wallet.name === 'bitcoin')
+            ?.walletAddress,
         );
         setEthereum(
-          resData?.data?.wallets?.find((wallet) => wallet.name === "ethereum")
-            ?.walletAddress
+          resData?.data?.wallets?.find((wallet) => wallet.name === 'ethereum')
+            ?.walletAddress,
         );
         setLitecoin(
-          resData?.data?.wallets?.find((wallet) => wallet.name === "litecoin")
-            ?.walletAddress
+          resData?.data?.wallets?.find((wallet) => wallet.name === 'litecoin')
+            ?.walletAddress,
         );
       } catch (error) {
         toast.error(error.message);
       }
     };
 
-    fetchSingleCampaign();
-  }, [campaignId]);
+    if (campaignId && user?.loggedIn && user?.data?.token) {
+      fetchSingleCampaign();
+    }
+  }, [user, campaignId]);
 
   const [image, setImage] = useState(null);
 
@@ -78,29 +83,29 @@ const EditFundraise = (props) => {
 
     const walletList = [];
 
-    bitcoin && walletList.push({ name: "bitcoin", walletAddress: bitcoin });
-    ethereum && walletList.push({ name: "ethereum", walletAddress: ethereum });
-    litecoin && walletList.push({ name: "litecoin", walletAddress: litecoin });
+    bitcoin && walletList.push({ name: 'bitcoin', walletAddress: bitcoin });
+    ethereum && walletList.push({ name: 'ethereum', walletAddress: ethereum });
+    litecoin && walletList.push({ name: 'litecoin', walletAddress: litecoin });
 
     const formData = new FormData();
-    formData.append("title", value.title);
-    formData.append("excerpt", value.excerpt);
-    formData.append("story", value.story);
-    formData.append("target", value.target);
-    formData.append("expiryDate", value.expiryDate);
-    formData.append("image", image);
-    formData.append("wallets", JSON.stringify(walletList));
+    formData.append('title', value.title);
+    formData.append('excerpt', value.excerpt);
+    formData.append('story', value.story);
+    formData.append('target', value.target);
+    formData.append('expiryDate', value.expiryDate);
+    formData.append('image', image);
+    formData.append('wallets', JSON.stringify(walletList));
 
     try {
       const resData = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/api/campaign/${campaignId}/update`,
         {
-          method: "POST",
+          method: 'POST',
           body: formData,
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${user?.data?.token}`,
           },
-        }
+        },
       ).then((res) => res.json());
 
       console.log({ resData });
@@ -114,7 +119,7 @@ const EditFundraise = (props) => {
   return (
     <Fragment>
       <Navbar Logo={Logo} />
-      <PageTitle pageTitle={"Edit Campaign"} pagesub={"Edit Campaign"} />
+      <PageTitle pageTitle={'Edit Campaign'} pagesub={'Edit Campaign'} />
       <div className="wpo-donation-page-area section-padding">
         <div className="container">
           <div className="row justify-content-center">
@@ -170,7 +175,7 @@ const EditFundraise = (props) => {
                         <label
                           for="fname"
                           class="form-label"
-                          style={{ width: "inherit" }}
+                          style={{ width: 'inherit' }}
                         >
                           Bitcoin Address
                         </label>
@@ -191,7 +196,7 @@ const EditFundraise = (props) => {
                         <label
                           for="fname"
                           class="form-label"
-                          style={{ width: "inherit" }}
+                          style={{ width: 'inherit' }}
                         >
                           Etherium Address
                         </label>
@@ -209,7 +214,7 @@ const EditFundraise = (props) => {
                         <label
                           for="fname"
                           class="form-label"
-                          style={{ width: "inherit" }}
+                          style={{ width: 'inherit' }}
                         >
                           Another Crypto
                         </label>

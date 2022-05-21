@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
@@ -10,11 +10,13 @@ import SimpleReactValidator from 'simple-react-validator';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import './style.scss';
+import UserContext from '../../context/user-context';
 
 const LoginPage = (props) => {
   const [value, setValue] = useState({
     email: '',
     remember: false,
+    isLoading: false,
   });
 
   const changeHandler = (e) => {
@@ -34,6 +36,12 @@ const LoginPage = (props) => {
 
   const submitForm = async (e) => {
     e.preventDefault();
+    setValue((previous) => {
+      return {
+        ...previous,
+        isLoading: true,
+      };
+    });
     if (validator.allValid()) {
       try {
         const resData = await fetch(
@@ -85,10 +93,22 @@ const LoginPage = (props) => {
         }
       } catch (error) {
         toast.error(error.message);
+        setValue((previous) => {
+          return {
+            ...previous,
+            isLoading: false,
+          };
+        });
       }
     } else {
       validator.showMessages();
       toast.error('Empty field is not allowed!');
+      setValue((previous) => {
+        return {
+          ...previous,
+          isLoading: false,
+        };
+      });
     }
   };
   return (
@@ -129,7 +149,12 @@ const LoginPage = (props) => {
                 />
               </Grid>
               <Grid className="formFooter">
-                <Button fullWidth className="cBtnTheme" type="submit">
+                <Button
+                  fullWidth
+                  className="cBtnTheme"
+                  type="submit"
+                  disabled={value?.isLoading}
+                >
                   Login
                 </Button>
               </Grid>
