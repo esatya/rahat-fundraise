@@ -68,7 +68,6 @@ Rahat Team `,
     });
   } catch (error) {
     if (error instanceof Error) {
-      console.log(error.message);
       return res.status(401).json({ ok: false, msg: error.message });
     }
 
