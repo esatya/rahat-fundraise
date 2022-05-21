@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import UserContext from '../../context/user-context';
 
 const UserCampaigns = (props) => {
   const [user, setUser] = useState({});
@@ -10,17 +11,19 @@ const UserCampaigns = (props) => {
     window.scrollTo(10, 0);
   };
 
+  const { user: contextUser } = useContext(UserContext);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const resData = await fetch(
           `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${contextUser?.data?.token}`,
             },
-          }
+          },
         ).then((res) => res.json());
 
         setUser(resData.data);
@@ -28,8 +31,10 @@ const UserCampaigns = (props) => {
         toast.error(error.message);
       }
     };
-    fetchUser();
-  }, []);
+    if (contextUser?.isLoggedIn && contextUser?.data?.token) {
+      fetchUser();
+    }
+  }, [contextUser]);
 
   return (
     <>

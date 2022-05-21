@@ -9,6 +9,7 @@ import User from '../models/User.model';
 import transporter from '../services/mail.service';
 import { secret, senderEmail } from '../config/keys';
 import { convertUserData, generateOTP } from '../utils/helper';
+import { TOKEN_EXPIRATION_DATE } from '../config/constants';
 
 export const registerUser = async (req: IRequest, res: IResponse) => {
   try {
@@ -168,6 +169,7 @@ export const verifyOTP = async (req: IRequest, res: IResponse) => {
     const token = jsonwebtoken.sign(
       { id: user?._id, email: user?.email, alias: user?.alias },
       secret,
+      { expiresIn: TOKEN_EXPIRATION_DATE },
     );
 
     res.json({

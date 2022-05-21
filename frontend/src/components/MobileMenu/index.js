@@ -1,29 +1,29 @@
-import React, { Component } from "react";
-import { Collapse, CardBody, Card } from "reactstrap";
-import { Link } from "react-router-dom";
-import "./style.css";
+import React, { Component } from 'react';
+import { Collapse, CardBody, Card } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import './style.css';
 
 const menus = [
   {
     id: 1,
-    title: "Home",
-    link: "#",
+    title: 'Home',
+    link: '#',
   },
 
   {
     id: 2,
-    title: "Donate",
-    link: "#",
+    title: 'Donate',
+    link: '#',
   },
   {
     id: 3,
-    title: "Fundraiser",
-    link: "#",
+    title: 'Fundraiser',
+    link: '#',
   },
   {
-    id: 3,
-    title: "Sign In",
-    link: "#",
+    id: 4,
+    title: 'Sign In',
+    link: '#',
   },
 ];
 
@@ -54,7 +54,7 @@ export default class MobileMenu extends Component {
 
     return (
       <div>
-        <div className={`mobileMenu ${isMenuShow ? "show" : ""}`}>
+        <div className={`mobileMenu ${isMenuShow ? 'show' : ''}`}>
           <div className="menu-close">
             <div className="clox" onClick={this.menuHandler}>
               <i className="ti-close"></i>
@@ -71,7 +71,7 @@ export default class MobileMenu extends Component {
                       {item.submenu ? (
                         <i className="fa fa-angle-right" aria-hidden="true"></i>
                       ) : (
-                        ""
+                        ''
                       )}
                     </p>
                   ) : (
@@ -100,7 +100,7 @@ export default class MobileMenu extends Component {
                       </Card>
                     </Collapse>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
               );

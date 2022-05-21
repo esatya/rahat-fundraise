@@ -33,21 +33,21 @@ const AllRoute = () => {
           <Route path="/404" component={ErrorPage} />
           <Route path="/otp" component={OtpPage} />
           <ProtectedRoute
-            routeElement={<FundraiseRegisterPage />}
+            routeElement={FundraiseRegisterPage}
             path="/campaign/register"
           />
           <ProtectedRoute
-            routeElement={<UserCampaignsPage />}
+            routeElement={UserCampaignsPage}
             path="/myfundraise"
           />
-          <ProtectedRoute routeElement={<ProfilePage />} path="/profile" />
+          <ProtectedRoute routeElement={ProfilePage} path="/profile" />
           <ProtectedRoute
-            routeElement={<SettingSection />}
+            routeElement={SettingSection}
             path="/account/settings"
           />
-          <ProtectedRoute routeElement={<ProfilePage />} path="/profile" />
+          <ProtectedRoute routeElement={ProfilePage} path="/profile" />
           <ProtectedRoute
-            routeElement={<EditFundraise />}
+            routeElement={EditFundraise}
             path="/fundraise/:id/edit"
           />
 

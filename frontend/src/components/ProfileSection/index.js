@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Nav, NavItem, NavLink } from "reactstrap";
-import { Badge } from "react-bootstrap";
-import { Form } from "react-bootstrap";
-import classnames from "classnames";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import React, { useContext, useEffect, useState } from 'react';
+import { Nav, NavItem, NavLink } from 'reactstrap';
+import { Badge } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import classnames from 'classnames';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import UserContext from '../../context/user-context';
 
 const CauseTabs = (props) => {
-  const [activeTab, setActiveTab] = useState("1");
+  const [activeTab, setActiveTab] = useState('1');
 
-  const [user, setUser] = React.useState({
-    alias: "alias",
+  const [user, setUser] = useState({
+    alias: 'alias',
     campaigns: [],
-    email: "email",
+    email: 'email',
   });
+
+  const { user: contextUser } = useContext(UserContext);
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -23,19 +26,17 @@ const CauseTabs = (props) => {
     window.scrollTo(10, 0);
   };
 
-  console.log("token", sessionStorage.getItem("token"));
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const resData = await fetch(
           `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${contextUser?.data?.token}`,
             },
-          }
+          },
         ).then((res) => res.json());
 
         setUser(resData.data);
@@ -43,14 +44,16 @@ const CauseTabs = (props) => {
         toast.error(error.message);
       }
     };
-    fetchUser();
-  }, []);
+    if (contextUser?.loggedIn && contextUser?.data?.token) {
+      fetchUser();
+    }
+  }, [contextUser]);
 
   return (
     <>
       <div
         className="row d-flex justify-content-center"
-        style={{ height: "150px" }}
+        style={{ height: '150px' }}
       >
         <div className="profile-pic">
           <Form.Group className="my-3 text-center">
@@ -58,22 +61,22 @@ const CauseTabs = (props) => {
               src="https://assets.rumsan.com/rumsan-group/zoonft-adoption-6.jpg"
               alt=""
               style={{
-                objectFit: "cover",
+                objectFit: 'cover',
                 marginTop: -10,
                 marginBottom: 20,
                 height: 150,
                 width: 150,
-                borderRadius: "50%",
+                borderRadius: '50%',
               }}
             />
           </Form.Group>
-          <div className="text-center" style={{ marginTop: "-25px" }}>
+          <div className="text-center" style={{ marginTop: '-25px' }}>
             <h2>{user.name}</h2>
             <Badge
               className="mb-2"
               bg="warning"
               text="dark"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
             >
               Wallet Address:12334245
             </Badge>
@@ -92,9 +95,9 @@ const CauseTabs = (props) => {
                     <Nav tabs>
                       <NavItem>
                         <NavLink
-                          className={classnames({ active: activeTab === "1" })}
+                          className={classnames({ active: activeTab === '1' })}
                           onClick={() => {
-                            toggle("1");
+                            toggle('1');
                           }}
                         >
                           My Fundraiser

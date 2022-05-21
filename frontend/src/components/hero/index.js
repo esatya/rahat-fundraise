@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import UserContext from '../../context/user-context';
 
 const Hero = () => {
+  const { user } = useContext(UserContext);
   return (
     <section className="wpo-hero-section-1">
       <div className="container-fluid">
@@ -23,11 +25,7 @@ const Hero = () => {
               </div>
               <div className="btns">
                 <Link
-                  to={
-                    sessionStorage.getItem('token')
-                      ? '/campaign/register'
-                      : '/login'
-                  }
+                  to={user?.isLoggedIn ? '/campaign/register' : '/login'}
                   className="theme-btn"
                 >
                   Start a Fundraiser
