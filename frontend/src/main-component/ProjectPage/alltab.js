@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 import {
   Col,
@@ -11,15 +11,15 @@ import {
   NavItem,
   NavLink,
   TabContent,
-} from "reactstrap";
-import classnames from "classnames";
+} from 'reactstrap';
+import classnames from 'classnames';
 
-import cmt1 from "../../images/blog-details/comments-author/img-1.jpg";
-import cmt2 from "../../images/blog-details/comments-author/img-2.jpg";
-import cmt3 from "../../images/blog-details/comments-author/img-3.jpg";
+import cmt1 from '../../images/blog-details/comments-author/img-1.jpg';
+import cmt2 from '../../images/blog-details/comments-author/img-2.jpg';
+import cmt3 from '../../images/blog-details/comments-author/img-3.jpg';
 
 const CauseTabs = ({ campaign, donated }) => {
-  const [activeTab, setActiveTab] = useState("1");
+  const [activeTab, setActiveTab] = useState('1');
   const [donations, setDonations] = React.useState([]);
 
   const toggle = (tab) => {
@@ -34,7 +34,7 @@ const CauseTabs = ({ campaign, donated }) => {
     const fetchDonations = async () => {
       try {
         const resData = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/donation/campaign/${campaign.id}`
+          `${process.env.REACT_APP_API_BASE_URL}/api/donation/campaign/${campaign.id}`,
         ).then((res) => res.json());
 
         setDonations(resData?.data);
@@ -53,9 +53,9 @@ const CauseTabs = ({ campaign, donated }) => {
         <Nav tabs>
           <NavItem>
             <NavLink
-              className={classnames({ active: activeTab === "1" })}
+              className={classnames({ active: activeTab === '1' })}
               onClick={() => {
-                toggle("1");
+                toggle('1');
               }}
             >
               Description
@@ -63,9 +63,9 @@ const CauseTabs = ({ campaign, donated }) => {
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({ active: activeTab === "2" })}
+              className={classnames({ active: activeTab === '2' })}
               onClick={() => {
-                toggle("2");
+                toggle('2');
               }}
             >
               Donations
@@ -118,13 +118,15 @@ const CauseTabs = ({ campaign, donated }) => {
                       </div>
                       <ul>
                         <li>
-                          <span>Raised:</span> ${campaign?.amount}
+                          <span className="pe-1">Raised: </span> $
+                          {campaign?.amount}
                         </li>
                         <li>
-                          <span>Goal:</span> ${campaign?.target}
+                          <span className="pe-1">Goal: </span> $
+                          {campaign?.target}
                         </li>
                         <li>
-                          <span>Donar:</span> 0
+                          <span>Donar: </span> 0
                         </li>
                       </ul>
                     </div>
@@ -150,7 +152,7 @@ const CauseTabs = ({ campaign, donated }) => {
                         <li>Else he endures pains to avoid worse pains.</li>
                         <li>
                           We denounce with righteous indignation and dislike
-                          men.{" "}
+                          men.{' '}
                         </li>
                         <li>Which is the same as saying through.</li>
                       </ul>
@@ -175,9 +177,9 @@ const CauseTabs = ({ campaign, donated }) => {
                         </tr>
                         <hr
                           style={{
-                            height: "2px",
-                            width: "417%",
-                            color: "#217ec2",
+                            height: '2px',
+                            width: '417%',
+                            color: '#217ec2',
                           }}
                         />
                         {donations?.map((donation) => (
@@ -188,7 +190,7 @@ const CauseTabs = ({ campaign, donated }) => {
                               {
                                 new Date(donation.createdDate)
                                   .toISOString()
-                                  .split("T")[0]
+                                  .split('T')[0]
                               }
                             </td>
                             <td>{donation.transactionId}</td>
@@ -223,7 +225,7 @@ const CauseTabs = ({ campaign, donated }) => {
                               <div className="comment-wrapper">
                                 <div className="comments-meta">
                                   <h4>
-                                    John Abraham{" "}
+                                    John Abraham{' '}
                                     <span className="comments-date">
                                       Octobor 28,2021 At 9.00am
                                     </span>
@@ -233,7 +235,7 @@ const CauseTabs = ({ campaign, donated }) => {
                                   <p>
                                     I will give you a complete account of the
                                     system, and expound the actual teachings of
-                                    the great explorer of the truth,{" "}
+                                    the great explorer of the truth,{' '}
                                   </p>
                                   <div className="comments-reply">
                                     <Link
@@ -263,7 +265,7 @@ const CauseTabs = ({ campaign, donated }) => {
                                   <div className="comment-wrapper">
                                     <div className="comments-meta">
                                       <h4>
-                                        Lily Watson{" "}
+                                        Lily Watson{' '}
                                         <span className="comments-date">
                                           Octobor 28,2021 At 9.00am
                                         </span>
@@ -274,7 +276,7 @@ const CauseTabs = ({ campaign, donated }) => {
                                         I will give you a complete account of
                                         the system, and expound the actual
                                         teachings of the great explorer of the
-                                        truth,{" "}
+                                        truth,{' '}
                                       </p>
                                       <div className="comments-reply">
                                         <Link
@@ -285,7 +287,7 @@ const CauseTabs = ({ campaign, donated }) => {
                                             <i
                                               className="fa fa-reply"
                                               aria-hidden="true"
-                                            ></i>{" "}
+                                            ></i>{' '}
                                             Reply
                                           </span>
                                         </Link>
@@ -306,7 +308,7 @@ const CauseTabs = ({ campaign, donated }) => {
                                       <div className="comment-wrapper">
                                         <div className="comments-meta">
                                           <h4>
-                                            John Abraham{" "}
+                                            John Abraham{' '}
                                             <span className="comments-date">
                                               Octobor 28,2021 At 9.00am
                                             </span>
@@ -317,7 +319,7 @@ const CauseTabs = ({ campaign, donated }) => {
                                             I will give you a complete account
                                             of the system, and expound the
                                             actual teachings of the great
-                                            explorer of the truth,{" "}
+                                            explorer of the truth,{' '}
                                           </p>
                                           <div className="comments-reply">
                                             <Link
@@ -328,7 +330,7 @@ const CauseTabs = ({ campaign, donated }) => {
                                                 <i
                                                   className="fa fa-reply"
                                                   aria-hidden="true"
-                                                ></i>{" "}
+                                                ></i>{' '}
                                                 Reply
                                               </span>
                                             </Link>
