@@ -10,6 +10,7 @@ const OtpPage = (props) => {
   const [value, setValue] = useState({
     otpNumber: '',
     isLoading: false,
+    isOTPSending: false,
   });
 
   const { updateUser } = useContext(UserContext);
@@ -62,6 +63,54 @@ const OtpPage = (props) => {
     }
   };
 
+  const resendOTP = async () => {
+    try {
+      if (value?.isOTPSending) {
+        toast.info('OTP already queued.');
+        return;
+      }
+      setValue((previous) => {
+        return {
+          ...previous,
+          isOTPSending: true,
+        };
+      });
+      const otpResult = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/user/otp`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            email: email,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      const otpRes = await otpResult.json();
+
+      if (otpRes?.ok) {
+        setValue((previous) => {
+          return {
+            ...previous,
+            isOTPSending: false,
+          };
+        });
+        toast.success('OTP has been sent to your email');
+      } else {
+        throw new Error('Failed to send OTP.');
+      }
+    } catch (error) {
+      toast.error(error?.message);
+      setValue((previous) => {
+        return {
+          ...previous,
+          isOTPSending: false,
+        };
+      });
+    }
+  };
+
   return (
     <Grid className="loginWrapper">
       <Grid className="loginForm">
@@ -83,7 +132,11 @@ const OtpPage = (props) => {
           </Button>
         </Grid>
         <p className="mt-3">
-          If you didn't receive the code, <a href="#">resend</a>.
+          If you didn't receive the code,{' '}
+          <a href="#" onClick={resendOTP}>
+            resend
+          </a>
+          .
         </p>
       </Grid>
     </Grid>
