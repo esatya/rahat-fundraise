@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/footer';
@@ -9,12 +9,15 @@ import CauseTabs from './alltab';
 import CauseSidebar from './sidebar';
 import Logo from '../../images/logo.png';
 import { Link } from 'react-router-dom';
+import UserContext from '../../context/user-context';
 
 const CauseSinglePage = (props) => {
   const [campaign, setCampaign] = useState({});
   const [donated, setDonated] = useState(false);
 
   const id = props.match.params.id;
+
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchSingleCampaign = async () => {
@@ -46,8 +49,11 @@ const CauseSinglePage = (props) => {
                     src={`${process.env.REACT_APP_API_BASE_URL}${campaign?.image}`}
                     alt=""
                   />
-
-                  <Link to={`/fundraise/${id}/edit`}>Edit</Link>
+                  {campaign?.creator === user?.data?.id && (
+                    <Link to={`/fundraise/${id}/edit`} className="theme-btn">
+                      Edit
+                    </Link>
+                  )}
                 </div>
                 <CauseTabs campaign={campaign} donated={donated} />
               </div>
