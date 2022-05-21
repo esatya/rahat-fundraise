@@ -1,7 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import UserContext from '../../context/user-context';
 
 const Footer = (props) => {
+  const { user } = useContext(UserContext);
   const ClickHandler = () => {
     window.scrollTo(10, 0);
   };
@@ -16,10 +18,10 @@ const Footer = (props) => {
                 <div className="logo widget-title">
                   <img
                     src={
-                      "https://assets.rumsan.com/rumsan-group/rumsan-footer-white-logo.png"
+                      'https://assets.rumsan.com/rumsan-group/rumsan-footer-white-logo.png'
                     }
                     alt="Rahat Logo"
-                    style={{ width: "250px" }}
+                    style={{ width: '250px' }}
                   />
                 </div>
                 <p>
@@ -81,11 +83,13 @@ const Footer = (props) => {
                       Home
                     </Link>
                   </li>
-                  <li>
-                    <Link onClick={ClickHandler} to="/fundraise">
-                      Fundraiser
-                    </Link>
-                  </li>
+                  {user?.isLoggedIn && (
+                    <li>
+                      <Link onClick={ClickHandler} to="/fundraise">
+                        Fundraiser
+                      </Link>
+                    </li>
+                  )}
                   <li>
                     <Link onClick={ClickHandler} to="/fundraise">
                       Donate
@@ -112,7 +116,7 @@ const Footer = (props) => {
                   </li>
                   <li>
                     <a href="https://github.com/esatya" target="_blank">
-                      {" "}
+                      {' '}
                       GitHub
                     </a>
                   </li>
@@ -167,8 +171,8 @@ const Footer = (props) => {
           <div className="row">
             <div className="col col-xs-12">
               <p className="copyright">
-                Copyright &copy; 2022 Rahat. A part of{" "}
-                <a href="https://rumsan.com/">Rumsan Company</a>. Designed by{" "}
+                Copyright &copy; 2022 Rahat. A part of{' '}
+                <a href="https://rumsan.com/">Rumsan Company</a>. Designed by{' '}
                 <a href="https://tech.rumsan.com/">Rumsan</a>.
               </p>
             </div>

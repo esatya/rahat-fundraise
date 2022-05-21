@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import UserContext from '../../context/user-context';
 
 const UserCampaigns = (props) => {
@@ -14,43 +13,13 @@ const UserCampaigns = (props) => {
   const { user: contextUser } = useContext(UserContext);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const resData = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${contextUser?.data?.token}`,
-            },
-          },
-        ).then((res) => res.json());
-
-        setUser(resData.data);
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
     if (contextUser?.isLoggedIn && contextUser?.data?.token) {
-      fetchUser();
+      setUser(contextUser.data);
     }
   }, [contextUser]);
 
   return (
     <>
-      <div className="wpo-case-details-area">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <div className="wpo-case-details-wrap">
-                <div className="wpo-case-details-img">
-                  <img src="" alt="" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className={`wpo-campaign-area mt-5  ${props.CmClass}`}>
         <div className="container">
           <div className="wpo-campaign-wrap">

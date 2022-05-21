@@ -23,6 +23,7 @@ const Header = (props) => {
   });
 
   const { user, updateUser } = useContext(UserContext);
+
   const ClickHandler = () => {
     window.scrollTo(10, 0);
   };
@@ -97,9 +98,11 @@ const Header = (props) => {
                     <li className="menu-item-has-children">
                       <Link to="/fundraise">Donate</Link>
                     </li>
-                    <li className="menu-item-has-children">
-                      <Link to="/myfundraise">Fundraiser</Link>
-                    </li>
+                    {user?.isLoggedIn && (
+                      <li className="menu-item-has-children">
+                        <Link to="/myfundraise">Fundraiser</Link>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </div>
