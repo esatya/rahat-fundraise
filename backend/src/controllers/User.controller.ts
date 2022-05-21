@@ -88,7 +88,7 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
     const user: TUser = await User.findOne({ email });
 
     if (!user) {
-      throw new Error(`The email is not registered. please sign up first.`);
+      throw new Error(`The email is not registered. Please sign up first.`);
     }
 
     return res.json({
