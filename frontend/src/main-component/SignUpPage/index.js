@@ -11,6 +11,7 @@ const SignUpPage = (props) => {
   const [value, setValue] = useState({
     email: '',
     alias: '',
+    isLoading: false,
   });
 
   const changeHandler = (e) => {
@@ -26,6 +27,12 @@ const SignUpPage = (props) => {
 
   const submitForm = async (e) => {
     e.preventDefault();
+    setValue((previous) => {
+      return {
+        ...previous,
+        isLoading: true,
+      };
+    });
     try {
       if (validator.allValid()) {
         const response = await fetch(
@@ -60,7 +67,19 @@ const SignUpPage = (props) => {
         validator.showMessages();
         toast.error('Please check all your input fields.');
       }
+      setValue((previous) => {
+        return {
+          ...previous,
+          isLoading: false,
+        };
+      });
     } catch (error) {
+      setValue((previous) => {
+        return {
+          ...previous,
+          isLoading: false,
+        };
+      });
       console.log(error);
       toast.error(error?.message || 'Something went wrong');
     }

@@ -44,14 +44,13 @@ const OtpPage = (props) => {
 
       const token = resData.token;
 
-      console.log(token);
       if (!token) {
         props.history.push('/login');
         throw new Error('Invalid/Expired OTP');
       }
       updateUser(USER_UPDATE_TYPES.LOG_IN, token);
 
-      props.history.push('/profile');
+      props.history.push('/');
     } catch (error) {
       toast.error(error.message);
       setValue((previous) => {

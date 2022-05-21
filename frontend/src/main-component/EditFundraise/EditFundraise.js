@@ -108,8 +108,6 @@ const EditFundraise = (props) => {
         },
       ).then((res) => res.json());
 
-      console.log({ resData });
-
       props.history.push(`/fundraise/${campaignId}`);
     } catch (error) {
       return toast.error(error.message);
@@ -198,13 +196,13 @@ const EditFundraise = (props) => {
                           class="form-label"
                           style={{ width: 'inherit' }}
                         >
-                          Etherium Address
+                          Ethereum Address
                         </label>
                         <input
                           type="text"
                           className="form-control"
-                          name="etheriumWalletAddress"
-                          id="etherium"
+                          name="ethereumWalletAddress"
+                          id="ethereum"
                           placeholder=""
                           value={ethereum}
                           onChange={(e) => setEthereum(e.target.value)}
