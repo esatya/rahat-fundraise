@@ -22,6 +22,11 @@ const UserCampaigns = (props) => {
     <>
       <div className={`wpo-campaign-area mt-5  ${props.CmClass}`}>
         <div className="container">
+          <div className="row justify-content-end py-4 mb-4">
+            <Link to="/campaign/register" className="theme-btn w-fit-content">
+              Start a Fundraiser
+            </Link>
+          </div>
           <div className="wpo-campaign-wrap">
             <div className="row">
               {user.campaigns?.map((Cause, citem) => (

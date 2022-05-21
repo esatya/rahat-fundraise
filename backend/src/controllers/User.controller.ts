@@ -26,19 +26,40 @@ export const registerUser = async (req: IRequest, res: IResponse) => {
       email,
     });
     if (existingUser) {
-      throw new Error(`User email already taken.`);
+      throw new Error(
+        `This email is already registered. Please sign in with the email address.`,
+      );
     }
 
     existingUser = await User.findOne({
       alias,
     });
     if (existingUser) {
-      throw new Error(`User alias already taken.`);
+      throw new Error(`Username already taken.`);
     }
 
     const user: TUser = new User<IUser>({ ...req.body, image: imageUrl });
 
     const savedUser: IUser = await user.save();
+
+    const message = {
+      from: senderEmail,
+      to: email,
+      subject: 'Welcome to Rahat',
+      text: `
+Dear ${alias},
+
+Thank you for signing up to Rahat Crowdfunding platform. Rahat Crowdfunding platform is an opensource platform which will help you collect fund for the needy people. 
+
+Please click here to login to your fundraiser account. 
+
+Thank you. 
+
+Regrads, 
+Rahat Team `,
+    };
+
+    const mailResult = await transporter.sendMail(message);
 
     return res.json({
       ok: true,
@@ -67,7 +88,7 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
     const user: TUser = await User.findOne({ email });
 
     if (!user) {
-      throw new Error(`User with ${email} not found.`);
+      throw new Error(`The email is not registered. please sign up first.`);
     }
 
     return res.json({
