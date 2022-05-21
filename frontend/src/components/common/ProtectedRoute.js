@@ -14,6 +14,7 @@ const ProtectedRoute = ({ routeElement, path }) => {
       history.push('/');
     }
   }, [user?.isLoggedIn]);
+
   return <Route path={path} component={routeElement} />;
 };
 
