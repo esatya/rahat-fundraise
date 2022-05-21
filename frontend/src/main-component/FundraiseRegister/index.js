@@ -1,13 +1,14 @@
 import { toast } from 'react-toastify';
 import React, { useState, Fragment, useContext } from 'react';
+import dayjs from 'dayjs';
 
 import Logo from '../../images/logo.png';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/footer';
 import PageTitle from '../../components/pagetitle';
+import UserContext from '../../context/user-context';
 import Scrollbar from '../../components/scrollbar';
 import { isObjEmpty } from '../../helper/helper';
-import UserContext from '../../context/user-context';
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
@@ -50,7 +51,12 @@ const FundraiseRegisterPage = (props) => {
     formData.append('excerpt', value.excerpt);
     formData.append('story', value.story);
     formData.append('target', value.target);
-    formData.append('expiryDate', value.expiryDate);
+    formData.append(
+      'expiryDate',
+      dayjs()
+        .add(Number.parseInt(value.expiryDate, 10), 'days')
+        .format('YYYY-MM-DD'),
+    );
     formData.append('image', image);
     formData.append('wallets', JSON.stringify(walletList));
 
@@ -67,7 +73,7 @@ const FundraiseRegisterPage = (props) => {
       ).then((res) => res.json());
 
       if (resData?.ok) {
-        props.history.push('/profile');
+        props.history.push('/myfundraise  ');
 
         console.log({ resData });
       } else {
@@ -110,7 +116,7 @@ const FundraiseRegisterPage = (props) => {
                           Enter an amount
                         </label>
                         <input
-                          type="text"
+                          type="number"
                           className="form-control"
                           name="target"
                           id="fname"
@@ -120,10 +126,11 @@ const FundraiseRegisterPage = (props) => {
                       </div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                         <label for="fname" class="form-label">
-                          Duration of your campaign
+                          Duration of your campaign{' '}
+                          <span className="text-gray">(in days)</span>
                         </label>
                         <input
-                          type="text"
+                          type="number"
                           className="form-control"
                           name="expiryDate"
                           id="name"
@@ -293,12 +300,14 @@ const FundraiseRegisterPage = (props) => {
                         </div>
                         <div className="col-lg-2 col-md-2 col-sm-2 col-2">
                           <button
-                            type="submit"
                             className="theme-btn submit-btn"
                             style={{
                               height: '35px',
                               width: '30px',
                               borderRadius: '15%',
+                            }}
+                            onClick={(event) => {
+                              event.preventDefault();
                             }}
                           >
                             <img
