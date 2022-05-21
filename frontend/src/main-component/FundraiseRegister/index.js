@@ -66,9 +66,13 @@ const FundraiseRegisterPage = (props) => {
         },
       ).then((res) => res.json());
 
-      props.history.push('/profile');
+      if (resData?.ok) {
+        props.history.push('/profile');
 
-      console.log({ resData });
+        console.log({ resData });
+      } else {
+        throw new Error('Failed to register campaign.');
+      }
     } catch (error) {
       return toast.error(error.message);
     }
@@ -158,19 +162,19 @@ const FundraiseRegisterPage = (props) => {
                           class="form-label"
                           style={{ width: 'inherit' }}
                         >
-                          Etherium Address
+                          Ethereum Address
                         </label>
                         <input
                           type="text"
                           className="form-control"
-                          name="etheriumWalletAddress"
-                          id="etherium"
+                          name="ethereumWalletAddress"
+                          id="ethereum"
                           placeholder=""
                           onChange={(e) =>
                             setWallets({
                               ...wallets,
                               ethereum: {
-                                name: 'etherium',
+                                name: 'ethereum',
                                 walletAddress: e.target.value,
                               },
                             })

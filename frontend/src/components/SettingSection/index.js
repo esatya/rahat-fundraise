@@ -91,8 +91,6 @@ function SettingsPage(props) {
           },
         ).then((res) => res.json());
 
-        console.log({ updatedUser });
-
         setUser(updatedUser.data);
 
         validator.hideMessages();
