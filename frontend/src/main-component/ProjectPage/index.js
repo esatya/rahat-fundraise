@@ -39,7 +39,7 @@ const CauseSinglePage = (props) => {
       <div className="wpo-case-details-area section-padding">
         <div className="container">
           <div className="row">
-            <div className="col col-lg-8">
+            <div className="col col-lg-7">
               <div className="wpo-case-details-wrap">
                 <div className="wpo-case-details-img">
                   <img

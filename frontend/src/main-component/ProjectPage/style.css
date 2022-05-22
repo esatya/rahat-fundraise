@@ -1,0 +1,10 @@
+@media only screen and (max-width : 991px) {
+    .custom-step-progress{
+        width: auto !important;
+    }
+}
+
+.custom-color {
+    background-color: #CCCCCC !important;
+    color: white !important;
+}
