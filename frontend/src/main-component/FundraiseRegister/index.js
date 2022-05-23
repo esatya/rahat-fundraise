@@ -73,7 +73,7 @@ const FundraiseRegisterPage = (props) => {
       ).then((res) => res.json());
 
       if (resData?.ok) {
-        props.history.push('/myfundraise  ');
+        props.history.push('/myfundraise');
 
         console.log({ resData });
       } else {
