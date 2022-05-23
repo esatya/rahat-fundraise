@@ -1,15 +1,15 @@
-import React from "react";
-import { v4 as uuidv4 } from "uuid";
+import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-import QRCode from "react-qr-code";
-import SimpleReactValidator from "simple-react-validator";
-import { toast } from "react-toastify";
-import { TextField } from "@material-ui/core";
+import QRCode from 'react-qr-code';
+import SimpleReactValidator from 'simple-react-validator';
+import { toast } from 'react-toastify';
+import { TextField } from '@material-ui/core';
 
 const Step3 = (props) => {
   const copyAddress = () => {
-    const copyText = document.getElementById("wallet");
-    const textArea = document.createElement("textarea");
+    const copyText = document.getElementById('wallet');
+    const textArea = document.createElement('textarea');
     textArea.value = copyText.textContent;
     document.body.appendChild(textArea);
     textArea.select();
@@ -19,8 +19,8 @@ const Step3 = (props) => {
 
   const [validator] = React.useState(
     new SimpleReactValidator({
-      className: "errorMessage",
-    })
+      className: 'errorMessage',
+    }),
   );
 
   const handleSubmit = async (e) => {
@@ -62,8 +62,8 @@ const Step3 = (props) => {
       <div className="row">
         <div>
           <p className="text-center">
-            Use the address below to donate{" "}
-            <span style={{ fontWeight: "600" }}>0.25 BTC </span>from your
+            Use the address below to donate{' '}
+            <span style={{ fontWeight: '600' }}>0.25 BTC </span>from your
             wallet.
           </p>
           <div className="text-center">
@@ -71,14 +71,14 @@ const Step3 = (props) => {
           </div>
           <div
             style={{
-              background: "white",
-              padding: "16px",
-              display: "flex",
-              justifyContent: "center",
+              background: 'white',
+              padding: '16px',
+              display: 'flex',
+              justifyContent: 'center',
             }}
           >
             <QRCode
-              value={props.getStore().walletAddress || "Wallet not selected"}
+              value={props.getStore().walletAddress || 'Wallet not selected'}
             />
           </div>
           <p
@@ -93,30 +93,30 @@ const Step3 = (props) => {
         </div>
         <div
           style={{
-            display: "flex",
-            justifyContent: "flex-end",
+            display: 'flex',
+            justifyContent: 'flex-end',
           }}
         >
           {!props.getStore().walletAddress ? (
-            <div style={{ position: "absolute" }}>
+            <div style={{ position: 'absolute' }}>
               <div>
                 <TextField
                   type="number"
                   name="amount"
                   label="Amount"
                   // onChange={handleChange}
-                  style={{ width: "100px" }}
+                  style={{ width: '100px' }}
                 />
                 <button
                   onClick={handleSubmit}
                   style={{
-                    background: "#0d6efd",
-                    borderRadius: "5px",
-                    color: "white",
+                    background: '#0d6efd',
+                    borderRadius: '5px',
+                    color: 'white',
                     // position: "absolute",
-                    padding: "0.5rem 1rem",
-                    fontSize: "1.25rem",
-                    border: "none",
+                    padding: '0.5rem 1rem',
+                    fontSize: '1.25rem',
+                    border: 'none',
                   }}
                 >
                   Donate
@@ -128,14 +128,14 @@ const Step3 = (props) => {
               className="btn btn-lg"
               onClick={handleSubmit}
               style={{
-                borderRadius: "5px",
-                position: "absolute",
-                padding: "0.5rem 1rem",
-                fontSize: "1.25rem",
-                border: "none",
-                background: "#0d6efd",
-                color: "white",
-                fontSize: "20px",
+                borderRadius: '5px',
+                position: 'absolute',
+                padding: '0.5rem 1rem',
+                fontSize: '1.25rem',
+                border: 'none',
+                background: '#0d6efd',
+                color: 'white',
+                fontSize: '20px',
               }}
             >
               Connect Wallet

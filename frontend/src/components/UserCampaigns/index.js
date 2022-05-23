@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link } from 'react-router-dom';
+import UserContext from '../../context/user-context';
 
 const UserCampaigns = (props) => {
   const [user, setUser] = useState({});
@@ -10,44 +10,23 @@ const UserCampaigns = (props) => {
     window.scrollTo(10, 0);
   };
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const resData = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-            },
-          }
-        ).then((res) => res.json());
+  const { user: contextUser } = useContext(UserContext);
 
-        setUser(resData.data);
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-    fetchUser();
-  }, []);
+  useEffect(() => {
+    if (contextUser?.isLoggedIn && contextUser?.data?.token) {
+      setUser(contextUser.data);
+    }
+  }, [contextUser]);
 
   return (
     <>
-      <div className="wpo-case-details-area">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <div className="wpo-case-details-wrap">
-                <div className="wpo-case-details-img">
-                  <img src="" alt="" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className={`wpo-campaign-area mt-5  ${props.CmClass}`}>
         <div className="container">
+          <div className="row justify-content-end py-4 mb-4">
+            <Link to="/campaign/register" className="theme-btn w-fit-content">
+              Start a Fundraiser
+            </Link>
+          </div>
           <div className="wpo-campaign-wrap">
             <div className="row">
               {user.campaigns?.map((Cause, citem) => (
@@ -97,10 +76,12 @@ const UserCampaigns = (props) => {
                           </div>
                           <ul>
                             <li>
-                              <span>Goal:</span> ${Cause.target}
+                              <span className="pe-1">Goal: </span> $
+                              {Cause.target}
                             </li>
                             <li>
-                              <span>Raised:</span> ${Cause.amount}
+                              <span className="pe-1">Raised: </span> $
+                              {Cause.amount}
                             </li>
                           </ul>
                           <div className="campaign-btn">

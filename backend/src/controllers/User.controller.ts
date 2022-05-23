@@ -9,20 +9,57 @@ import User from '../models/User.model';
 import transporter from '../services/mail.service';
 import { secret, senderEmail } from '../config/keys';
 import { convertUserData, generateOTP } from '../utils/helper';
+import { TOKEN_EXPIRATION_DATE } from '../config/constants';
 
 export const registerUser = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
     const imageUrl = req.file ? `/uploads/users/${req.file.filename}` : null;
 
+    const email: string = req.body.email;
+    const alias: string = req.body.alias;
+    let existingUser: TUser = await User.findOne({
+      email,
+    });
+    if (existingUser) {
+      throw new Error(
+        `This email is already registered. Please sign in with the email address.`,
+      );
+    }
+
+    existingUser = await User.findOne({
+      alias,
+    });
+    if (existingUser) {
+      throw new Error(`Username already taken.`);
+    }
+
     const user: TUser = new User<IUser>({ ...req.body, image: imageUrl });
 
     const savedUser: IUser = await user.save();
+
+    const message = {
+      from: senderEmail,
+      to: email,
+      subject: 'Welcome to Rahat',
+      text: `
+Dear ${alias},
+
+Thank you for signing up to Rahat Crowdfunding platform. Rahat Crowdfunding platform is an opensource platform which will help you collect fund for the needy people. 
+
+Please click here to login to your fundraiser account. 
+
+Thank you. 
+
+Regrads, 
+Rahat Team `,
+    };
+
+    const mailResult = await transporter.sendMail(message);
 
     return res.json({
       ok: true,
@@ -50,7 +87,7 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
     const user: TUser = await User.findOne({ email });
 
     if (!user) {
-      throw new Error(`User with ${email} not found.`);
+      throw new Error(`The email is not registered. Please sign up first.`);
     }
 
     return res.json({
@@ -101,7 +138,7 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
 
     await user.save({ validateModifiedOnly: true });
 
-    transporter.sendMail(message);
+    const mailResult = await transporter.sendMail(message);
 
     res.json({
       ok: true,
@@ -152,6 +189,7 @@ export const verifyOTP = async (req: IRequest, res: IResponse) => {
     const token = jsonwebtoken.sign(
       { id: user?._id, email: user?.email, alias: user?.alias },
       secret,
+      { expiresIn: TOKEN_EXPIRATION_DATE },
     );
 
     res.json({
