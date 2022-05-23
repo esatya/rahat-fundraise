@@ -23,8 +23,7 @@ const CauseSidebar = (props) => {
   };
 
   const onChange = (e) => {
-    const { amount, project_name } = e;
-    setDonations({ toggle: true, amount, project_name });
+    setDonations({ toggle: true });
   };
   const steps = [
     {
@@ -61,14 +60,51 @@ const CauseSidebar = (props) => {
       {donation.toggle ? (
         <div className="blog-sidebar">
           <div className="widget category-widget">
-            <h3>Registered</h3>
+            <h3>Thank you for your donation !!!</h3>
             <div
               className="step-progress custom-step-progress"
               style={{ width: "340px" }}
             >
               <div>
-                <div>{donation.amount}</div>
-                <div>{donation.project_name}</div>
+                <p>
+                  Dear <strong>Firstname,</strong>
+                </p>
+                <p className="mt-4">
+                  Thank you for your generous contribution of{" "}
+                  <strong>Amount</strong> to <strong>Project Name</strong>.
+                </p>
+              </div>
+              <div className="mt-5">
+                <p className="height-height">
+                  Amount : <strong>10 ETH</strong>
+                </p>
+                <p className="height-height">
+                  Wallet address : <strong>dcxas323</strong>
+                </p>
+                <p className="height-height">
+                  TXN Hash : <strong>df342</strong>
+                </p>
+                <p className="height-height">
+                  Date : <strong>Date and time</strong>
+                </p>
+              </div>
+              <div className="mt-5">
+                <p className="height-height">Personal Information</p>
+                <p className="height-height">
+                  Name : <strong>Fullname</strong>
+                </p>
+                <p className="height-height">
+                  Email : <strong>asd@mail.com</strong>
+                </p>
+                <p className="height-height">
+                  Address : <strong>asfuiwer</strong>
+                </p>
+              </div>
+              <div className="mt-4">
+                <p>Regards</p>
+                <p className="height-height-1">
+                  <strong>Campaign Creator</strong>
+                </p>
               </div>
             </div>
           </div>

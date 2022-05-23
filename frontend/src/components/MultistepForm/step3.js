@@ -46,7 +46,7 @@ const Step3 = (props) => {
     //   validator.hideMessages();
 
     //Catch the API response and set the below value as per API
-    props.onChange({ amount: "100000", project_name: "Raktim lai ETH Daan  " });
+    props.onChange({});
     //   if (resData.data) {
     //     props.setDonated(!props.donated);
     //     toast.success("Donation Complete successfully!");
