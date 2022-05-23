@@ -120,7 +120,11 @@ const Header = (props) => {
                         style={{ marginLeft: '10px' }}
                       >
                         <img
-                          src="https://assets.rumsan.com/rumsan-group/new-project-1.png"
+                          src={
+                            user?.data?.image
+                              ? `${process.env.REACT_APP_API_BASE_URL}${user?.data?.image}`
+                              : 'https://assets.rumsan.com/rumsan-group/new-project-1.png'
+                          }
                           style={{ width: '50px', height: '50px' }}
                           alt=""
                         />
@@ -141,7 +145,8 @@ const Header = (props) => {
                                   }}
                                 >
                                   <span>
-                                    <i className="fa fa-user"></i> My Fundraiser
+                                    <i className="fa fa-bullhorn"></i> My
+                                    Fundraiser
                                   </span>
                                 </NavLink>
                               </li>
@@ -158,10 +163,10 @@ const Header = (props) => {
                                 >
                                   <span>
                                     <i
-                                      className="fa fa-pencil fa-sm"
+                                      className="fa fa-user fa-sm"
                                       style={{ paddingLeft: '7px' }}
                                     ></i>
-                                    Edit Profile
+                                    My Profile
                                   </span>
                                 </NavLink>
                               </li>
