@@ -97,7 +97,7 @@ const Step3 = (props) => {
             justifyContent: 'flex-end',
           }}
         >
-          {!props.getStore().walletAddress ? (
+          {props.getStore().walletAddress ? (
             <div style={{ position: 'absolute' }}>
               <div>
                 <TextField
