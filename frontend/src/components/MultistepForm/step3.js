@@ -61,14 +61,6 @@ const Step3 = (props) => {
     <div className="step step7">
       <div className="row">
         <div>
-          <p className="text-center">
-            Use the address below to donate{' '}
-            <span style={{ fontWeight: '600' }}>0.25 BTC </span>from your
-            wallet.
-          </p>
-          <div className="text-center">
-            <img src="https://assets.rumsan.com/esatya/eth-icon.png" />
-          </div>
           <div
             style={{
               background: 'white',
