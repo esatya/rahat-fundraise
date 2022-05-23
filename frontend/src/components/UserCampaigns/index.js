@@ -12,15 +12,15 @@ const UserCampaigns = (props) => {
     window.scrollTo(10, 0);
   };
 
-  const { user: contextUser } = useContext(UserContext);
+  const { user: contextUser, refreshLoggedInUser } = useContext(UserContext);
 
   useEffect(() => {
     if (contextUser?.isLoggedIn && contextUser?.data?.token) {
       fetchUserData();
     }
-  }, [contextUser]);
+  }, [contextUser?.data?.token]);
 
-  const fetchUserData = async (token) => {
+  const fetchUserData = async () => {
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
@@ -37,6 +37,7 @@ const UserCampaigns = (props) => {
       }
 
       setUser(parsedResponse?.data);
+      refreshLoggedInUser(parsedResponse?.data);
     } catch (error) {
       console.log(error);
       toast.warning('Could not fetch ');

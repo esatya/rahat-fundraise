@@ -67,10 +67,20 @@ const UserContextProvider = ({ children }) => {
     }
   };
 
+  const refreshLoggedInUser = (userData) => {
+    setUser((previous) => {
+      return {
+        ...previous,
+        data: {
+          ...previous?.data,
+          ...userData,
+        },
+      };
+    });
+  };
+
   return (
-    <UserContext.Provider
-      value={{ user, updateUser, refereshUserData: fetchUserData }}
-    >
+    <UserContext.Provider value={{ user, updateUser, refreshLoggedInUser }}>
       {children}
     </UserContext.Provider>
   );
