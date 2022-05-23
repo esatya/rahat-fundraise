@@ -97,13 +97,17 @@ const CauseSection = (props) => {
                                 <img
                                   width={45}
                                   height={45}
-                                  src={`${process.env.REACT_APP_API_BASE_URL}${Cause?.creator?.image}`}
+                                  src={
+                                    Cause?.creator?.image
+                                      ? `${process.env.REACT_APP_API_BASE_URL}${Cause?.creator?.image}`
+                                      : 'https://assets.rumsan.com/rumsan-group/new-project-1.png'
+                                  }
                                   alt=""
                                 />
                               </span>
                               <span>
                                 <Link to={`/fundraise/${Cause.id}`}>
-                                  {Cause.creator?.name}
+                                  {Cause.creator?.name || Cause.creator?.alias}
                                 </Link>
                               </span>
                             </li>
