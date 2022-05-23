@@ -61,6 +61,8 @@ const Step3 = (props) => {
     <div className="step step7">
       <div className="row">
         <div>
+          <p className="text-center">Scan the QR code to donate</p>
+
           <div
             style={{
               background: 'white',
