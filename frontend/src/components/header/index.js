@@ -27,23 +27,6 @@ const Header = (props) => {
   const ClickHandler = () => {
     window.scrollTo(10, 0);
   };
-  // const closePop = () => {
-  //   setState((previous) => {
-  //     return {
-  //       ...previous,
-  //       showpop: false,
-  //     };
-  //   });
-  // };
-
-  // const searchHandler = () => {
-  //   setState((previous) => {
-  //     return {
-  //       ...previous,
-  //       isSearchShow: !previous.isSearchShow,
-  //     };
-  //   });
-  // };
 
   const toggleDropdown = () => {
     setState((previous) => {
@@ -54,8 +37,8 @@ const Header = (props) => {
     });
   };
 
-  const handleSignOut = () => {
-    updateUser(USER_UPDATE_TYPES.LOG_OUT);
+  const handleSignOut = async () => {
+    await updateUser(USER_UPDATE_TYPES.LOG_OUT);
     window.location.replace('/');
   };
 

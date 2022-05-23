@@ -62,7 +62,7 @@ const UserContextProvider = ({ children }) => {
       });
       fetchUserData(token);
     } else if (type === USER_UPDATE_TYPES.LOG_OUT) {
-      cookies.remove(COOKIE_VALUES.USER_TOKEN_COOKIE);
+      cookies.remove(COOKIE_VALUES.USER_TOKEN_COOKIE, { path: '/' });
       setUser({ isLoggedIn: false, data: {} });
     }
   };
