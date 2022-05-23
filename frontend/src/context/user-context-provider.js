@@ -68,7 +68,9 @@ const UserContextProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, updateUser }}>
+    <UserContext.Provider
+      value={{ user, updateUser, refereshUserData: fetchUserData }}
+    >
       {children}
     </UserContext.Provider>
   );

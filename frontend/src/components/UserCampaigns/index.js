@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import UserContext from '../../context/user-context';
+import './style.css';
 
 const UserCampaigns = (props) => {
   const [user, setUser] = useState({});
@@ -14,9 +16,32 @@ const UserCampaigns = (props) => {
 
   useEffect(() => {
     if (contextUser?.isLoggedIn && contextUser?.data?.token) {
-      setUser(contextUser.data);
+      fetchUserData();
     }
   }, [contextUser]);
+
+  const fetchUserData = async (token) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${contextUser?.data?.token}`,
+          },
+        },
+      );
+      const parsedResponse = await response.json();
+      if (!parsedResponse.ok) {
+        throw new Error(parsedResponse?.msg);
+      }
+
+      setUser(parsedResponse?.data);
+    } catch (error) {
+      console.log(error);
+      toast.warning('Could not fetch ');
+    }
+  };
 
   return (
     <>
@@ -34,10 +59,15 @@ const UserCampaigns = (props) => {
                   <div className="wpo-campaign-single">
                     <div className="wpo-campaign-item">
                       <div className="wpo-campaign-img">
-                        <img
-                          src={`${process.env.REACT_APP_API_BASE_URL}${Cause.image}`}
-                          alt=""
-                        />
+                        {Cause.image ? (
+                          <img
+                            src={`${process.env.REACT_APP_API_BASE_URL}${Cause.image}`}
+                            alt=""
+                            className="single-campaign-image"
+                          />
+                        ) : (
+                          <div className="single-campaign-image"></div>
+                        )}
                         {/* <span className="thumb">{Cause.thumb}</span> */}
                       </div>
                       <div className="wpo-campaign-content">
