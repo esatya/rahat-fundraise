@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const Step2 = (props) => {
   const handleChange = (e) => {
@@ -32,27 +32,15 @@ const Step2 = (props) => {
           />
           {!props.getStore().isAnonymous && (
             <div className="form-group content form-block-holder mb-4">
-              <label className="control-label col-md-6">Firstname</label>
+              <label className="control-label col-md-6">Full Name</label>
               <div>
                 <input
-                  name="firstName"
+                  name="fullName"
                   autoComplete="off"
                   type="text"
                   className="form-control"
                   required
-                  defaultValue={""}
-                  onChange={handleChange}
-                />
-              </div>
-              <label className="control-label col-md-6">Lastname</label>
-              <div>
-                <input
-                  name="lastName"
-                  autoComplete="off"
-                  type="text"
-                  className="form-control"
-                  required
-                  defaultValue={""}
+                  defaultValue={''}
                   onChange={handleChange}
                 />
               </div>
@@ -64,31 +52,7 @@ const Step2 = (props) => {
                   type="text"
                   className="form-control"
                   required
-                  defaultValue={""}
-                  onChange={handleChange}
-                />
-              </div>
-              <label className="control-label col-md-6">Country</label>
-              <div>
-                <input
-                  name="country"
-                  autoComplete="off"
-                  type="text"
-                  className="form-control"
-                  required
-                  defaultValue={""}
-                  onChange={handleChange}
-                />
-              </div>
-              <label className="control-label col-md-6">State</label>
-              <div>
-                <input
-                  name="state"
-                  autoComplete="off"
-                  type="text"
-                  className="form-control"
-                  required
-                  defaultValue={""}
+                  defaultValue={''}
                   onChange={handleChange}
                 />
               </div>
@@ -100,31 +64,7 @@ const Step2 = (props) => {
                   type="text"
                   className="form-control"
                   required
-                  defaultValue={""}
-                  onChange={handleChange}
-                />
-              </div>
-              <label className="control-label col-md-6">City</label>
-              <div>
-                <input
-                  name="city"
-                  autoComplete="off"
-                  type="text"
-                  className="form-control"
-                  required
-                  defaultValue={""}
-                  onChange={handleChange}
-                />
-              </div>
-              <label className="control-label col-md-6">Zip Code</label>
-              <div>
-                <input
-                  name="zip"
-                  autoComplete="off"
-                  type="text"
-                  className="form-control"
-                  required
-                  defaultValue={""}
+                  defaultValue={''}
                   onChange={handleChange}
                 />
               </div>

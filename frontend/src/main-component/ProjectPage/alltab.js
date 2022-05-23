@@ -126,7 +126,7 @@ const CauseTabs = ({ campaign, donated }) => {
                           {campaign?.target}
                         </li>
                         <li>
-                          <span>Donar: </span> 0
+                          <span>Donor: </span> 0
                         </li>
                       </ul>
                     </div>
