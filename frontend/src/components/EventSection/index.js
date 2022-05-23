@@ -1,6 +1,6 @@
-import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
 
 const EventSection = (props) => {
   const [campaigns, setCampaigns] = React.useState([]);
@@ -9,7 +9,7 @@ const EventSection = (props) => {
     const fetchCampaigns = async () => {
       try {
         const resData = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/campaign`
+          `${process.env.REACT_APP_API_BASE_URL}/api/campaign`,
         ).then((res) => res.json());
 
         setCampaigns(resData.data);
@@ -81,10 +81,11 @@ const EventSection = (props) => {
                         </div>
                         <ul>
                           <li>
-                            <span>Goal:</span> ${Cause.target}
+                            <span className="pe-1">Goal: </span> ${Cause.target}
                           </li>
                           <li>
-                            <span>Raised:</span> ${Cause.amount}
+                            <span className="pe-1">Raised: </span> $
+                            {Cause.amount}
                           </li>
                         </ul>
                         <div className="campaign-btn">
