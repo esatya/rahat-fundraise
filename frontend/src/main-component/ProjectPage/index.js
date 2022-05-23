@@ -20,20 +20,20 @@ const CauseSinglePage = (props) => {
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    const fetchSingleCampaign = async () => {
-      try {
-        const resData = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/campaign/get-by-id/${id}`,
-        ).then((res) => res.json());
-
-        setCampaign(resData.data);
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-
     fetchSingleCampaign();
   }, [id]);
+
+  const fetchSingleCampaign = async () => {
+    try {
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/campaign/get-by-id/${id}`,
+      ).then((res) => res.json());
+
+      setCampaign(resData.data);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <Fragment>
@@ -65,6 +65,7 @@ const CauseSinglePage = (props) => {
               campaign={campaign}
               donated={donated}
               setDonated={setDonated}
+              refreshData={fetchSingleCampaign}
             />
           </div>
         </div>
