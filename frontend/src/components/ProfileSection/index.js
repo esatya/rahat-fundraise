@@ -245,7 +245,7 @@ const CauseTabs = (props) => {
                                     onClick={ClickHandler}
                                     to={`/fundraise/${Cause.id}`}
                                   >
-                                    {user.name}
+                                    {user.name || user?.alias}
                                   </Link>
                                 </span>
                               </li>
