@@ -6,9 +6,13 @@ import './style.css';
 import Step1 from '../../components/MultistepForm/step1';
 import Step2 from '../../components/MultistepForm/step2';
 import Step3 from '../../components/MultistepForm/step3';
+import dayjs from 'dayjs';
 
 const CauseSidebar = (props) => {
-  const [sampleStore, setSampleStore] = useState({});
+  const [sampleStore, setSampleStore] = useState({
+    isAnonymous: false,
+  });
+
   const [donation, setDonations] = useState({
     toggle: false,
     amount: '',
@@ -23,13 +27,7 @@ const CauseSidebar = (props) => {
   };
 
   const onChange = async (e) => {
-    console.log(sampleStore, donation);
-    await saveDonation();
     setDonations({ toggle: true });
-  };
-
-  const saveDonation = async () => {
-    console.log('Save Donation here');
   };
 
   const steps = [
@@ -57,6 +55,7 @@ const CauseSidebar = (props) => {
           donated={props.donated}
           setDonated={props.setDonated}
           onChange={(e) => onChange(e)}
+          refreshData={props.refreshData}
         />
       ),
     },
@@ -74,16 +73,17 @@ const CauseSidebar = (props) => {
             >
               <div>
                 <p>
-                  Dear <strong>Firstname,</strong>
+                  Dear <strong>{sampleStore?.fullName || 'Anonymous'},</strong>
                 </p>
                 <p className="mt-4">
                   Thank you for your generous contribution of{' '}
-                  <strong>Amount</strong> to <strong>Project Name</strong>.
+                  <strong>{sampleStore?.amount || 0}</strong> to{' '}
+                  <strong>{props.campaign?.title}</strong>.
                 </p>
               </div>
               <div className="mt-5">
                 <p className="height-height">
-                  Amount : <strong>10 ETH</strong>
+                  Amount : <strong>{sampleStore?.amount || 0}</strong>
                 </p>
                 <p className="height-height">
                   Wallet address : <strong>dcxas323</strong>
@@ -92,21 +92,23 @@ const CauseSidebar = (props) => {
                   TXN Hash : <strong>df342</strong>
                 </p>
                 <p className="height-height">
-                  Date : <strong>Date and time</strong>
+                  Date : <strong>{dayjs().format('YYYY-MM-DD')}</strong>
                 </p>
               </div>
-              <div className="mt-5">
-                <p className="height-height">Personal Information</p>
-                <p className="height-height">
-                  Name : <strong>Fullname</strong>
-                </p>
-                <p className="height-height">
-                  Email : <strong>asd@mail.com</strong>
-                </p>
-                <p className="height-height">
-                  Address : <strong>asfuiwer</strong>
-                </p>
-              </div>
+              {!sampleStore?.isAnonymous && (
+                <div className="mt-5">
+                  <p className="height-height">Personal Information</p>
+                  <p className="height-height">
+                    Name : <strong>{sampleStore?.fullName}</strong>
+                  </p>
+                  <p className="height-height">
+                    Email : <strong>{sampleStore?.email}</strong>
+                  </p>
+                  <p className="height-height">
+                    Address : <strong>{sampleStore?.address}</strong>
+                  </p>
+                </div>
+              )}
               <div className="mt-4">
                 <p>Regards</p>
                 <p className="height-height-1">

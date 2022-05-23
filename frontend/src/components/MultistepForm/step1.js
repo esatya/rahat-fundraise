@@ -21,7 +21,7 @@ const Step1 = (props) => {
               <select
                 id="crypto"
                 name="walletAddress"
-                value={props.getStore().wallet}
+                value={props.getStore().walletAddress}
                 onChange={handleChange}
                 defaultValue="Select"
               >

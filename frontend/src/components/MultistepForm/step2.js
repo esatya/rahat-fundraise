@@ -20,6 +20,7 @@ const Step2 = (props) => {
             control={
               <Checkbox
                 name="isAnonymous"
+                checked={props.getStore().isAnonymous}
                 onChange={(e) =>
                   props.updateStore({
                     ...props.getStore(),
@@ -41,6 +42,7 @@ const Step2 = (props) => {
                   className="form-control"
                   required
                   defaultValue={''}
+                  value={props.getStore().fullName}
                   onChange={handleChange}
                 />
               </div>
@@ -53,6 +55,7 @@ const Step2 = (props) => {
                   className="form-control"
                   required
                   defaultValue={''}
+                  value={props.getStore().email}
                   onChange={handleChange}
                 />
               </div>
@@ -65,6 +68,7 @@ const Step2 = (props) => {
                   className="form-control"
                   required
                   defaultValue={''}
+                  value={props.getStore().address}
                   onChange={handleChange}
                 />
               </div>
