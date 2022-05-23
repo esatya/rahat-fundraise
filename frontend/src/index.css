@@ -473,3 +473,10 @@
     margin-top: -12px !important;
   }
 }
+
+.single-campaign-image {
+  height: 150px;
+  width: 100%;
+  background-color: gray;
+  border-radius: 15px;
+}

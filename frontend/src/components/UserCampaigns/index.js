@@ -40,7 +40,7 @@ const UserCampaigns = (props) => {
       refreshLoggedInUser(parsedResponse?.data);
     } catch (error) {
       console.log(error);
-      toast.warning('Could not fetch ');
+      toast.warning('Could not fetch campaigns.');
     }
   };
 

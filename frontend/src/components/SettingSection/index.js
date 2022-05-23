@@ -14,47 +14,31 @@ import SimpleReactValidator from 'simple-react-validator';
 import UserContext from '../../context/user-context';
 
 function SettingsPage(props) {
-  const [image, setImage] = useState(null);
+  const [newImage, setNewImage] = useState(null);
   const [user, setUser] = React.useState({
     name: '',
     phone: '',
     address: '',
     bio: '',
+    imageUrl: '',
   });
-  const { user: contextUser } = useContext(UserContext);
+  const { user: contextUser, refreshLoggedInUser } = useContext(UserContext);
 
   const handleFileChange = (event) => {
-    setImage(event.target.files[0]);
+    setNewImage(event.target.files[0]);
   };
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const resData = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/user/get-my-profile`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${contextUser?.data?.token}`,
-            },
-          },
-        ).then((res) => res.json());
-
-        setUser({
-          name: resData.data.name,
-          phone: resData.data.phone,
-          address: resData.data.address,
-          bio: resData.data.bio,
-          image: resData.data.image,
-        });
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-    if (contextUser?.loggedIn && contextUser?.data?.token) {
-      fetchUser();
+    if (contextUser?.isLoggedIn && contextUser?.data?.token) {
+      setUser({
+        name: contextUser?.data?.name || '',
+        phone: contextUser?.data?.phone || '',
+        address: contextUser?.data?.address || '',
+        bio: contextUser?.data?.bio || '',
+        imageUrl: contextUser?.data?.image || '',
+      });
     }
-  }, [contextUser]);
+  }, [contextUser?.data?.token]);
 
   const [validator] = React.useState(
     new SimpleReactValidator({
@@ -76,7 +60,9 @@ function SettingsPage(props) {
       formData.append('phone', user.phone);
       formData.append('address', user.address);
       formData.append('bio', user.bio);
-      formData.append('image', image);
+      if (newImage) {
+        formData.append('image', newImage);
+      }
 
       try {
         const updatedUser = await fetch(
@@ -91,10 +77,21 @@ function SettingsPage(props) {
           },
         ).then((res) => res.json());
 
-        setUser(updatedUser.data);
-
-        validator.hideMessages();
-        toast.success('Profile Updated successfully!');
+        if (updatedUser?.ok) {
+          setUser({
+            name: updatedUser?.data?.name || '',
+            phone: updatedUser?.data?.phone || '',
+            address: updatedUser?.data?.address || '',
+            bio: updatedUser?.data?.bio || '',
+            imageUrl: updatedUser?.data?.image || '',
+          });
+          refreshLoggedInUser(updatedUser?.data);
+          setNewImage(null);
+          validator.hideMessages();
+          toast.success('Profile Updated successfully!');
+        } else {
+          throw new Error(updatedUser?.message);
+        }
       } catch (error) {
         toast.error('Something went wrong');
       }
@@ -187,17 +184,22 @@ function SettingsPage(props) {
                                 </Col>
                               </Row>
 
-                              <FloatingLabel controlId="floatingTextarea2">
+                              <Form.Group
+                                className="mb-3"
+                                controlId="exampleForm.ControlInput1"
+                              >
                                 <Form.Label>Bio</Form.Label>
-                                <Form.Control
-                                  as="textarea"
-                                  placeholder="Enter Your Bio Here. "
-                                  style={{ height: '100px' }}
-                                  name="bio"
-                                  onChange={changeHandler}
-                                  value={user.bio}
-                                />
-                              </FloatingLabel>
+                                <FloatingLabel controlId="floatingTextarea2">
+                                  <Form.Control
+                                    as="textarea"
+                                    placeholder="Enter Your Bio Here. "
+                                    style={{ height: '100px' }}
+                                    name="bio"
+                                    onChange={changeHandler}
+                                    value={user.bio}
+                                  />
+                                </FloatingLabel>
+                              </Form.Group>
 
                               <Row>
                                 <Col>
@@ -206,7 +208,7 @@ function SettingsPage(props) {
                                     variant="primary"
                                     type="submit"
                                   >
-                                    Submit
+                                    Save
                                   </Button>
                                 </Col>
                               </Row>
@@ -225,7 +227,11 @@ function SettingsPage(props) {
                                 {/* <small>Upload your Profile picture</small> */}
                                 <div className="text-center">
                                   <img
-                                    src={`${process.env.REACT_APP_API_BASE_URL}${user.image}`}
+                                    src={
+                                      newImage
+                                        ? URL.createObjectURL(newImage)
+                                        : `${process.env.REACT_APP_API_BASE_URL}${user.imageUrl}`
+                                    }
                                     alt=""
                                     style={{
                                       objectFit: 'cover',

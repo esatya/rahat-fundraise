@@ -10,10 +10,7 @@ const SettingPage = () => {
   return (
     <Fragment>
       <Navbar Logo={Logo} />
-      <PageTitle
-        pageTitle={'Profile Settings'}
-        pagesub={'Settings / Account'}
-      />
+      <PageTitle pageTitle={'Edit Profile'} pagesub={' Settings / Account'} />
       <SettingSection evCLass={'section-padding'} />
       <Footer />
       <Scrollbar />
