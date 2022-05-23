@@ -34,14 +34,6 @@ const Step1 = (props) => {
                   );
                 })}
               </select>
-              <div className="mt-4">
-                <TextField
-                  type="number"
-                  name="amount"
-                  label="Donate Amount"
-                  onChange={handleChange}
-                />
-              </div>
             </div>
           </div>
         </form>
