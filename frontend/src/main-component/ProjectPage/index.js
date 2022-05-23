@@ -45,15 +45,18 @@ const CauseSinglePage = (props) => {
             <div className="col col-lg-7">
               <div className="wpo-case-details-wrap">
                 <div className="wpo-case-details-img">
+                  {campaign?.creator === user?.data?.id && (
+                    <Link
+                      to={`/fundraise/${id}/edit`}
+                      className="theme-btn mb-4"
+                    >
+                      Edit
+                    </Link>
+                  )}
                   <img
                     src={`${process.env.REACT_APP_API_BASE_URL}${campaign?.image}`}
                     alt=""
                   />
-                  {campaign?.creator === user?.data?.id && (
-                    <Link to={`/fundraise/${id}/edit`} className="theme-btn">
-                      Edit
-                    </Link>
-                  )}
                 </div>
                 <CauseTabs campaign={campaign} donated={donated} />
               </div>

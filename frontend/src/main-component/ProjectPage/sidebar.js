@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import StepZilla from "react-stepzilla";
+import React, { useState } from 'react';
+import StepZilla from 'react-stepzilla';
 
-import "../../sass/multistep.css";
-import "./style.css";
-import Step1 from "../../components/MultistepForm/step1";
-import Step2 from "../../components/MultistepForm/step2";
-import Step3 from "../../components/MultistepForm/step3";
+import '../../sass/multistep.css';
+import './style.css';
+import Step1 from '../../components/MultistepForm/step1';
+import Step2 from '../../components/MultistepForm/step2';
+import Step3 from '../../components/MultistepForm/step3';
 
 const CauseSidebar = (props) => {
   const [sampleStore, setSampleStore] = useState({});
   const [donation, setDonations] = useState({
     toggle: false,
-    amount: "",
-    project_name: "",
+    amount: '',
+    project_name: '',
   });
   const getStore = () => {
     return sampleStore;
@@ -22,12 +22,19 @@ const CauseSidebar = (props) => {
     setSampleStore((prev) => ({ ...prev, ...update }));
   };
 
-  const onChange = (e) => {
+  const onChange = async (e) => {
+    console.log(sampleStore, donation);
+    await saveDonation();
     setDonations({ toggle: true });
   };
+
+  const saveDonation = async () => {
+    console.log('Save Donation here');
+  };
+
   const steps = [
     {
-      name: "Pledge",
+      name: 'Pledge',
       component: (
         <Step1
           getStore={getStore}
@@ -37,11 +44,11 @@ const CauseSidebar = (props) => {
       ),
     },
     {
-      name: "Info",
+      name: 'Info',
       component: <Step2 getStore={getStore} updateStore={updateStore} />,
     },
     {
-      name: "Donate",
+      name: 'Donate',
       component: (
         <Step3
           getStore={getStore}
@@ -54,7 +61,7 @@ const CauseSidebar = (props) => {
       ),
     },
   ];
-  console.log(props);
+
   return (
     <div className="col col-lg-5 col-12 ">
       {donation.toggle ? (
@@ -63,14 +70,14 @@ const CauseSidebar = (props) => {
             <h3>Thank you for your donation !!!</h3>
             <div
               className="step-progress custom-step-progress"
-              style={{ width: "340px" }}
+              style={{ width: '340px' }}
             >
               <div>
                 <p>
                   Dear <strong>Firstname,</strong>
                 </p>
                 <p className="mt-4">
-                  Thank you for your generous contribution of{" "}
+                  Thank you for your generous contribution of{' '}
                   <strong>Amount</strong> to <strong>Project Name</strong>.
                 </p>
               </div>
@@ -115,7 +122,7 @@ const CauseSidebar = (props) => {
             <h3>Donate Here</h3>
             <div
               className="step-progress custom-step-progress"
-              style={{ width: "340px" }}
+              style={{ width: '340px' }}
             >
               <StepZilla
                 steps={steps}

@@ -480,3 +480,7 @@
   background-color: gray;
   border-radius: 15px;
 }
+
+.c-p:hover {
+  cursor: pointer;
+}
