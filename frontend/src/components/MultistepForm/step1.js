@@ -1,5 +1,5 @@
-import React from "react";
-import TextField from "@material-ui/core/TextField";
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
 
 const Step1 = (props) => {
   const handleChange = (e) => {
@@ -21,7 +21,7 @@ const Step1 = (props) => {
               <select
                 id="crypto"
                 name="walletAddress"
-                value={props.getStore().wallet}
+                value={props.getStore().walletAddress}
                 onChange={handleChange}
                 defaultValue="Select"
               >
@@ -29,7 +29,7 @@ const Step1 = (props) => {
                 {props.campaign?.wallets?.map((wallet, index) => {
                   return (
                     <option key={index} value={wallet.walletAddress}>
-                      {wallet.name}
+                      {wallet.name + ' - ' + wallet?.walletAddress}
                     </option>
                   );
                 })}

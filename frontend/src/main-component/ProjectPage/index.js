@@ -20,20 +20,20 @@ const CauseSinglePage = (props) => {
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    const fetchSingleCampaign = async () => {
-      try {
-        const resData = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/campaign/get-by-id/${id}`,
-        ).then((res) => res.json());
-
-        setCampaign(resData.data);
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-
     fetchSingleCampaign();
   }, [id]);
+
+  const fetchSingleCampaign = async () => {
+    try {
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/campaign/get-by-id/${id}`,
+      ).then((res) => res.json());
+
+      setCampaign(resData.data);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <Fragment>
@@ -45,15 +45,18 @@ const CauseSinglePage = (props) => {
             <div className="col col-lg-7">
               <div className="wpo-case-details-wrap">
                 <div className="wpo-case-details-img">
+                  {campaign?.creator === user?.data?.id && (
+                    <Link
+                      to={`/fundraise/${id}/edit`}
+                      className="theme-btn mb-4"
+                    >
+                      Edit
+                    </Link>
+                  )}
                   <img
                     src={`${process.env.REACT_APP_API_BASE_URL}${campaign?.image}`}
                     alt=""
                   />
-                  {campaign?.creator === user?.data?.id && (
-                    <Link to={`/fundraise/${id}/edit`} className="theme-btn">
-                      Edit
-                    </Link>
-                  )}
                 </div>
                 <CauseTabs campaign={campaign} donated={donated} />
               </div>
@@ -62,6 +65,7 @@ const CauseSinglePage = (props) => {
               campaign={campaign}
               donated={donated}
               setDonated={setDonated}
+              refreshData={fetchSingleCampaign}
             />
           </div>
         </div>

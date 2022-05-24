@@ -23,45 +23,67 @@ const Step3 = (props) => {
     }),
   );
 
+  const handleChange = (e) => {
+    props.updateStore({
+      ...props.getStore(),
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // if (validator.allValid()) {
-    //   const resData = await fetch(
-    //     `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
-    //     {
-    //       method: "POST",
-    //       body: JSON.stringify({
-    //         ...props.getStore(),
-    //         transactionId: uuidv4(),
-    //         campaignId: props.campaign.id,
-    //       }),
+    if (validator.allValid()) {
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            ...props.getStore(),
+            transactionId: uuidv4(),
+            campaignId: props.campaign.id,
+          }),
 
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   ).then((res) => res.json());
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      ).then((res) => res.json());
 
-    //   validator.hideMessages();
+      validator.hideMessages();
 
-    //Catch the API response and set the below value as per API
+      // Catch the API response and set the below value as per API
+
+      if (resData.data) {
+        props.setDonated(!props.donated);
+        props.onChange({});
+        props.refreshData();
+        toast.success('Donation Complete successfully!');
+      }
+    } else {
+      validator.showMessages();
+      return toast.error('Empty field is not allowed!');
+    }
+  };
+
+  const handleWalletConnect = (e) => {
+    e.preventDefault();
     props.onChange({});
-    //   if (resData.data) {
-    //     props.setDonated(!props.donated);
-    //     toast.success("Donation Complete successfully!");
-    //   }
-    // } else {
-    //   validator.showMessages();
-    //   return toast.error("Empty field is not allowed!");
-    // }
   };
 
   return (
     <div className="step step7">
       <div className="row">
         <div>
-          <p className="text-center">Scan the QR code to donate</p>
+          <p className="text-center">
+            Use the address below to donate from your wallet.
+          </p>
+          <div className="text-center">
+            <img src="https://assets.rumsan.com/esatya/eth-icon.png" />
+          </div>
+
+//           <p className="text-center">Scan the QR code to donate</p>
+
 
           <div
             style={{
@@ -98,7 +120,7 @@ const Step3 = (props) => {
                   type="number"
                   name="amount"
                   label="Amount"
-                  // onChange={handleChange}
+                  onChange={handleChange}
                   style={{ width: '100px' }}
                 />
                 <button
@@ -120,7 +142,7 @@ const Step3 = (props) => {
           ) : (
             <button
               className="btn btn-lg"
-              onClick={handleSubmit}
+              onClick={handleWalletConnect}
               style={{
                 borderRadius: '5px',
                 position: 'absolute',

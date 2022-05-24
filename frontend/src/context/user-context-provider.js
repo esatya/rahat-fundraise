@@ -62,13 +62,25 @@ const UserContextProvider = ({ children }) => {
       });
       fetchUserData(token);
     } else if (type === USER_UPDATE_TYPES.LOG_OUT) {
-      cookies.remove(COOKIE_VALUES.USER_TOKEN_COOKIE);
+      cookies.remove(COOKIE_VALUES.USER_TOKEN_COOKIE, { path: '/' });
       setUser({ isLoggedIn: false, data: {} });
     }
   };
 
+  const refreshLoggedInUser = (userData) => {
+    setUser((previous) => {
+      return {
+        ...previous,
+        data: {
+          ...previous?.data,
+          ...userData,
+        },
+      };
+    });
+  };
+
   return (
-    <UserContext.Provider value={{ user, updateUser }}>
+    <UserContext.Provider value={{ user, updateUser, refreshLoggedInUser }}>
       {children}
     </UserContext.Provider>
   );

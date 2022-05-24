@@ -26,8 +26,6 @@ const AllRoute = () => {
         <Switch>
           {/* Public Routes */}
           <Route exact path="/" component={Homepage} />
-          <Route path="/fundraise/:id" component={ProjectPage} />
-          <Route path="/fundraise" component={EventPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/404" component={ErrorPage} />
@@ -45,11 +43,13 @@ const AllRoute = () => {
             routeElement={SettingSection}
             path="/account/settings"
           />
-          <ProtectedRoute routeElement={ProfilePage} path="/profile" />
+
           <ProtectedRoute
             routeElement={EditFundraise}
             path="/fundraise/:id/edit"
           />
+          <Route path="/fundraise/:id" component={ProjectPage} />
+          <Route path="/fundraise" component={EventPage} />
 
           <Route path="*">
             <Redirect to="/404" />
