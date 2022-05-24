@@ -7,7 +7,6 @@ const initialState = {
   is_app_ready: false
 };
 
-
 export const AppContext = createContext(initialState);
 export const AppContextProvider = ({ children }) => {
   const { connectMetaMask, disconnect } = useAuth();
