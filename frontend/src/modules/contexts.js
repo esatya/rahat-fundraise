@@ -16,8 +16,7 @@ export const AppContextProvider = ({ children }) => {
     dispatch({ type: APP_ACTIONS.INIT_APP, data: { app_ready: true } });
   }, [dispatch]);
 
-
-  return (
+return (
     <AppContext.Provider
       value={{
         is_app_ready: state.is_app_ready,
