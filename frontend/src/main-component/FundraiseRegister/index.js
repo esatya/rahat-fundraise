@@ -17,9 +17,11 @@ const FundraiseRegisterPage = (props) => {
     story: '',
     target: '',
     expiryDate: '',
+    walletType: 'Ethereum',
+    walletAddress: '',
   });
 
-  const [wallets, setWallets] = useState({});
+  const [wallets, setWallets] = useState([]);
 
   const { user } = useContext(UserContext);
 
@@ -33,17 +35,34 @@ const FundraiseRegisterPage = (props) => {
     setImage(event.target.files[0]);
   };
 
+  const removeWallet = (index) => {
+    const newWallets = value.wallets?.filter((item, idx) => index !== idx);
+    setWallets(newWallets);
+  };
+
+  const handleWalletSave = (event) => {
+    event.preventDefault();
+    setWallets(
+      wallets.concat({
+        name: value?.walletType || 'Ethereum',
+        walletAddress: value?.walletAddress,
+      }),
+    );
+    setValue((previous) => {
+      return {
+        ...previous,
+        walletType: 'Ethereum',
+        walletAddress: '',
+      };
+    });
+  };
+
   const SubmitHandler = async (e) => {
     e.preventDefault();
 
-    const walletList = [];
-
-    for (const walletKey in wallets) {
-      console.log('key', walletKey);
-
-      if (!isObjEmpty(wallets[walletKey])) {
-        walletList.push(wallets[walletKey]);
-      }
+    if (wallets?.length <= 0) {
+      toast.info('Please add at least one wallet.');
+      return;
     }
 
     const formData = new FormData();
@@ -51,14 +70,9 @@ const FundraiseRegisterPage = (props) => {
     formData.append('excerpt', value.excerpt);
     formData.append('story', value.story);
     formData.append('target', value.target);
-    formData.append(
-      'expiryDate',
-      dayjs()
-        .add(Number.parseInt(value.expiryDate, 10), 'days')
-        .format('YYYY-MM-DD'),
-    );
+    formData.append('expiryDate', dayjs(value.expiryDate).format('YYYY-MM-DD'));
     formData.append('image', image);
-    formData.append('wallets', JSON.stringify(walletList));
+    formData.append('wallets', JSON.stringify(wallets));
 
     try {
       const resData = await fetch(
@@ -73,9 +87,7 @@ const FundraiseRegisterPage = (props) => {
       ).then((res) => res.json());
 
       if (resData?.ok) {
-        props.history.push('/myfundraise  ');
-
-        console.log({ resData });
+        props.history.push('/myfundraise');
       } else {
         throw new Error('Failed to register campaign.');
       }
@@ -97,17 +109,6 @@ const FundraiseRegisterPage = (props) => {
               </div>
               <div id="Donations" className="tab-pane">
                 <form onSubmit={SubmitHandler}>
-                  {/* <div className="wpo-donations-amount">
-                    <h2>Select A Country</h2>
-                  <div className="wpo-donations-amount">
-                    <h2>Select a country</h2>
-                    <select id="inputState" class="form-select">
-                      <option selected>Choose...</option>
-                      <option>Nepal</option>
-                      <option>Nepal</option>
-                      <option>Nepal</option>
-                    </select>
-                  </div> */}
                   <div className="wpo-donations-details">
                     <h2>Enter details of your campaign?</h2>
                     <div className="row">
@@ -126,93 +127,18 @@ const FundraiseRegisterPage = (props) => {
                       </div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                         <label for="fname" class="form-label">
-                          Duration of your campaign{' '}
-                          <span className="text-gray">(in days)</span>
+                          Campaign End Date
                         </label>
                         <input
-                          type="number"
+                          type="date"
+                          min={dayjs().add('1', 'day').format('YYYY-MM-DD')}
                           className="form-control"
                           name="expiryDate"
-                          id="name"
-                          placeholder=""
+                          id="expiryDate"
                           onChange={changeHandler}
                         />
                       </div>
-                      <div className=" form-group d-flex">
-                        <label
-                          for="fname"
-                          class="form-label"
-                          style={{ width: 'inherit' }}
-                        >
-                          Bitcoin Address
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="bitCoinWalletAddress"
-                          id="bitcoin"
-                          placeholder=""
-                          onChange={(e) =>
-                            setWallets({
-                              ...wallets,
-                              bitcoin: {
-                                name: 'bitcoin',
-                                walletAddress: e.target.value,
-                              },
-                            })
-                          }
-                        />
-                      </div>
-                      <div className=" col-12 form-group d-flex">
-                        <label
-                          for="fname"
-                          class="form-label"
-                          style={{ width: 'inherit' }}
-                        >
-                          Ethereum Address
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="ethereumWalletAddress"
-                          id="ethereum"
-                          placeholder=""
-                          onChange={(e) =>
-                            setWallets({
-                              ...wallets,
-                              ethereum: {
-                                name: 'ethereum',
-                                walletAddress: e.target.value,
-                              },
-                            })
-                          }
-                        />
-                      </div>
-                      <div className="col-12 form-group d-flex">
-                        <label
-                          for="fname"
-                          class="form-label"
-                          style={{ width: 'inherit' }}
-                        >
-                          Another Crypto
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="anotherWalletAddress"
-                          id="another"
-                          placeholder=""
-                          onChange={(e) =>
-                            setWallets({
-                              ...wallets,
-                              litecoin: {
-                                name: 'litecoin',
-                                walletAddress: e.target.value,
-                              },
-                            })
-                          }
-                        />
-                      </div>
+
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
                         <label for="fname" class="form-label">
                           Title
@@ -264,131 +190,57 @@ const FundraiseRegisterPage = (props) => {
                         />
                       </div>
 
-                      <div className="row">
+                      <div className="row align-items-center">
                         <div className="col-lg-5 col-md-5 col-sm-5 col-5">
-                          <select id="inputState" class="form-select">
-                            <option selected>Bitcoin</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
+                          <select
+                            id="inputState"
+                            class="form-select"
+                            name="walletType"
+                            value={value?.walletType}
+                            onChange={changeHandler}
+                          >
+                            <option>Ethereum</option>
+                            <option>Bitcoin</option>
                           </select>
                         </div>
-                        <div className="col-lg-5 col-md-5 col-sm-5 col-5">
+                        <div className="col-lg-5 col-md-5 col-sm-5 col-5 ">
                           <input
-                            style={{ height: '37px' }}
                             type="text"
                             placeholder="Wallet Address"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-lg-5 col-md-5 col-sm-5 col-5">
-                          <select id="inputState" class="form-select">
-                            <option selected>Ethereum</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                          </select>
-                        </div>
-                        <div className="col-lg-5 col-md-5 col-sm-5 col-5">
-                          <input
-                            style={{ height: '37px' }}
-                            type="text"
-                            placeholder="Wallet Address"
+                            className=" my-auto"
+                            name="walletAddress"
+                            value={value?.walletAddress}
+                            onChange={changeHandler}
+                            style={{ height: 35 }}
                           />
                         </div>
                         <div className="col-lg-2 col-md-2 col-sm-2 col-2">
                           <button
-                            className="theme-btn submit-btn"
-                            style={{
-                              height: '35px',
-                              width: '30px',
-                              borderRadius: '15%',
-                            }}
-                            onClick={(event) => {
-                              event.preventDefault();
-                            }}
+                            className="btn btn-primary submit-btn"
+                            onClick={handleWalletSave}
                           >
-                            <img
-                              className="button-increment"
-                              src="https://assets.rumsan.com/rumsan-group/rahat-crowdfunding-increment.png"
-                              style={{
-                                marginTop: '-18px',
-                                width: '20px',
-                                marginLeft: '-9px',
-                              }}
-                              alt=""
-                            />
+                            Add
                           </button>
                         </div>
                       </div>
 
-                      {/* <div class="mb-3">
-                                                <label for="formFileSm" class="form-label">Small file input example</label>
-                                                <input class="form-control form-control-sm" id="formFileSm" type="file">
-                                            </div> */}
+                      <div className="mt-3">
+                        <div className="mb-2">Linked Wallets</div>
+                        {wallets?.map((wallet, index) => (
+                          <p className="mb-0">
+                            {wallet?.name}: {wallet?.walletAddress}{' '}
+                            <span
+                              className="text-danger c-p"
+                              onClick={() => removeWallet(index)}
+                            >
+                              <i className="fa fa-trash"></i>
+                            </span>
+                          </p>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  {/* <div className="wpo-doanation-payment">
-                                        <h2>Choose Your Payment Method</h2>
-                                        <div className="wpo-payment-area">
-                                            <div className="row">
-                                                <div className="col-12">
-                                                    <div className="wpo-payment-option" id="open4">
-                                                        <div className="wpo-payment-select">
-                                                            <ul>
-                                                                <li className="addToggle">
-                                                                    <input id="add" type="radio" name="payment" value="30" />
-                                                                    <label htmlFor="add">Payment By Card</label>
-                                                                </li>
-                                                                <li className="removeToggle">
-                                                                    <input id="remove" type="radio" name="payment" value="30" />
-                                                                    <label htmlFor="remove">Offline Donation</label>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div id="open5" className="payment-name">
-                                                            <ul>
-                                                                <li className="visa"><input id="1" type="radio" name="size" value="30" />
-                                                                    <label htmlFor="1"><img src={pimg} alt="" /></label>
-                                                                </li>
-                                                                <li className="mas"><input id="2" type="radio" name="size" value="30" />
-                                                                    <label htmlFor="2"><img src={pimg2} alt="" /></label>
-                                                                </li>
-                                                                <li className="ski"><input id="3" type="radio" name="size" value="30" />
-                                                                    <label htmlFor="3"><img src={pimg3} alt="" /></label>
-                                                                </li>
-                                                                <li className="pay"><input id="4" type="radio" name="size" value="30" />
-                                                                    <label htmlFor="4"><img src={pimg4} alt="" /></label>
-                                                                </li>
-                                                            </ul>
-                                                            <div className="contact-form form-style">
-                                                                <div className="row">
-                                                                    <div className="col-lg-6 col-md-12 col-12">
-                                                                        <label>Card holder Name</label>
-                                                                        <input type="text" placeholder="" name="name" />
-                                                                    </div>
-                                                                    <div className="col-lg-6 col-md-12 col-12">
-                                                                        <label>Card Number</label>
-                                                                        <input type="text" placeholder="" id="card" name="card" />
-                                                                    </div>
-                                                                    <div className="col-lg-6 col-md-12 col-12">
-                                                                        <label>CVV</label>
-                                                                        <input type="text" placeholder="" name="CVV" />
-                                                                    </div>
-                                                                    <div className="col-lg-6 col-md-12 col-12">
-                                                                        <label>Expire Date</label>
-                                                                        <input type="text" placeholder="" name="date" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> */}
+
                   <div className="submit-area">
                     <button type="submit" className="theme-btn submit-btn">
                       Register
