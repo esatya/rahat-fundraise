@@ -3,14 +3,8 @@ import { Link } from 'react-router-dom'
 // import Clients from './client'
 import hero1 from '../../images/slider/right-img2.png'
 import hero3 from '../../images/slider/right-img.png'
-import {AppContext} from '../../modules/contexts'
-import { useWeb3React } from '@web3-react/core';
 
 const Hero =() => {
-    const { connectMetaMask } = useContext(AppContext);
-    const { account } = useWeb3React();
-    console.log(account,"hereeeeeeeeeeee")
-
     return (
         <section className="wpo-hero-section-1">
             <div className="container-fluid">
@@ -28,7 +22,6 @@ const Hero =() => {
                             </div>
                             <div className="btns">
                                 <Link to="/login" className="theme-btn">Start a Fundraiser</Link>
-                                <button className="btn btn-primary" onClick={connectMetaMask}>connectMetaMask</button>
                             </div>
                         </div>
                     </div>
