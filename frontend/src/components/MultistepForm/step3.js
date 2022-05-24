@@ -81,6 +81,10 @@ const Step3 = (props) => {
           <div className="text-center">
             <img src="https://assets.rumsan.com/esatya/eth-icon.png" />
           </div>
+
+//           <p className="text-center">Scan the QR code to donate</p>
+
+
           <div
             style={{
               background: 'white',
