@@ -14,7 +14,6 @@ import { useEffect } from 'react';
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
   const { account } = useWeb3React();
-  console.log(account, 'wallet address');
 
   const connected = async () => {
     await connectMetaMask();
