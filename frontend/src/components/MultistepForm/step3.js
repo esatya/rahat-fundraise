@@ -1,12 +1,18 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import QRCode from 'react-qr-code';
 import SimpleReactValidator from 'simple-react-validator';
 import { toast } from 'react-toastify';
 import { TextField } from '@material-ui/core';
+import { AppContext } from '../../modules/contexts';
+import { useWeb3React } from '@web3-react/core';
+
 
 const Step3 = (props) => {
+  const { connectMetaMask } = useContext(AppContext);
+  const { account } = useWeb3React();
+  console.log(account, "wallet address")
   const copyAddress = () => {
     const copyText = document.getElementById('wallet');
     const textArea = document.createElement('textarea');
@@ -66,10 +72,6 @@ const Step3 = (props) => {
     }
   };
 
-  const handleWalletConnect = (e) => {
-    e.preventDefault();
-    props.onChange({});
-  };
 
   return (
     <div className="step step7">
@@ -142,7 +144,7 @@ const Step3 = (props) => {
           ) : (
             <button
               className="btn btn-lg"
-              onClick={handleWalletConnect}
+              onClick={connectMetaMask}
               style={{
                 borderRadius: '5px',
                 position: 'absolute',
