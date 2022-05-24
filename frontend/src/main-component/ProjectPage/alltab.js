@@ -17,6 +17,7 @@ import classnames from 'classnames';
 import cmt1 from '../../images/blog-details/comments-author/img-1.jpg';
 import cmt2 from '../../images/blog-details/comments-author/img-2.jpg';
 import cmt3 from '../../images/blog-details/comments-author/img-3.jpg';
+import dayjs from 'dayjs';
 
 const CauseTabs = ({ campaign, donated }) => {
   const [activeTab, setActiveTab] = useState('1');
@@ -44,6 +45,49 @@ const CauseTabs = ({ campaign, donated }) => {
     };
     campaign.id && fetchDonations();
   }, [campaign?.id, donated]);
+
+  console.log(donations);
+
+  const arrayToCsv = (data) => {
+    return data
+      .map(
+        (row) =>
+          row
+            .map(String) // convert every value to String
+            .map((v) => v.replaceAll('"', '""')) // escape double colons
+            .map((v) => `"${v}"`) // quote it
+            .join(','), // comma-separated
+      )
+      .join('\r\n'); // rows starting on new lines
+  };
+
+  const downloadCSV = () => {
+    // Create a blob
+    let values = [
+      ['Wallet Address', 'Amount', 'Donation Date', 'Transaction ID'],
+    ];
+    for (const donation of donations) {
+      values.push([
+        donation?.walletAddress,
+        donation?.amount,
+        dayjs(donation?.createdDate)?.format('YYYY-MM-DD'),
+        donation?.transactionId,
+      ]);
+    }
+    let csv = arrayToCsv(values);
+
+    const filename = `${campaign?.title}-${dayjs().format(
+      'YYYY-MM-DD-hh-mm',
+    )}.csv`;
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+
+    // Create a link to download it
+    var pom = document.createElement('a');
+    pom.href = url;
+    pom.setAttribute('download', filename);
+    pom.click();
+  };
 
   if (!campaign) return <>No Campaign</>;
 
@@ -143,6 +187,14 @@ const CauseTabs = ({ campaign, donated }) => {
               <Col sm="12">
                 <div id="Donations" className="tab-pane">
                   <div className="wpo-donations-details">
+                    <div>
+                      <button
+                        className="btn btn-primary mb-4"
+                        onClick={downloadCSV}
+                      >
+                        Export as CSV
+                      </button>
+                    </div>
                     <div className="row">
                       <table>
                         <tr>
@@ -154,7 +206,7 @@ const CauseTabs = ({ campaign, donated }) => {
                         <hr
                           style={{
                             height: '2px',
-                            width: '417%',
+                            width: '100%',
                             color: '#217ec2',
                           }}
                         />

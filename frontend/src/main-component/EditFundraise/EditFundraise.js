@@ -228,6 +228,7 @@ const EditFundraise = (props) => {
                           class="form-control form-control-sm"
                           id="formFileSm"
                           type="file"
+                          accept=".jpg,.jpeg,.png"
                           onChange={handleFileChange}
                         />
                       </div>
