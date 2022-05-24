@@ -15,6 +15,7 @@ const EditFundraise = (props) => {
   const [value, setValue] = useState({
     title: campaign?.title,
     excerpt: campaign?.excerpt,
+    status: campaign?.status,
     story: campaign?.story,
     target: campaign?.target,
     expiryDate: campaign?.expiryDate,
@@ -44,6 +45,7 @@ const EditFundraise = (props) => {
           target: resData.data.target,
           expiryDate: resData.data.expiryDate,
           wallets: resData.data.wallets || [],
+          status: resData?.data?.status?.toLowerCase() || 'Published',
         });
       } catch (error) {
         toast.error(error.message);
@@ -119,6 +121,137 @@ const EditFundraise = (props) => {
       ).then((res) => res.json());
 
       props.history.push(`/fundraise/${campaignId}`);
+    } catch (error) {
+      return toast.error(error.message);
+    }
+  };
+
+  const PublishCampaign = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append('status', 'PUBLISHED');
+
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/campaign/${campaignId}/update-status`,
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${user?.data?.token}`,
+          },
+        },
+      ).then((res) => res.json());
+
+      if (resData?.ok) {
+        setValue((previous) => {
+          return {
+            ...previous,
+            status: 'Published',
+          };
+        });
+        toast.success('Published Campaign.');
+      } else {
+        throw new Error('Could not complete action.');
+      }
+    } catch (error) {
+      return toast.error(error.message);
+    }
+  };
+
+  const MoveToDraft = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append('status', 'DRAFT');
+
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/campaign/${campaignId}/update-status`,
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${user?.data?.token}`,
+          },
+        },
+      ).then((res) => res.json());
+
+      if (resData?.ok) {
+        setValue((previous) => {
+          return {
+            ...previous,
+            status: 'Draft',
+          };
+        });
+        toast.success('Moved Campaign to draft.');
+      } else {
+        throw new Error('Could not complete action.');
+      }
+    } catch (error) {
+      return toast.error(error.message);
+    }
+  };
+
+  const MoveToArchive = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append('status', 'ARCHIVE');
+
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/campaign/${campaignId}/update-status`,
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${user?.data?.token}`,
+          },
+        },
+      ).then((res) => res.json());
+
+      if (resData?.ok) {
+        setValue((previous) => {
+          return {
+            ...previous,
+            status: 'Archive',
+          };
+        });
+        toast.success('Moved Campaign to Archive.');
+      } else {
+        throw new Error('Could not complete action.');
+      }
+    } catch (error) {
+      return toast.error(error.message);
+    }
+  };
+
+  const CloseCampaign = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append('status', 'CLOSED');
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/campaign/${campaignId}/update-status`,
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${user?.data?.token}`,
+          },
+        },
+      ).then((res) => res.json());
+
+      if (resData?.ok) {
+        setValue((previous) => {
+          return {
+            ...previous,
+            status: 'Closed',
+          };
+        });
+        toast.success('Closed Campaign');
+      } else {
+        throw new Error('Could not complete action.');
+      }
     } catch (error) {
       return toast.error(error.message);
     }
@@ -280,6 +413,42 @@ const EditFundraise = (props) => {
                             </span>
                           </p>
                         ))}
+                      </div>
+
+                      <div className="mt-3">
+                        <div className="mb-2">
+                          Campaign Status:{' '}
+                          <span className="fw-bold">
+                            {value?.status?.toUpperCase()}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="d-flex flex-row mt-4">
+                        <button
+                          className="btn btn-success me-3"
+                          onClick={PublishCampaign}
+                        >
+                          Publish Campaign
+                        </button>
+                        <button
+                          className="btn btn-primary me-3"
+                          onClick={MoveToDraft}
+                        >
+                          Move to Draft
+                        </button>
+                        <button
+                          className="btn btn-primary me-3"
+                          onClick={MoveToArchive}
+                        >
+                          Move to Archive
+                        </button>
+                        <button
+                          className="btn btn-primary me-3"
+                          onClick={CloseCampaign}
+                        >
+                          Close Campaign
+                        </button>
                       </div>
                     </div>
                   </div>

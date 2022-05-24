@@ -46,8 +46,6 @@ const CauseTabs = ({ campaign, donated }) => {
     campaign.id && fetchDonations();
   }, [campaign?.id, donated]);
 
-  console.log(donations);
-
   const arrayToCsv = (data) => {
     return data
       .map(

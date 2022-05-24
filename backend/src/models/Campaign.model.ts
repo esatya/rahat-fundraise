@@ -23,7 +23,7 @@ const CampaignModel = new mongoose.Schema<ICampaign>(
       type: String,
       required: true,
       enum: CAMPAIGN_OPTIONS,
-      default: 'DRAFT',
+      default: 'PUBLISHED',
     },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
