@@ -30,7 +30,7 @@ import Scrollbar from '../../components/scrollbar';
 import CauseTabs from './alltab';
 import CauseSidebar from './sidebar';
 import Logo from '../../images/logo.png';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const CauseSinglePage = (props) => {
   const [campaign, setCampaign] = useState({});
@@ -39,9 +39,6 @@ const CauseSinglePage = (props) => {
   const id = props.match.params.id;
 
   const { user } = useContext(UserContext);
-
-  const location = useLocation();
-  console.log(location);
 
   useEffect(() => {
     fetchSingleCampaign();
@@ -98,19 +95,23 @@ const CauseSinglePage = (props) => {
                     <EmailIcon size={32} round={true} className="mx-1" />
                   </EmailShareButton>
                 </div>
+                {campaign?.creator === user?.data?.id && (
+                  <Link to={`/fundraise/${id}/edit`} className="theme-btn mb-4">
+                    Edit
+                  </Link>
+                )}
                 <div className="wpo-case-details-img">
-                  {campaign?.creator === user?.data?.id && (
-                    <Link
-                      to={`/fundraise/${id}/edit`}
-                      className="theme-btn mb-4"
-                    >
-                      Edit
-                    </Link>
+                  {campaign?.image && (
+                    <img
+                      src={`${process.env.REACT_APP_API_BASE_URL}${campaign?.image}`}
+                      alt=""
+                      style={{
+                        maxHeight: 400,
+                        objectFit: 'none',
+                        width: 'auto',
+                      }}
+                    />
                   )}
-                  <img
-                    src={`${process.env.REACT_APP_API_BASE_URL}${campaign?.image}`}
-                    alt=""
-                  />
                 </div>
                 <CauseTabs campaign={campaign} donated={donated} />
               </div>
