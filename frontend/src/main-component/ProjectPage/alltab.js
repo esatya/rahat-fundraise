@@ -133,30 +133,6 @@ const CauseTabs = ({ campaign, donated }) => {
                     <div className="case-b-text">
                       <p>{campaign?.story}</p>
                     </div>
-                    <div className="case-bb-text">
-                      <h3>We want to ensure the education for the kids.</h3>
-                      <p>
-                        These cases are perfectly simple and easy to
-                        distinguish. In a free hour, when our power of choice is
-                        untrammelled and when nothing prevents our being able to
-                        do what we like best, every pleasure.
-                      </p>
-                      <ul>
-                        <li>
-                          The wise man therefore always holds in these matters.
-                        </li>
-                        <li>
-                          In a free hour, when our power of choice and when
-                          nothing.
-                        </li>
-                        <li>Else he endures pains to avoid worse pains.</li>
-                        <li>
-                          We denounce with righteous indignation and dislike
-                          men.{' '}
-                        </li>
-                        <li>Which is the same as saying through.</li>
-                      </ul>
-                    </div>
                   </div>
                 </div>
               </Col>
