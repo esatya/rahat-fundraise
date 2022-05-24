@@ -1,13 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./main-component/App/App";
-import * as serviceWorker from "./serviceWorker";
-import "./css/font-awesome.min.css";
-import "./css/themify-icons.css";
-import "./css/flaticon.css";
-import Web3 from "web3";
-import { Web3ReactProvider } from "@web3-react/core";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './main-component/App/App';
+import * as serviceWorker from './serviceWorker';
+import './css/font-awesome.min.css';
+import './css/themify-icons.css';
+import './css/flaticon.css';
+import Web3 from 'web3';
+import { Web3ReactProvider } from '@web3-react/core';
 
 function getLibrary(provider) {
   const library = new Web3(provider);
@@ -19,7 +19,7 @@ ReactDOM.render(
   <Web3ReactProvider getLibrary={getLibrary}>
     <App />
   </Web3ReactProvider>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change
