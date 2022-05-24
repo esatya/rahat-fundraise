@@ -8,7 +8,6 @@ import Footer from '../../components/footer';
 import PageTitle from '../../components/pagetitle';
 import UserContext from '../../context/user-context';
 import Scrollbar from '../../components/scrollbar';
-import { isObjEmpty } from '../../helper/helper';
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
@@ -60,6 +59,15 @@ const FundraiseRegisterPage = (props) => {
   const SubmitHandler = async (e) => {
     e.preventDefault();
 
+    registerFundraise(0);
+  };
+
+  const RegisterAsDraft = (e) => {
+    e.preventDefault();
+    registerFundraise(1);
+  };
+
+  const registerFundraise = async (saveAsDraft) => {
     if (wallets?.length <= 0) {
       toast.info('Please add at least one wallet.');
       return;
@@ -73,6 +81,7 @@ const FundraiseRegisterPage = (props) => {
     formData.append('expiryDate', dayjs(value.expiryDate).format('YYYY-MM-DD'));
     formData.append('image', image);
     formData.append('wallets', JSON.stringify(wallets));
+    formData.append('status', saveAsDraft ? 'DRAFT' : 'PUBLISHED');
 
     try {
       const resData = await fetch(
@@ -243,8 +252,14 @@ const FundraiseRegisterPage = (props) => {
                   </div>
 
                   <div className="submit-area">
-                    <button type="submit" className="theme-btn submit-btn">
-                      Register
+                    <button type="submit" className="theme-btn submit-btn mx-2">
+                      Publish Campaign
+                    </button>
+                    <button
+                      className="theme-btn submit-btn mx-2"
+                      onClick={RegisterAsDraft}
+                    >
+                      Save As Draft
                     </button>
                   </div>
                 </form>

@@ -56,15 +56,21 @@ const Step3 = (props) => {
     e.preventDefault();
 
     if (validator.allValid()) {
+      const body = {
+        ...props.getStore(),
+        donor: {
+          fullName: props.getStore().fullName,
+          email: props.getStore().email,
+          country: props.getStore().country,
+        },
+        transactionId: uuidv4(),
+        campaignId: props.campaign.id,
+      };
       const resData = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
         {
           method: 'POST',
-          body: JSON.stringify({
-            ...props.getStore(),
-            transactionId: uuidv4(),
-            campaignId: props.campaign.id,
-          }),
+          body: JSON.stringify(body),
 
           headers: {
             'Content-Type': 'application/json',
