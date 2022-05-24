@@ -1,16 +1,18 @@
-import React from "react";
-import { ToastContainer } from "react-toastify";
-
-import AllRoute from "../router";
-
-import "../../sass/style.scss";
+import React from 'react';
+import AllRoute from '../router'
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../../sass/style.scss';
+import {AppContextProvider} from '../../modules/contexts'
 import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
-    <div className="App" id="scrool">
-      <AllRoute />
-      <ToastContainer position="bottom-right" autoClose={5000} />
+    <div className="App" id='scrool'>
+      <AppContextProvider>
+          <AllRoute/>
+          <ToastContainer/>
+      </AppContextProvider>
     </div>
   );
 };
