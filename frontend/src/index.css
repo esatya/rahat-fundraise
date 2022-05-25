@@ -484,3 +484,12 @@
 .c-p:hover {
   cursor: pointer;
 }
+
+.c-p-primary:hover {
+  cursor: pointer;
+  color: #096efd !important;
+}
+
+.text-default {
+  color: #4f555a;
+}

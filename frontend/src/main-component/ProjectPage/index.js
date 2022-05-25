@@ -100,7 +100,7 @@ const CauseSinglePage = (props) => {
                     Edit
                   </Link>
                 )}
-                <div className="wpo-case-details-img">
+                <div className="wpo-case-details-img d-flex justify-content-center">
                   {campaign?.image && (
                     <img
                       src={`${process.env.REACT_APP_API_BASE_URL}${campaign?.image}`}
@@ -109,6 +109,7 @@ const CauseSinglePage = (props) => {
                         maxHeight: 400,
                         objectFit: 'none',
                         width: 'auto',
+                        maxWidth: '100%',
                       }}
                     />
                   )}
