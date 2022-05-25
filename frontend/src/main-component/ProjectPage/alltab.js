@@ -19,10 +19,10 @@ import cmt1 from '../../images/blog-details/comments-author/img-1.jpg';
 import cmt2 from '../../images/blog-details/comments-author/img-2.jpg';
 import cmt3 from '../../images/blog-details/comments-author/img-3.jpg';
 import dayjs from 'dayjs';
-import { isJson } from '../../helper/helper';
+import { isJson, shortenString } from '../../helper/helper';
 
 const CauseTabs = ({ campaign, donated }) => {
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState('2');
   const [donations, setDonations] = React.useState([]);
 
   const toggle = (tab) => {
@@ -93,6 +93,10 @@ const CauseTabs = ({ campaign, donated }) => {
     if (isJson(text)) {
       return stateToHTML(convertFromRaw(JSON.parse(text)));
     }
+  };
+
+  const copyAddress = (address) => {
+    console.log(address);
   };
 
   if (!campaign) return <>No Campaign</>;
@@ -231,7 +235,19 @@ const CauseTabs = ({ campaign, donated }) => {
                             />
                             {donations?.map((donation) => (
                               <tr>
-                                <td>{donation.walletAddress}</td>
+                                <td>
+                                  <span
+                                    onClick={() =>
+                                      copyAddress(donation.walletAddress)
+                                    }
+                                    className="c-p-primary"
+                                  >
+                                    {shortenString(donation.walletAddress)}
+                                    <span className=" ps-1">
+                                      <i className="fa fa-copy "></i>
+                                    </span>
+                                  </span>
+                                </td>
                                 <td>{`$${donation.amount}`}</td>
                                 <td>
                                   {
@@ -240,7 +256,18 @@ const CauseTabs = ({ campaign, donated }) => {
                                       .split('T')[0]
                                   }
                                 </td>
-                                <td>{donation.transactionId}</td>
+                                <td>
+                                  <a
+                                    href="#"
+                                    target="_blank"
+                                    className="text-decoration-underline text-default"
+                                  >
+                                    {shortenString(donation.transactionId)}
+                                    <span className=" ps-1">
+                                      <i className="fa fa-paperclip"></i>
+                                    </span>
+                                  </a>
+                                </td>
                               </tr>
                             ))}
                           </table>

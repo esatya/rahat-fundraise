@@ -17,17 +17,7 @@ const Step3 = (props) => {
 
   const connected = async () => {
     await connectMetaMask();
-    props.updateStore({
-      ...props.getStore(),
-      walletAddress: account,
-    });
   };
-
-  useEffect(() => {
-    props.updateStore({
-      walletAddress: account,
-    });
-  }, [account]);
 
   const copyAddress = () => {
     const copyText = document.getElementById('wallet');

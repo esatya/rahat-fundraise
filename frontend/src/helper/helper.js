@@ -19,3 +19,11 @@ export const isJson = (str) => {
   }
   return false;
 };
+
+export const shortenString = (string) => {
+  return string
+    ? string?.slice(0, 4) +
+        '...' +
+        string?.slice(string?.length - 4, string?.length)
+    : '';
+};
