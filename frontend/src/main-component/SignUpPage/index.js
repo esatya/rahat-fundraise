@@ -58,7 +58,9 @@ const SignUpPage = (props) => {
             alias: '',
           });
           validator.hideMessages();
-          toast.success('Registration Complete successfully!');
+          toast.success(
+            'Your Fundraiser account has been created. Please check your registered email. ',
+          );
           props.history.push('/login');
         } else {
           throw new Error(body?.msg);

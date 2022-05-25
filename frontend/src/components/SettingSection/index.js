@@ -21,6 +21,9 @@ function SettingsPage(props) {
     address: '',
     bio: '',
     imageUrl: '',
+    email: '',
+    alias: '',
+    isLoading: false,
   });
   const { user: contextUser, refreshLoggedInUser } = useContext(UserContext);
 
@@ -30,12 +33,18 @@ function SettingsPage(props) {
 
   useEffect(() => {
     if (contextUser?.isLoggedIn && contextUser?.data?.token) {
-      setUser({
-        name: contextUser?.data?.name || '',
-        phone: contextUser?.data?.phone || '',
-        address: contextUser?.data?.address || '',
-        bio: contextUser?.data?.bio || '',
-        imageUrl: contextUser?.data?.image || '',
+      setUser((previous) => {
+        return {
+          ...previous,
+
+          name: contextUser?.data?.name || '',
+          phone: contextUser?.data?.phone || '',
+          address: contextUser?.data?.address || '',
+          bio: contextUser?.data?.bio || '',
+          imageUrl: contextUser?.data?.image || '',
+          email: contextUser?.data?.email || '',
+          alias: contextUser?.data?.alias || '',
+        };
       });
     }
   }, [contextUser?.data?.token]);
@@ -53,19 +62,32 @@ function SettingsPage(props) {
 
   const submitForm = async (e) => {
     e.preventDefault();
+
     if (validator.allValid()) {
+      setUser((previous) => {
+        return {
+          ...previous,
+          isLoading: true,
+        };
+      });
       const formData = new FormData();
 
       formData.append('name', user.name);
       formData.append('phone', user.phone);
       formData.append('address', user.address);
       formData.append('bio', user.bio);
+      if (contextUser.data?.email !== user.email) {
+        formData.append('email', user.email.trim());
+      }
+      if (contextUser.data?.alias !== user.alias) {
+        formData.append('alias', user.alias);
+      }
       if (newImage) {
         formData.append('image', newImage);
       }
 
       try {
-        const updatedUser = await fetch(
+        const response = await fetch(
           `${process.env.REACT_APP_API_BASE_URL}/api/user/update-by-id`,
           {
             method: 'POST',
@@ -75,8 +97,8 @@ function SettingsPage(props) {
               Authorization: `Bearer ${contextUser?.data?.token}`,
             },
           },
-        ).then((res) => res.json());
-
+        );
+        const updatedUser = await response.json();
         if (updatedUser?.ok) {
           setUser({
             name: updatedUser?.data?.name || '',
@@ -84,16 +106,25 @@ function SettingsPage(props) {
             address: updatedUser?.data?.address || '',
             bio: updatedUser?.data?.bio || '',
             imageUrl: updatedUser?.data?.image || '',
+            alias: updatedUser?.data?.alias || '',
+            email: updatedUser?.data?.email || '',
+            isLoading: false,
           });
           refreshLoggedInUser(updatedUser?.data);
           setNewImage(null);
           validator.hideMessages();
           toast.success('Profile Updated successfully!');
         } else {
-          throw new Error(updatedUser?.message);
+          throw new Error(updatedUser?.msg);
         }
       } catch (error) {
-        toast.error('Something went wrong');
+        toast.error(error?.message || 'Something went wrong');
+        setUser((previous) => {
+          return {
+            ...previous,
+            isLoading: false,
+          };
+        });
       }
     } else {
       validator.showMessages();
@@ -138,19 +169,34 @@ function SettingsPage(props) {
                                     />
                                   </Form.Group>
                                 </Col>
-                                {/* <Col>
-                                  <Form.Group
-                                    className="mb-3"
-                                    controlId="exampleForm.ControlInput1"
-                                  >
-                                    <Form.Label>Email address</Form.Label>
-                                    <Form.Control
-                                      type="email"
+                              </Row>
+                              <Row>
+                                <Col xs={12} md={6}>
+                                  <Form.Group className="mb-3">
+                                    <Form.Label>Email</Form.Label>
+                                    <FormControl
+                                      placeholder="Email"
+                                      aria-label="Email"
+                                      aria-describedby="basic-addon2"
                                       name="email"
-                                      placeholder="name@example.com"
+                                      value={user.email}
+                                      onChange={changeHandler}
                                     />
                                   </Form.Group>
-                                </Col> */}
+                                </Col>
+                                <Col xs={12} md={6}>
+                                  <Form.Group className="mb-3">
+                                    <Form.Label>Username</Form.Label>
+                                    <FormControl
+                                      placeholder="Username"
+                                      aria-label="Username"
+                                      aria-describedby="basic-addon2"
+                                      name="alias"
+                                      value={user.alias}
+                                      onChange={changeHandler}
+                                    />
+                                  </Form.Group>
+                                </Col>
                               </Row>
                               <Row>
                                 <Col>
@@ -207,6 +253,7 @@ function SettingsPage(props) {
                                     className="mt-3"
                                     variant="primary"
                                     type="submit"
+                                    disabled={user.isLoading}
                                   >
                                     Save
                                   </Button>
