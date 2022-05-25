@@ -12,6 +12,8 @@ import { convertUserData, generateOTP } from '../utils/helper';
 import { TOKEN_EXPIRATION_DATE } from '../config/constants';
 import axios from 'axios';
 
+const LOGIN_URL = 'https://stage.rahat-fundraise.pages.dev/login';
+
 export const registerUser = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
@@ -47,15 +49,17 @@ export const registerUser = async (req: IRequest, res: IResponse) => {
       from: senderEmail,
       to: email,
       subject: 'Welcome to Rahat',
-      text: `
+
+      html: `
+      
 Dear ${alias},
-
+<br/><br/>
 Thank you for signing up to Rahat Crowdfunding platform. Rahat Crowdfunding platform is an opensource platform which will help you collect fund for the needy people. 
-
-Please click here to login to your fundraiser account. 
-
+<br/><br/>
+Please click here to <a href="${LOGIN_URL}" target="_blank">login</a> to your fundraiser account. 
+<br/><br/>
 Thank you. 
-
+<br/><br/>
 Regrads, 
 Rahat Team `,
     };
@@ -304,6 +308,24 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({
         error: 'Must have one valid field to update',
       });
+    }
+
+    if (req.body.email) {
+      let existingUser: TUser = await User.findOne({
+        email: req.body.email,
+      });
+      if (existingUser) {
+        throw new Error(`This email is already registered.`);
+      }
+    }
+
+    if (req.body.alias) {
+      let existingUser = await User.findOne({
+        alias: req.body.alias,
+      });
+      if (existingUser) {
+        throw new Error(`Username already taken.`);
+      }
     }
 
     const imageUrl = req.file ? `/uploads/users/${req.file.filename}` : null;
