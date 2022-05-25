@@ -161,6 +161,7 @@ const EditFundraise = (props) => {
           };
         });
         toast.success('Published Campaign.');
+        SubmitHandler(e);
       } else {
         throw new Error('Could not complete action.');
       }
@@ -367,9 +368,6 @@ const EditFundraise = (props) => {
                             src={`${process.env.REACT_APP_API_BASE_URL}${value.image}`}
                             alt="campaign"
                           />
-                          {console.log(
-                            `${process.env.REACT_APP_API_BASE_URL}${value.image}`,
-                          )}
                         </div>
                         <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
                           <label for="formFileSm" class="form-label">
