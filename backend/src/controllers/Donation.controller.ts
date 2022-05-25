@@ -83,7 +83,7 @@ export const addDonation = async (req: IRequest, res: IResponse) => {
     const message = {
       from: senderEmail,
       to: campaign?.creator?.email,
-      subject: 'Welcome to Rahat',
+      subject: 'Donation Recieved',
       text: `
 Hello ${campaign?.creator?.alias},
 
