@@ -1,18 +1,35 @@
-import React,{useContext} from 'react';
+import React, { useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import QRCode from 'react-qr-code';
 import SimpleReactValidator from 'simple-react-validator';
 import { toast } from 'react-toastify';
-import { TextField } from '@material-ui/core';
+import './style.css';
+import { FormGroup, Label, Col, Input } from 'reactstrap';
+
 import { AppContext } from '../../modules/contexts';
 import { useWeb3React } from '@web3-react/core';
-
+import { useEffect } from 'react';
 
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
   const { account } = useWeb3React();
-  console.log(account, "wallet address")
+  console.log(account, 'wallet address');
+
+  const connected = async () => {
+    await connectMetaMask();
+    props.updateStore({
+      ...props.getStore(),
+      walletAddress: account,
+    });
+  };
+
+  useEffect(() => {
+    props.updateStore({
+      walletAddress: account,
+    });
+  }, [account]);
+
   const copyAddress = () => {
     const copyText = document.getElementById('wallet');
     const textArea = document.createElement('textarea');
@@ -76,21 +93,70 @@ const Step3 = (props) => {
   return (
     <div className="step step7">
       <div className="row">
+        <div
+          style={{
+            textAlign: 'center',
+          }}
+        >
+          {props.getStore()?.walletAddress ? (
+            <div className="mt-3 mb-2">
+              <FormGroup row>
+                <Col sm={8} xs={8}>
+                  <Input
+                    name="amount"
+                    type="number"
+                    placeholder="Enter Amount"
+                    onChange={handleChange}
+                  />
+                </Col>
+                <Col sm={4} xs={4}>
+                  <button
+                    onClick={handleSubmit}
+                    style={{
+                      background: '#0d6efd',
+                      borderRadius: '5px',
+                      color: 'white',
+                      // position: "absolute",
+                      padding: '0.3rem 1rem',
+                      fontSize: '1.25rem',
+                      border: 'none',
+                    }}
+                  >
+                    Donate
+                  </button>
+                </Col>
+              </FormGroup>
+            </div>
+          ) : (
+            <div className="mt-3 mb-2">
+              <p>Connect your wallet for donation</p>
+              <button
+                className="btn btn-lg"
+                onClick={connected}
+                style={{
+                  borderRadius: '5px',
+                  // position: 'absolute',
+                  padding: '0.5rem 1rem',
+                  fontSize: '1.25rem',
+                  border: 'none',
+                  background: '#0d6efd',
+                  color: 'white',
+                  fontSize: '20px',
+                  marginTop: '-10px',
+                }}
+              >
+                Connect Wallet
+              </button>
+            </div>
+          )}
+          <div className="text-center decoratio">or</div>
+        </div>
         <div>
-          <p className="text-center">
-            Use the address below to donate from your wallet.
-          </p>
-          <div className="text-center">
-            <img src="https://assets.rumsan.com/esatya/eth-icon.png" />
-          </div>
-
-//           <p className="text-center">Scan the QR code to donate</p>
-
-
+          <p className="text-center">Scan the QR code to donate</p>
           <div
             style={{
               background: 'white',
-              padding: '16px',
+              padding: '5px',
               display: 'flex',
               justifyContent: 'center',
             }}
@@ -108,57 +174,6 @@ const Step3 = (props) => {
           >
             walletAddress: {props.getStore().walletAddress}
           </p>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}
-        >
-          {props.getStore().walletAddress ? (
-            <div style={{ position: 'absolute' }}>
-              <div>
-                <TextField
-                  type="number"
-                  name="amount"
-                  label="Amount"
-                  onChange={handleChange}
-                  style={{ width: '100px' }}
-                />
-                <button
-                  onClick={handleSubmit}
-                  style={{
-                    background: '#0d6efd',
-                    borderRadius: '5px',
-                    color: 'white',
-                    // position: "absolute",
-                    padding: '0.5rem 1rem',
-                    fontSize: '1.25rem',
-                    border: 'none',
-                  }}
-                >
-                  Donate
-                </button>
-              </div>
-            </div>
-          ) : (
-            <button
-              className="btn btn-lg"
-              onClick={connectMetaMask}
-              style={{
-                borderRadius: '5px',
-                position: 'absolute',
-                padding: '0.5rem 1rem',
-                fontSize: '1.25rem',
-                border: 'none',
-                background: '#0d6efd',
-                color: 'white',
-                fontSize: '20px',
-              }}
-            >
-              Connect Wallet
-            </button>
-          )}
         </div>
       </div>
     </div>

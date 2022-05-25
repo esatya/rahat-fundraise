@@ -1,0 +1,27 @@
+.decoration:after, .decoration:before {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 12px;
+    height: 1px;
+    background-color: grey;
+    top: 50%;
+}
+
+.decoration:after {
+    right: 16px;
+}
+
+.decoration:before {
+    left: 16px;
+}
+
+
+.decoration {
+    position: relative;
+    display: inline-block;
+    font-size: 14px;
+    color: black;
+    /* margin: var(--space-2) 0; */
+    line-height: 1;
+}
