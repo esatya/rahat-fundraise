@@ -21,9 +21,9 @@ export const isJson = (str) => {
 };
 
 export const shortenString = (string) => {
-  return string
+  return string?.length > 8
     ? string?.slice(0, 4) +
         '...' +
         string?.slice(string?.length - 4, string?.length)
-    : '';
+    : string;
 };
