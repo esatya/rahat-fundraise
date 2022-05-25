@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
-import React, { useContext, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -10,7 +11,6 @@ import SimpleReactValidator from 'simple-react-validator';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import './style.scss';
-import UserContext from '../../context/user-context';
 
 const LoginPage = (props) => {
   const [value, setValue] = useState({
@@ -18,6 +18,14 @@ const LoginPage = (props) => {
     remember: false,
     isLoading: false,
   });
+  const [token, setToken] = useState(null);
+  const [validator] = useState(
+    new SimpleReactValidator({
+      className: 'errorMessage',
+    }),
+  );
+
+  const captchaRef = useRef(null);
 
   const changeHandler = (e) => {
     setValue({ ...value, [e.target.name]: e.target.value });
@@ -28,20 +36,28 @@ const LoginPage = (props) => {
     setValue({ ...value, remember: !value.remember });
   };
 
-  const [validator] = React.useState(
-    new SimpleReactValidator({
-      className: 'errorMessage',
-    }),
-  );
+  const onLoad = () => {
+    // this reaches out to the hCaptcha JS API and runs the
+    // execute function on it. you can use other functions as
+    // documented here:
+    // https://docs.hcaptcha.com/configuration#jsapi
+    captchaRef.current.execute();
+  };
 
   const submitForm = async (e) => {
     e.preventDefault();
+
+    if (!token) {
+      toast.warning('Please verify that you are a human.');
+      return;
+    }
     setValue((previous) => {
       return {
         ...previous,
         isLoading: true,
       };
     });
+
     if (validator.allValid()) {
       try {
         const resData = await fetch(
@@ -111,6 +127,7 @@ const LoginPage = (props) => {
       });
     }
   };
+
   return (
     <Grid className="loginWrapper">
       <Grid className="loginForm">
@@ -134,6 +151,15 @@ const LoginPage = (props) => {
                 onChange={(e) => changeHandler(e)}
               />
               {validator.message('email', value.email, 'required|email')}
+            </Grid>
+
+            <Grid item xs={12}>
+              <HCaptcha
+                sitekey={process.env.REACT_APP_HCAPTCHA_SITE_KEY}
+                onLoad={onLoad}
+                onVerify={setToken}
+                ref={captchaRef}
+              />
             </Grid>
 
             <Grid item xs={12}>

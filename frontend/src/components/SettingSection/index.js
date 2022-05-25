@@ -261,6 +261,7 @@ function SettingsPage(props) {
                                 id="profile-upload"
                                 className="d-none"
                                 type="file"
+                                accept=".jpg,.jpeg,.png"
                                 onChange={handleFileChange}
                               />
                             </Form.Group>
