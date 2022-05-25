@@ -1,6 +1,9 @@
 import { toast } from 'react-toastify';
 import React, { useState, Fragment, useContext } from 'react';
 import dayjs from 'dayjs';
+import { EditorState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import Logo from '../../images/logo.png';
 import Navbar from '../../components/Navbar';
@@ -8,13 +11,12 @@ import Footer from '../../components/footer';
 import PageTitle from '../../components/pagetitle';
 import UserContext from '../../context/user-context';
 import Scrollbar from '../../components/scrollbar';
-import { isObjEmpty } from '../../helper/helper';
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
     title: '',
     excerpt: '',
-    story: '',
+    story: EditorState.createEmpty(),
     target: '',
     expiryDate: '',
     walletType: 'Ethereum',
@@ -60,6 +62,15 @@ const FundraiseRegisterPage = (props) => {
   const SubmitHandler = async (e) => {
     e.preventDefault();
 
+    registerFundraise(0);
+  };
+
+  const RegisterAsDraft = (e) => {
+    e.preventDefault();
+    registerFundraise(1);
+  };
+
+  const registerFundraise = async (saveAsDraft) => {
     if (wallets?.length <= 0) {
       toast.info('Please add at least one wallet.');
       return;
@@ -68,11 +79,15 @@ const FundraiseRegisterPage = (props) => {
     const formData = new FormData();
     formData.append('title', value.title);
     formData.append('excerpt', value.excerpt);
-    formData.append('story', value.story);
+    formData.append(
+      'story',
+      JSON.stringify(convertToRaw(value.story.getCurrentContent())),
+    );
     formData.append('target', value.target);
     formData.append('expiryDate', dayjs(value.expiryDate).format('YYYY-MM-DD'));
     formData.append('image', image);
     formData.append('wallets', JSON.stringify(wallets));
+    formData.append('status', saveAsDraft ? 'DRAFT' : 'PUBLISHED');
 
     try {
       const resData = await fetch(
@@ -169,13 +184,20 @@ const FundraiseRegisterPage = (props) => {
                         <label for="fname" class="form-label">
                           Share Your Story
                         </label>
-                        <textarea
-                          className="form-control"
-                          name="story"
-                          id="note"
-                          placeholder="Minimum 200 words"
-                          onChange={changeHandler}
-                        ></textarea>
+
+                        <Editor
+                          editorState={value?.story}
+                          wrapperClassName="border border-1 p-2"
+                          editorClassName="editer-content"
+                          onEditorStateChange={(editorState) => {
+                            setValue((previous) => {
+                              return {
+                                ...previous,
+                                story: editorState,
+                              };
+                            });
+                          }}
+                        />
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-12 form-group">
                         <label for="formFileSm" class="form-label">
@@ -186,6 +208,7 @@ const FundraiseRegisterPage = (props) => {
                           class="form-control form-control-sm"
                           id="formFileSm"
                           type="file"
+                          accept=".jpg,.jpeg,.png"
                           onChange={handleFileChange}
                         />
                       </div>
@@ -242,8 +265,14 @@ const FundraiseRegisterPage = (props) => {
                   </div>
 
                   <div className="submit-area">
-                    <button type="submit" className="theme-btn submit-btn">
-                      Register
+                    <button type="submit" className="theme-btn submit-btn mx-2">
+                      Publish Campaign
+                    </button>
+                    <button
+                      className="theme-btn submit-btn mx-2"
+                      onClick={RegisterAsDraft}
+                    >
+                      Save As Draft
                     </button>
                   </div>
                 </form>
