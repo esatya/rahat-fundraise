@@ -58,6 +58,7 @@ const LoginPage = (props) => {
             method: 'POST',
             body: JSON.stringify({
               email: value.email,
+              captchaToken: token,
             }),
 
             headers: {

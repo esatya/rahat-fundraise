@@ -7,9 +7,10 @@ import { IRequest, IResponse } from '../interfaces/vendors';
 
 import User from '../models/User.model';
 import transporter from '../services/mail.service';
-import { secret, senderEmail } from '../config/keys';
+import { SITE_KEY, secret, senderEmail, HCAPTCHA_SECRET } from '../config/keys';
 import { convertUserData, generateOTP } from '../utils/helper';
 import { TOKEN_EXPIRATION_DATE } from '../config/constants';
+import axios from 'axios';
 
 export const registerUser = async (req: IRequest, res: IResponse) => {
   try {
@@ -83,6 +84,20 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ ok: false, errors: errors.array() });
     }
 
+    const captchaResponse = await axios.post(
+      'https://hcaptcha.com/siteverify',
+      new URLSearchParams({
+        response: req.body.captchaToken,
+        secret: HCAPTCHA_SECRET,
+      }),
+    );
+
+    if (!captchaResponse.data || !captchaResponse.data.success) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'Captcha could not be verified. Please try again.',
+      });
+    }
     const email: string = req.body.email;
     const user: TUser = await User.findOne({ email });
 
