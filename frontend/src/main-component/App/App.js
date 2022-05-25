@@ -13,9 +13,9 @@ const App = () => {
       <UserContextProvider>
         <AppContextProvider>
           <AllRoute />
-          <ToastContainer />
         </AppContextProvider>
       </UserContextProvider>
+      {/* <ToastContainer /> */}
     </div>
   );
 };
