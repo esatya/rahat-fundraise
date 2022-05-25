@@ -44,7 +44,7 @@ const CauseSinglePage = (props) => {
           <div className="row">
             <div className="col col-lg-7">
               <div className="wpo-case-details-wrap">
-                {campaign?.creator === user?.data?.id && (
+                {campaign?.creator?.id === user?.data?.id && (
                   <Link to={`/fundraise/${id}/edit`} className="theme-btn mb-4">
                     Edit
                   </Link>

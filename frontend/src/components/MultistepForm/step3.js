@@ -44,7 +44,7 @@ const Step3 = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const uuid = uuidv4();
     if (validator.allValid()) {
       const body = {
         ...props.getStore(),
@@ -53,7 +53,7 @@ const Step3 = (props) => {
           email: props.getStore().email,
           country: props.getStore().country,
         },
-        transactionId: uuidv4(),
+        transactionId: uuid,
         campaignId: props.campaign.id,
       };
       const resData = await fetch(
@@ -76,6 +76,11 @@ const Step3 = (props) => {
         props.setDonated(!props.donated);
         props.onChange({});
         props.refreshData();
+        props.updateStore({
+          ...props.getStore(),
+          donorAddress: account,
+          transactionHash: uuid,
+        });
         toast.success('Donation Complete successfully!');
       }
     } else {
