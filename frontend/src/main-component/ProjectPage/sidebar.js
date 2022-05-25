@@ -28,8 +28,6 @@ const CauseSidebar = (props) => {
     setDonations({ toggle: true });
   };
 
-  console.log(getStore());
-
   const steps = [
     {
       name: 'Pledge',
