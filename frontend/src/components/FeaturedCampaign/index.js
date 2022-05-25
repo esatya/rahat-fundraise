@@ -43,16 +43,23 @@ const CauseSection = (props) => {
                 <div className="wpo-campaign-single">
                   <div className="wpo-campaign-item">
                     <div className="wpo-campaign-img">
-                      <img
-                        src={`${process.env.REACT_APP_API_BASE_URL}${Cause.image}`}
-                        alt=""
-                      />
-                      {/* <span className="thumb">{Cause.thumb}</span> */}
+                      {Cause.image ? (
+                        <img
+                          src={`${process.env.REACT_APP_API_BASE_URL}${Cause.image}`}
+                          alt=""
+                          className="single-campaign-image"
+                        />
+                      ) : (
+                        <div className="single-campaign-image"></div>
+                      )}
                     </div>
                     <div className="wpo-campaign-content">
                       <div className="wpo-campaign-text-top">
                         <h2>
-                          <Link to={`/fundraise/${Cause.id}`}>
+                          <Link
+                            to={`/fundraise/${Cause.id}`}
+                            className="text-break"
+                          >
                             {Cause.title}
                           </Link>
                         </h2>
@@ -67,17 +74,7 @@ const CauseSection = (props) => {
                                     100
                                   ).toFixed(2)}%`,
                                 }}
-                              >
-                                <div className="progress-value">
-                                  <span>
-                                    {(
-                                      (Cause.amount / Cause.target) *
-                                      100
-                                    ).toFixed(2)}
-                                  </span>
-                                  %
-                                </div>
-                              </div>
+                              ></div>
                             </div>
                           </div>
                         </div>
@@ -106,7 +103,10 @@ const CauseSection = (props) => {
                                 />
                               </span>
                               <span>
-                                <Link to={`/fundraise/${Cause.id}`}>
+                                <Link
+                                  to={`/fundraise/${Cause.id}`}
+                                  className="text-break"
+                                >
                                   {Cause.creator?.name || Cause.creator?.alias}
                                 </Link>
                               </span>
