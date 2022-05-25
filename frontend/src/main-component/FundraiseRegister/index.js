@@ -1,6 +1,9 @@
 import { toast } from 'react-toastify';
 import React, { useState, Fragment, useContext } from 'react';
 import dayjs from 'dayjs';
+import { EditorState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import Logo from '../../images/logo.png';
 import Navbar from '../../components/Navbar';
@@ -13,7 +16,7 @@ const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
     title: '',
     excerpt: '',
-    story: '',
+    story: EditorState.createEmpty(),
     target: '',
     expiryDate: '',
     walletType: 'Ethereum',
@@ -76,7 +79,10 @@ const FundraiseRegisterPage = (props) => {
     const formData = new FormData();
     formData.append('title', value.title);
     formData.append('excerpt', value.excerpt);
-    formData.append('story', value.story);
+    formData.append(
+      'story',
+      JSON.stringify(convertToRaw(value.story.getCurrentContent())),
+    );
     formData.append('target', value.target);
     formData.append('expiryDate', dayjs(value.expiryDate).format('YYYY-MM-DD'));
     formData.append('image', image);
@@ -178,13 +184,20 @@ const FundraiseRegisterPage = (props) => {
                         <label for="fname" class="form-label">
                           Share Your Story
                         </label>
-                        <textarea
-                          className="form-control"
-                          name="story"
-                          id="note"
-                          placeholder="Minimum 200 words"
-                          onChange={changeHandler}
-                        ></textarea>
+
+                        <Editor
+                          editorState={value?.story}
+                          wrapperClassName="border border-1 p-2"
+                          editorClassName="editer-content"
+                          onEditorStateChange={(editorState) => {
+                            setValue((previous) => {
+                              return {
+                                ...previous,
+                                story: editorState,
+                              };
+                            });
+                          }}
+                        />
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-12 form-group">
                         <label for="formFileSm" class="form-label">
