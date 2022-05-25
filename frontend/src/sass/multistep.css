@@ -16,7 +16,7 @@ ol.progtrckr {
   
   @media (max-width: 650px) {
     .progtrckr li span {
-      display: none;
+      display: display;
     }
   }
   .progtrckr em {
@@ -27,7 +27,7 @@ ol.progtrckr {
   
   @media (max-width: 650px) {
     .progtrckr em {
-      display: inline;
+      display: none;
     }
   }
   

@@ -15,8 +15,6 @@ const CauseSidebar = (props) => {
 
   const [donation, setDonations] = useState({
     toggle: false,
-    amount: '',
-    project_name: '',
   });
   const getStore = () => {
     return sampleStore;
