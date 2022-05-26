@@ -17,7 +17,7 @@ const Step2 = (props) => {
       <div className="row">
         <form id="Form" className="form-horizontal">
           <FormControlLabel
-            className="mb-2"
+            className="mb-4"
             control={
               <Checkbox
                 name="isAnonymous"
