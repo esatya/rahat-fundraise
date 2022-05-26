@@ -171,7 +171,7 @@ const Step3 = (props) => {
           ) : (
             <div className="mt-3 mb-2">
               <p>Connect your wallet for donation</p>
-              <button className="btn-primary btn-lg btn" onClick={connected}>
+              <button className="btn-primary btn-lg btn btn-outline" onClick={connected}>
                 Connect Wallet
               </button>
             </div>
