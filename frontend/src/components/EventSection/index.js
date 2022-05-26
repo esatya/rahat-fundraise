@@ -51,7 +51,10 @@ const EventSection = (props) => {
                     <div className="wpo-campaign-content">
                       <div className="wpo-campaign-text-top">
                         <h2>
-                          <Link to={`/fundraise/${Cause.id}`}>
+                          <Link
+                            to={`/fundraise/${Cause.id}`}
+                            className="text-break"
+                          >
                             {Cause.title}
                           </Link>
                         </h2>
@@ -65,17 +68,7 @@ const EventSection = (props) => {
                                     (Cause.amount / Cause.target) * 100
                                   }%`,
                                 }}
-                              >
-                                <div className="progress-value">
-                                  <span>
-                                    {(
-                                      (Cause.amount / Cause.target) *
-                                      100
-                                    ).toFixed(2)}
-                                  </span>
-                                  %
-                                </div>
-                              </div>
+                              ></div>
                             </div>
                           </div>
                         </div>
@@ -104,7 +97,10 @@ const EventSection = (props) => {
                                 />
                               </span>
                               <span>
-                                <Link to={`/fundraise/${Cause.id}`}>
+                                <Link
+                                  to={`/fundraise/${Cause.id}`}
+                                  className="text-break"
+                                >
                                   {Cause.creator?.name || Cause.creator?.alias}
                                 </Link>
                               </span>

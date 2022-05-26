@@ -36,14 +36,6 @@ const LoginPage = (props) => {
     setValue({ ...value, remember: !value.remember });
   };
 
-  const onLoad = () => {
-    // this reaches out to the hCaptcha JS API and runs the
-    // execute function on it. you can use other functions as
-    // documented here:
-    // https://docs.hcaptcha.com/configuration#jsapi
-    captchaRef.current.execute();
-  };
-
   const submitForm = async (e) => {
     e.preventDefault();
 
@@ -66,6 +58,7 @@ const LoginPage = (props) => {
             method: 'POST',
             body: JSON.stringify({
               email: value.email,
+              captchaToken: token,
             }),
 
             headers: {
@@ -156,7 +149,6 @@ const LoginPage = (props) => {
             <Grid item xs={12}>
               <HCaptcha
                 sitekey={process.env.REACT_APP_HCAPTCHA_SITE_KEY}
-                onLoad={onLoad}
                 onVerify={setToken}
                 ref={captchaRef}
               />
