@@ -14,12 +14,34 @@ import {
   TabContent,
 } from 'reactstrap';
 import classnames from 'classnames';
+import { Dropdown } from 'react-bootstrap';
+import {
+  FacebookShareButton,
+  RedditShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+  TelegramShareButton,
+  ViberShareButton,
+  FacebookMessengerShareButton,
+  EmailShareButton,
+} from 'react-share';
+import {
+  FacebookIcon,
+  FacebookMessengerIcon,
+  LinkedinIcon,
+  RedditIcon,
+  TelegramIcon,
+  TwitterIcon,
+  ViberIcon,
+  EmailIcon,
+  LivejournalIcon,
+} from 'react-share';
 
 import cmt1 from '../../images/blog-details/comments-author/img-1.jpg';
 import cmt2 from '../../images/blog-details/comments-author/img-2.jpg';
 import cmt3 from '../../images/blog-details/comments-author/img-3.jpg';
 import dayjs from 'dayjs';
-import { isJson } from '../../helper/helper';
+import { isJson, shortenString } from '../../helper/helper';
 
 const CauseTabs = ({ campaign, donated }) => {
   const [activeTab, setActiveTab] = useState('1');
@@ -95,13 +117,18 @@ const CauseTabs = ({ campaign, donated }) => {
     }
   };
 
+  const copyAddress = (address) => {
+    navigator.clipboard.writeText(address);
+    toast.success('Copied to Clipboard.');
+  };
+
   if (!campaign) return <>No Campaign</>;
 
   return (
     <div>
       {campaign?.id && (
         <>
-          <div className="wpo-case-details-tab">
+          <div className="wpo-case-details-tab d-flex justify-content-between align-items-center">
             <Nav tabs>
               <NavItem>
                 <NavLink
@@ -134,6 +161,79 @@ const CauseTabs = ({ campaign, donated }) => {
             </NavLink>
           </NavItem> */}
             </Nav>
+            <div>
+              <Dropdown>
+                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                  Share
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item>
+                    <FacebookShareButton url={window.location.href}>
+                      <FacebookIcon size={32} round={true} className="mx-1" />{' '}
+                      Facebook
+                    </FacebookShareButton>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <RedditShareButton url={window.location.href}>
+                      <RedditIcon size={32} round={true} className="mx-1" />{' '}
+                      Reddit
+                    </RedditShareButton>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <TwitterShareButton url={window.location.href}>
+                      <TwitterIcon size={32} round={true} className="mx-1" />{' '}
+                      Twitter
+                    </TwitterShareButton>
+                  </Dropdown.Item>
+
+                  <Dropdown.Item>
+                    <LinkedinShareButton url={window.location.href}>
+                      <LinkedinIcon size={32} round={true} className="mx-1" />{' '}
+                      LinkedIn
+                    </LinkedinShareButton>
+                  </Dropdown.Item>
+
+                  <Dropdown.Item>
+                    <TelegramShareButton url={window.location.href}>
+                      <TelegramIcon size={32} round={true} className="mx-1" />
+                    </TelegramShareButton>{' '}
+                    Telegram
+                  </Dropdown.Item>
+
+                  <Dropdown.Item>
+                    <ViberShareButton url={window.location.href}>
+                      <ViberIcon size={32} round={true} className="mx-1" />
+                    </ViberShareButton>{' '}
+                    Viber
+                  </Dropdown.Item>
+
+                  <Dropdown.Item>
+                    <FacebookMessengerShareButton url={window.location.href}>
+                      <FacebookMessengerIcon
+                        size={32}
+                        round={true}
+                        className="mx-1"
+                      />
+                    </FacebookMessengerShareButton>{' '}
+                    Messenger
+                  </Dropdown.Item>
+
+                  <Dropdown.Item>
+                    <EmailShareButton url={window.location.href}>
+                      <EmailIcon size={32} round={true} className="mx-1" />
+                    </EmailShareButton>{' '}
+                    Email
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => copyAddress(window.location.href)}
+                  >
+                    <LivejournalIcon size={32} round={true} className="mx-1" />
+                    Copy Link
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
           </div>
           <div className="wpo-case-details-text">
             <TabContent activeTab={activeTab}>
@@ -231,7 +331,19 @@ const CauseTabs = ({ campaign, donated }) => {
                             />
                             {donations?.map((donation) => (
                               <tr>
-                                <td>{donation.walletAddress}</td>
+                                <td>
+                                  <span
+                                    onClick={() =>
+                                      copyAddress(donation.walletAddress)
+                                    }
+                                    className="c-p-primary"
+                                  >
+                                    {shortenString(donation.walletAddress)}
+                                    <span className=" ps-1">
+                                      <i className="fa fa-copy "></i>
+                                    </span>
+                                  </span>
+                                </td>
                                 <td>{`$${donation.amount}`}</td>
                                 <td>
                                   {
@@ -240,7 +352,18 @@ const CauseTabs = ({ campaign, donated }) => {
                                       .split('T')[0]
                                   }
                                 </td>
-                                <td>{donation.transactionId}</td>
+                                <td>
+                                  <a
+                                    href="#"
+                                    target="_blank"
+                                    className="text-decoration-underline text-default"
+                                  >
+                                    {shortenString(donation.transactionId)}
+                                    <span className=" ps-1">
+                                      <i className="fa fa-paperclip"></i>
+                                    </span>
+                                  </a>
+                                </td>
                               </tr>
                             ))}
                           </table>

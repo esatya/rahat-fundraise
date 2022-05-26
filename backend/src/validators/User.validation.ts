@@ -32,7 +32,10 @@ export const updateUserValidationRules: ValidationChain[] = [
   body('isActive').toBoolean(true).optional(),
 ];
 
-export const loginValidationRules = [body('email').exists().isEmail()];
+export const loginValidationRules = [
+  body('email').exists().isEmail(),
+  body('captchaToken').exists().isString(),
+];
 
 export const addWalletValidationRules: ValidationChain[] = [
   body('wallet').isString(),

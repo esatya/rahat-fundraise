@@ -196,6 +196,7 @@ const CauseTabs = (props) => {
                             <Link
                               onClick={ClickHandler}
                               to={`/fundraise/${Cause.id}`}
+                              className="text-break"
                             >
                               {Cause.title}
                             </Link>
@@ -210,17 +211,7 @@ const CauseTabs = (props) => {
                                       (Cause.amount / Cause.target) * 100
                                     }%`,
                                   }}
-                                >
-                                  <div className="progress-value">
-                                    <span>
-                                      {(
-                                        (Cause.amount / Cause.target) *
-                                        100
-                                      ).toFixed(2)}
-                                    </span>
-                                    %
-                                  </div>
-                                </div>
+                                ></div>
                               </div>
                             </div>
                           </div>
@@ -244,6 +235,7 @@ const CauseTabs = (props) => {
                                   <Link
                                     onClick={ClickHandler}
                                     to={`/fundraise/${Cause.id}`}
+                                    className="text-break"
                                   >
                                     {user.name || user?.alias}
                                   </Link>

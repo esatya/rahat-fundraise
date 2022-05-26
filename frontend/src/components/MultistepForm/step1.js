@@ -1,5 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import { shortenString } from '../../helper/helper';
 
 const Step1 = (props) => {
   const handleChange = (e) => {
@@ -29,7 +30,9 @@ const Step1 = (props) => {
                 {props.campaign?.wallets?.map((wallet, index) => {
                   return (
                     <option key={index} value={wallet.walletAddress}>
-                      {wallet.name + ' - ' + wallet?.walletAddress}
+                      {wallet.name +
+                        ' - ' +
+                        shortenString(wallet?.walletAddress)}
                     </option>
                   );
                 })}

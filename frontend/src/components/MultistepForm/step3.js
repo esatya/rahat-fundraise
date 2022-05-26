@@ -17,17 +17,7 @@ const Step3 = (props) => {
 
   const connected = async () => {
     await connectMetaMask();
-    props.updateStore({
-      ...props.getStore(),
-      walletAddress: account,
-    });
   };
-
-  useEffect(() => {
-    props.updateStore({
-      walletAddress: account,
-    });
-  }, [account]);
 
   const copyAddress = () => {
     const copyText = document.getElementById('wallet');
@@ -78,7 +68,7 @@ console.log(receipt.transactionHash)});
           email: props.getStore().email,
           country: props.getStore().country,
         },
-        transactionId: uuidv4(),
+        transactionId: uuid,
         campaignId: props.campaign.id,
       };
       const resData = await fetch(
@@ -100,6 +90,11 @@ console.log(receipt.transactionHash)});
         props.setDonated(!props.donated);
         props.onChange({});
         props.refreshData();
+        props.updateStore({
+          ...props.getStore(),
+          donorAddress: account,
+          transactionHash: uuid,
+        });
         toast.success('Donation Complete successfully!');
       }
     } else {
