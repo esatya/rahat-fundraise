@@ -159,7 +159,7 @@ const Step3 = (props) => {
               copyAddress();
             }}
           >
-         <div className={props.getStore().walletAddress?'d-block':'d-none'}><strong>Your wallet Address:</strong><br/> {props.getStore().walletAddress}</div>
+         <span className={props.getStore().walletAddress?'d-block':'d-none'}><strong>Your wallet Address:</strong><br/> {props.getStore().walletAddress}</span>
           </p>
         </div>
       </div>
