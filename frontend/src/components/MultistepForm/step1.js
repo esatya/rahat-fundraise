@@ -16,7 +16,7 @@ const Step1 = (props) => {
         <form id="Form" className="form-horizontal">
           <div className="form-group col-md-12 content form-block-holder">
             <label className="control-label col-md-12 mt-2">
-             <strong>Select Your Crypto</strong> 
+             <strong>Select Fundraiser's Wallet</strong> 
             </label>
             <div className="mt-2 mb-4">
               <select

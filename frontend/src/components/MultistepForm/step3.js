@@ -19,13 +19,13 @@ const Step3 = (props) => {
     await connectMetaMask();
     props.updateStore({
       ...props.getStore(),
-      walletAddress: account,
+      yourWalletAddress: account,
     });
   };
 
   useEffect(() => {
     props.updateStore({
-      walletAddress: account,
+      yourWalletAddress: account,
     });
   }, [account]);
 
@@ -123,25 +123,27 @@ const Step3 = (props) => {
             textAlign: "center",
           }}
         >
-          {props.getStore()?.walletAddress ? (
+          {props.getStore()?.yourWalletAddress ? (
             <div className="mt-3 mb-2">
               <FormGroup row className="mt-3">
                 <Col sm={12}>
                   <p className="text-center">
+                    <small>
                     <strong>Your wallet Address is:</strong>
                     <a
                       id="wallet"
                       onClick={() => {
                         copyAddress();
                       }}
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: "pointer",color:'#4f555a'}}
                       className={
-                        props.getStore().walletAddress ? "d-block " : "d-none"
+                        props.getStore().yourWalletAddress ? "d-block " : "d-none"
                       }
                       title="Click to copy Wallet address"
                     >
-                      {props.getStore().walletAddress}
+                      {props.getStore().yourWalletAddress}
                     </a>
+                    </small>
                   </p>
                 </Col>
                 <Col
@@ -174,7 +176,7 @@ const Step3 = (props) => {
               </button>
             </div>
           )}
-          <div className="text-center decoratio">or</div>
+          <div className="text-center decoration">or</div>
         </div>
         <div>
           <p className="text-center">Scan the QR code to donate</p>
@@ -192,6 +194,7 @@ const Step3 = (props) => {
               value={props.getStore().walletAddress || "Wallet not selected"}
             />
           </div>
+          <p className={props.getStore().walletAddress?'d-block text-center':'d-none'} ><small><strong>Fundraiser's Wallet:</strong> {props.getStore().walletAddress?props.getStore().walletAddress:""}</small></p>
         </div>
       </div>
     </div>
