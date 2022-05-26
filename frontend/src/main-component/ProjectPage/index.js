@@ -43,26 +43,23 @@ const CauseSinglePage = (props) => {
         <div className="container">
           <div className="row">
             <div className="col col-lg-7">
-              <div className="wpo-case-details-wrap">
-                {campaign?.creator?.id === user?.data?.id && (
-                  <Link to={`/fundraise/${id}/edit`} className="theme-btn mb-4">
-                    Edit
-                  </Link>
-                )}
+              <div className="wpo-case-details-wrap text-center">
+                
                 <div className="wpo-case-details-img d-flex justify-content-center">
                   {campaign?.image && (
                     <img
                       src={`${process.env.REACT_APP_API_BASE_URL}${campaign?.image}`}
                       alt=""
-                      style={{
-                        maxHeight: 400,
-                        objectFit: 'none',
-                        width: 'auto',
-                        maxWidth: '100%',
-                      }}
+                     className='img-fluid'
+                     style={{maxHeight:"400px",width:'100%',objectFit:'contain'}}
                     />
                   )}
                 </div>
+                {campaign?.creator?.id === user?.data?.id && (
+                  <Link to={`/fundraise/${id}/edit`} className="btn-primary btn btn-md mt-4">
+                    Edit Campaign
+                  </Link>
+                )}
                 <CauseTabs campaign={campaign} donated={donated} />
               </div>
             </div>
