@@ -1,20 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useState,useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import QRCode from "react-qr-code";
 import SimpleReactValidator from "simple-react-validator";
 import { toast } from "react-toastify";
 import "./style.css";
-import { FormGroup, Label, Col, Input } from "reactstrap";
+import { FormGroup, Label, Col, Input, Form } from "reactstrap";
 
 import { AppContext } from "../../modules/contexts";
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
+import { getLatestPrice } from "../../modules/charges/services";
 
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
   const { account, library } = useWeb3React();
-
+  const [fiatPrice,setFiatPrice]=useState()
+  
+  const fetchAndSetFiatPrice= async()=>{
+    const current_unit_price = await getLatestPrice({ token: 'bnb', currency:'usd' });
+    setFiatPrice(current_unit_price.USD*props.getStore().amount)
+  } 
+  
   const connected = async () => {
     await connectMetaMask();
     props.updateStore({
@@ -22,6 +29,11 @@ const Step3 = (props) => {
       yourWalletAddress: account,
     });
   };
+
+	useEffect(() => {
+		fetchAndSetFiatPrice();
+	}, [fetchAndSetFiatPrice]);
+
 
   useEffect(() => {
     props.updateStore({
@@ -145,24 +157,30 @@ const Step3 = (props) => {
                     </small>
                   </p>
                 </Col>
-                <Col
+              </FormGroup>
+              <FormGroup row className="p-3 bg-light">
+              <Col
                   sm={8}
-                  xs={8}
-                  className="d-flex align-item-center justify-content-center"
                 >
                   <Input
                     name="amount"
                     type="number"
-                    placeholder="Enter Amount"
+                    placeholder="Enter Amount in BNB"
                     onChange={handleChange}
                   />
+                
                 </Col>
-                <Col sm={4} xs={4}>
+                <Col sm={4} className="d-flex justify-content-center align-item-center">
+                  <small><strong>Price in USD:</strong> ${fiatPrice?fiatPrice.toFixed(2):"0"}</small>
+                </Col>
+              </FormGroup>
+              <FormGroup>
+              <Col sm={12} >
                   <button
                     onClick={handleSubmit}
-                    className="btn-primary btn-lg btn"
+                    className="btn-primary btn-lg btn btn-block mt-3"
                   >
-                    Donate
+                    Donate Now
                   </button>
                 </Col>
               </FormGroup>
