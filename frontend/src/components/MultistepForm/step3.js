@@ -71,7 +71,6 @@ const Step3 = (props) => {
         {
           method: 'POST',
           body: JSON.stringify(body),
-
           headers: {
             'Content-Type': 'application/json',
           },
@@ -105,8 +104,10 @@ const Step3 = (props) => {
         >
           {props.getStore()?.walletAddress ? (
             <div className="mt-3 mb-2">
-              <FormGroup row>
-                <Col sm={8} xs={8}>
+              <div><strong>Your wallet Address:</strong> {props.getStore().walletAddress}</div>
+              <FormGroup row className='mt-3'>
+                <Col sm={8} xs={8} className="d-flex align-item-center justify-content-center"
+>
                   <Input
                     name="amount"
                     type="number"
@@ -117,15 +118,7 @@ const Step3 = (props) => {
                 <Col sm={4} xs={4}>
                   <button
                     onClick={handleSubmit}
-                    style={{
-                      background: '#0d6efd',
-                      borderRadius: '5px',
-                      color: 'white',
-                      // position: "absolute",
-                      padding: '0.3rem 1rem',
-                      fontSize: '1.25rem',
-                      border: 'none',
-                    }}
+                 className="theme-btn btn-sm"
                   >
                     Donate
                   </button>
@@ -136,19 +129,9 @@ const Step3 = (props) => {
             <div className="mt-3 mb-2">
               <p>Connect your wallet for donation</p>
               <button
-                className="btn btn-lg"
+                className="theme-btn"
                 onClick={connected}
-                style={{
-                  borderRadius: '5px',
-                  // position: 'absolute',
-                  padding: '0.5rem 1rem',
-                  fontSize: '1.25rem',
-                  border: 'none',
-                  background: '#0d6efd',
-                  color: 'white',
-                  fontSize: '20px',
-                  marginTop: '-10px',
-                }}
+              
               >
                 Connect Wallet
               </button>
@@ -177,7 +160,6 @@ const Step3 = (props) => {
               copyAddress();
             }}
           >
-            walletAddress: {props.getStore().walletAddress}
           </p>
         </div>
       </div>
