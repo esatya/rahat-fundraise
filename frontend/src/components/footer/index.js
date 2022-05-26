@@ -32,43 +32,33 @@ const Footer = (props) => {
                 </p>
 
                 <div className="company-logo">
-                  <Link href="https://hamrolifebank.com/">
-                    <a target="_blank">
+                  <a href="https://hamrolifebank.com/" target="_blank">
                       <img src="https://assets.rumsan.com/esatya/hlb-blk-rumsan.png" />
-                    </a>
-                  </Link>
-                  <Link href="https://askbhunte.com/">
-                    <a target="_blank">
+                  </a>
+                  <a href="https://askbhunte.com/"  target="_blank"> 
                       <img
                         src="https://assets.rumsan.com/askbhunte/assets/askbhunte-sq.png"
                         alt=""
                       />
-                    </a>
-                  </Link>
-                  <Link href="https://agriclear.io/">
-                    <a target="_blank">
+                  </a>
+                  <a href="https://agriclear.io/"  target="_blank">
                       <img
                         src="https://assets.rumsan.com/esatya/agriclear-sq.png"
                         alt=""
                       />
-                    </a>
-                  </Link>
-                  <Link href="https://esatya.io/">
-                    <a target="_blank">
+                  </a>
+                  <a href="https://esatya.io/"  target="_blank">
                       <img
                         src="https://assets.rumsan.com/esatya/esatya-square-logo-500x500.png"
                         alt=""
                       />
-                    </a>
-                  </Link>
-                  <Link href="https://lonetreenepal.com/">
-                    <a target="_blank">
+                  </a>
+                  <a href="https://lonetreenepal.com/"  target="_blank">
                       <img
                         src="https://assets.rumsan.com/rumsan-test/lonetree-100x100.png"
                         alt=""
                       />
-                    </a>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
