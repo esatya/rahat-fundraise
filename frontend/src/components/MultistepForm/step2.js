@@ -2,6 +2,7 @@ import React from 'react';
 
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { COUNTRY_LIST } from '../../helper/constants';
 
 const Step2 = (props) => {
   const handleChange = (e) => {
@@ -59,18 +60,20 @@ const Step2 = (props) => {
                   onChange={handleChange}
                 />
               </div>
-              <label className="control-label col-md-6">Address</label>
+              <label className="control-label col-md-6">Country</label>
               <div>
-                <input
-                  name="address"
-                  autoComplete="off"
-                  type="text"
+                <select
+                  id="country"
+                  name="country"
                   className="form-control"
-                  required
-                  defaultValue={''}
-                  value={props.getStore().address}
+                  value={props.getStore().country}
                   onChange={handleChange}
-                />
+                  defaultValue=" "
+                >
+                  {Object.entries(COUNTRY_LIST).map((country) => (
+                    <option value={country[0]}>{country[1]}</option>
+                  ))}
+                </select>
               </div>
             </div>
           )}
