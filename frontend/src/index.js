@@ -8,6 +8,7 @@ import './css/themify-icons.css';
 import './css/flaticon.css';
 import Web3 from 'web3';
 import { Web3ReactProvider } from '@web3-react/core';
+import { ToastContainer } from 'react-toastify';
 
 function getLibrary(provider) {
   const library = new Web3(provider);
@@ -18,6 +19,7 @@ function getLibrary(provider) {
 ReactDOM.render(
   <Web3ReactProvider getLibrary={getLibrary}>
     <App />
+    <ToastContainer position="bottom-right" />
   </Web3ReactProvider>,
   document.getElementById('root'),
 );

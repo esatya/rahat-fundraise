@@ -75,7 +75,7 @@ const CauseSidebar = (props) => {
                 </p>
                 <p className="mt-4">
                   Thank you for your generous contribution of{' '}
-                  <strong>{sampleStore?.amount || 0}</strong> to{' '}
+                  <strong>{sampleStore?.amount || 0} ETH</strong> to{' '}
                   <strong>{props.campaign?.title}</strong>.
                 </p>
               </div>
@@ -84,10 +84,10 @@ const CauseSidebar = (props) => {
                   Amount : <strong>{sampleStore?.amount || 0}</strong>
                 </p>
                 <p className="height-height">
-                  Wallet address : <strong>dcxas323</strong>
+                  Wallet address : <strong>{sampleStore?.donorAddress}</strong>
                 </p>
                 <p className="height-height">
-                  TXN Hash : <strong>df342</strong>
+                  TXN Hash : <strong>{sampleStore?.transactionHash}</strong>
                 </p>
                 <p className="height-height">
                   Date : <strong>{dayjs().format('YYYY-MM-DD')}</strong>
@@ -110,7 +110,10 @@ const CauseSidebar = (props) => {
               <div className="mt-4">
                 <p>Regards</p>
                 <p className="height-height-1">
-                  <strong>Campaign Creator</strong>
+                  <strong>
+                    {props.campaign.creator.name ||
+                      props.campaign.creator.alias}
+                  </strong>
                 </p>
               </div>
             </div>

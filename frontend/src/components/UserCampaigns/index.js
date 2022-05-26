@@ -77,6 +77,7 @@ const UserCampaigns = (props) => {
                             <Link
                               onClick={ClickHandler}
                               to={`/fundraise/${Cause.id}`}
+                              className="text-break"
                             >
                               {Cause.title}
                             </Link>
@@ -91,17 +92,7 @@ const UserCampaigns = (props) => {
                                       (Cause.amount / Cause.target) * 100
                                     }%`,
                                   }}
-                                >
-                                  <div className="progress-value">
-                                    <span>
-                                      {(
-                                        (Cause.amount / Cause.target) *
-                                        100
-                                      ).toFixed(2)}
-                                    </span>
-                                    %
-                                  </div>
-                                </div>
+                                ></div>
                               </div>
                             </div>
                           </div>
@@ -125,6 +116,7 @@ const UserCampaigns = (props) => {
                                   <Link
                                     onClick={ClickHandler}
                                     to={`/fundraise/${Cause.id}`}
+                                    className="text-break"
                                   >
                                     {user.name || user?.alias}
                                   </Link>
