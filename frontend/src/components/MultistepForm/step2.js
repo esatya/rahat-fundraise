@@ -71,7 +71,7 @@ const Step2 = (props) => {
                   defaultValue=" "
                 >
                   {Object.entries(COUNTRY_LIST).map((country) => (
-                    <option value={country[0]}>{country[1]}</option>
+                    <option key={country[0]} value={country[0]}>{country[1]}</option>
                   ))}
                 </select>
               </div>
