@@ -117,7 +117,7 @@ const Step3 = (props) => {
                 <Col sm={4} xs={4}>
                   <button
                     onClick={handleSubmit}
-                 className="theme-btn btn-sm"
+                 className="btn-primary btn-lg btn"
                   >
                     Donate
                   </button>
@@ -128,7 +128,7 @@ const Step3 = (props) => {
             <div className="mt-3 mb-2">
               <p>Connect your wallet for donation</p>
               <button
-                className="theme-btn"
+                className="btn-primary btn-lg btn"
                 onClick={connected}
               
               >
@@ -153,7 +153,7 @@ const Step3 = (props) => {
             />
           </div>
           <p
-            className="text-center"
+            className="text-center mt-2"
             id="wallet"
             onClick={() => {
               copyAddress();
