@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
-  const { account } = useWeb3React();
+  const { account,library } = useWeb3React();
 
   const connected = async () => {
     await connectMetaMask();
@@ -54,6 +54,21 @@ const Step3 = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+   const weiAmount=library.utils.toWei( props.getStore().amount)
+  //  const trasaction= await library.eth.sendTransaction({
+  //     value:weiAmount,
+  //     from:account,
+  //     to:"0xc38c9f707A89c93eb09Ef8DE02119fa4a709503d"
+  //   })
+
+    // using the promise
+    await library.eth.sendTransaction({
+  from: account,
+  to: '0xc38c9f707A89c93eb09Ef8DE02119fa4a709503d',
+  value: weiAmount
+})
+.then(function(receipt){
+console.log(receipt.transactionHash)});
 
     if (validator.allValid()) {
       const body = {
@@ -105,6 +120,17 @@ const Step3 = (props) => {
           {props.getStore()?.walletAddress ? (
             <div className="mt-3 mb-2">
               <FormGroup row className='mt-3'>
+                <Col sm={12}>
+                <p
+            className="text-center mt-2"
+            id="wallet"
+            onClick={() => {
+              copyAddress();
+            }}
+          >
+         <span className={props.getStore().walletAddress?'d-block':'d-none'}><strong>Your wallet Address:</strong><br/> {props.getStore().walletAddress}</span>
+          </p>
+                </Col>
                 <Col sm={8} xs={8} className="d-flex align-item-center justify-content-center"
 >
                   <Input
@@ -152,15 +178,7 @@ const Step3 = (props) => {
               value={props.getStore().walletAddress || 'Wallet not selected'}
             />
           </div>
-          <p
-            className="text-center mt-2"
-            id="wallet"
-            onClick={() => {
-              copyAddress();
-            }}
-          >
-         <span className={props.getStore().walletAddress?'d-block':'d-none'}><strong>Your wallet Address:</strong><br/> {props.getStore().walletAddress}</span>
-          </p>
+       
         </div>
       </div>
     </div>
