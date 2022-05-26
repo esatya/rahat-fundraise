@@ -104,7 +104,6 @@ const Step3 = (props) => {
         >
           {props.getStore()?.walletAddress ? (
             <div className="mt-3 mb-2">
-              <div><strong>Your wallet Address:</strong> {props.getStore().walletAddress}</div>
               <FormGroup row className='mt-3'>
                 <Col sm={8} xs={8} className="d-flex align-item-center justify-content-center"
 >
@@ -160,6 +159,7 @@ const Step3 = (props) => {
               copyAddress();
             }}
           >
+         <div className={props.getStore().walletAddress?'d-block':'d-none'}><strong>Your wallet Address:</strong><br/> {props.getStore().walletAddress}</div>
           </p>
         </div>
       </div>
