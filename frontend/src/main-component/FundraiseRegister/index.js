@@ -11,7 +11,7 @@ import Footer from '../../components/footer';
 import PageTitle from '../../components/pagetitle';
 import UserContext from '../../context/user-context';
 import Scrollbar from '../../components/scrollbar';
-import { useWeb3React } from '@web3-react/core';
+import web3 from'web3';
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
@@ -24,9 +24,6 @@ const FundraiseRegisterPage = (props) => {
     walletAddress: '',
   });
 
-  const { library } = useWeb3React();
-
-  console.log(library,"asds")
   const [wallets, setWallets] = useState([]);
 
   const { user } = useContext(UserContext);
@@ -48,8 +45,7 @@ const FundraiseRegisterPage = (props) => {
 
   const handleWalletSave = (event) => {
     event.preventDefault();
-  //  const isValidAddress= library.utils.isAddress(value.walletAddress)
-  const isValidAddress=true;
+   const isValidAddress= web3.utils.isAddress(value.walletAddress);
     if(isValidAddress){
       setWallets(
         wallets.concat({
