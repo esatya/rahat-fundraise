@@ -36,3 +36,12 @@ ol.progtrckr li.progtrckr-done:before{
 .MuiCheckbox-colorSecondary.Mui-checked{
     color:#2876B3 !important;
 }
+
+ol.progtrckr li.progtrckr-doing:hover:before{
+    color:#2876B3 !important;
+
+}
+ol.progtrckr li.progtrckr-todo:hover:before{
+    color:#2876B3 !important;
+
+}
