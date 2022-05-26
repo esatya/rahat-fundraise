@@ -54,24 +54,22 @@ const Step3 = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const weiAmount = library.utils.toWei(props.getStore().amount);
-    //  const trasaction= await library.eth.sendTransaction({
-    //     value:weiAmount,
-    //     from:account,
-    //     to:"0xc38c9f707A89c93eb09Ef8DE02119fa4a709503d"
-    //   })
 
-    // using the promise
-    await library.eth
-      .sendTransaction({
-        from: account,
-        to: "0xc38c9f707A89c93eb09Ef8DE02119fa4a709503d",
-        value: weiAmount,
-      })
-      .then(function (receipt) {
-        console.log(receipt.transactionHash);
+    toast.info('Please Wait your transaction is being processed...!!', {
+      position: "bottom-right",
+      autoClose: 25000,
+      hideProgressBar: true,
+      loading:true
       });
 
+    const weiAmount = library.utils.toWei(props.getStore().amount);
+    const receipt= await library.eth
+      .sendTransaction({
+        from: account,
+        to: props.getStore().walletAddress,
+        value: weiAmount,
+      })
+  
     if (validator.allValid()) {
       const body = {
         ...props.getStore(),
@@ -80,7 +78,7 @@ const Step3 = (props) => {
           email: props.getStore().email,
           country: props.getStore().country,
         },
-        // transactionId: uuid,
+        transactionId: receipt.transactionHash,
         campaignId: props.campaign.id,
       };
       const resData = await fetch(
@@ -105,8 +103,9 @@ const Step3 = (props) => {
         props.updateStore({
           ...props.getStore(),
           donorAddress: account,
-          // transactionHash: uuid,
+          transactionHash: receipt.transactionHash,
         });
+        toast.dismiss()
         toast.success("Donation Complete successfully!");
       }
     } else {
