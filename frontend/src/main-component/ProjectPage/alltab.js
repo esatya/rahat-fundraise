@@ -316,21 +316,24 @@ const CauseTabs = ({ campaign, donated }) => {
                         </div>
                         <div className="row">
                           <table>
+                            <thead>
                             <tr>
                               <th>Wallet Address</th>
                               <th>Amount</th>
                               <th>Donation Date</th>
                               <th>Transaction Id</th>
                             </tr>
-                            <hr
+                            </thead>
+                            <tbody>
+                            {/* <hr
                               style={{
                                 height: '2px',
                                 width: '100%',
                                 color: '#217ec2',
                               }}
-                            />
+                            /> */}
                             {donations?.map((donation) => (
-                              <tr>
+                              <tr key={donation.id}>
                                 <td>
                                   <span
                                     onClick={() =>
@@ -366,6 +369,7 @@ const CauseTabs = ({ campaign, donated }) => {
                                 </td>
                               </tr>
                             ))}
+                            </tbody>
                           </table>
                         </div>
                       </div>
