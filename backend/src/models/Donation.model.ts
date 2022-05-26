@@ -15,7 +15,7 @@ const DonationSchema = new mongoose.Schema<IDonation>(
     donor: {
       fullName: String,
       email: String,
-      address: String,
+      country: String,
     },
     isAnonymous: { type: Boolean, required: true, default: false },
     emailReceipt: { type: String },
