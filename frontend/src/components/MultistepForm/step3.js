@@ -1,27 +1,37 @@
-import React, { useContext } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useContext } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-import QRCode from 'react-qr-code';
-import SimpleReactValidator from 'simple-react-validator';
-import { toast } from 'react-toastify';
-import './style.css';
-import { FormGroup, Label, Col, Input } from 'reactstrap';
+import QRCode from "react-qr-code";
+import SimpleReactValidator from "simple-react-validator";
+import { toast } from "react-toastify";
+import "./style.css";
+import { FormGroup, Label, Col, Input } from "reactstrap";
 
-import { AppContext } from '../../modules/contexts';
-import { useWeb3React } from '@web3-react/core';
-import { useEffect } from 'react';
+import { AppContext } from "../../modules/contexts";
+import { useWeb3React } from "@web3-react/core";
+import { useEffect } from "react";
 
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
-  const { account,library } = useWeb3React();
+  const { account, library } = useWeb3React();
 
   const connected = async () => {
     await connectMetaMask();
+    props.updateStore({
+      ...props.getStore(),
+      walletAddress: account,
+    });
   };
 
+  useEffect(() => {
+    props.updateStore({
+      walletAddress: account,
+    });
+  }, [account]);
+
   const copyAddress = () => {
-    const copyText = document.getElementById('wallet');
-    const textArea = document.createElement('textarea');
+    const copyText = document.getElementById("wallet");
+    const textArea = document.createElement("textarea");
     textArea.value = copyText.textContent;
     document.body.appendChild(textArea);
     textArea.select();
@@ -31,8 +41,8 @@ const Step3 = (props) => {
 
   const [validator] = React.useState(
     new SimpleReactValidator({
-      className: 'errorMessage',
-    }),
+      className: "errorMessage",
+    })
   );
 
   const handleChange = (e) => {
@@ -44,21 +54,23 @@ const Step3 = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   const weiAmount=library.utils.toWei( props.getStore().amount)
-  //  const trasaction= await library.eth.sendTransaction({
-  //     value:weiAmount,
-  //     from:account,
-  //     to:"0xc38c9f707A89c93eb09Ef8DE02119fa4a709503d"
-  //   })
+    const weiAmount = library.utils.toWei(props.getStore().amount);
+    //  const trasaction= await library.eth.sendTransaction({
+    //     value:weiAmount,
+    //     from:account,
+    //     to:"0xc38c9f707A89c93eb09Ef8DE02119fa4a709503d"
+    //   })
 
     // using the promise
-    await library.eth.sendTransaction({
-  from: account,
-  to: '0xc38c9f707A89c93eb09Ef8DE02119fa4a709503d',
-  value: weiAmount
-})
-.then(function(receipt){
-console.log(receipt.transactionHash)});
+    await library.eth
+      .sendTransaction({
+        from: account,
+        to: "0xc38c9f707A89c93eb09Ef8DE02119fa4a709503d",
+        value: weiAmount,
+      })
+      .then(function (receipt) {
+        console.log(receipt.transactionHash);
+      });
 
     if (validator.allValid()) {
       const body = {
@@ -68,18 +80,18 @@ console.log(receipt.transactionHash)});
           email: props.getStore().email,
           country: props.getStore().country,
         },
-        transactionId: uuid,
+        // transactionId: uuid,
         campaignId: props.campaign.id,
       };
       const resData = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
         {
-          method: 'POST',
+          method: "POST",
           body: JSON.stringify(body),
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-        },
+        }
       ).then((res) => res.json());
 
       validator.hideMessages();
@@ -93,41 +105,50 @@ console.log(receipt.transactionHash)});
         props.updateStore({
           ...props.getStore(),
           donorAddress: account,
-          transactionHash: uuid,
+          // transactionHash: uuid,
         });
-        toast.success('Donation Complete successfully!');
+        toast.success("Donation Complete successfully!");
       }
     } else {
       validator.showMessages();
-      return toast.error('Empty field is not allowed!');
+      return toast.error("Empty field is not allowed!");
     }
   };
-
 
   return (
     <div className="step step7">
       <div className="row">
         <div
           style={{
-            textAlign: 'center',
+            textAlign: "center",
           }}
         >
           {props.getStore()?.walletAddress ? (
             <div className="mt-3 mb-2">
-              <FormGroup row className='mt-3'>
+              <FormGroup row className="mt-3">
                 <Col sm={12}>
-                <p
-            className="text-center mt-2"
-            id="wallet"
-            onClick={() => {
-              copyAddress();
-            }}
-          >
-         <span className={props.getStore().walletAddress?'d-block':'d-none'}><strong>Your wallet Address:</strong><br/> {props.getStore().walletAddress}</span>
-          </p>
+                  <p className="text-center">
+                    <strong>Your wallet Address is:</strong>
+                    <a
+                      id="wallet"
+                      onClick={() => {
+                        copyAddress();
+                      }}
+                      style={{ cursor: "pointer" }}
+                      className={
+                        props.getStore().walletAddress ? "d-block " : "d-none"
+                      }
+                      title="Click to copy Wallet address"
+                    >
+                      {props.getStore().walletAddress}
+                    </a>
+                  </p>
                 </Col>
-                <Col sm={8} xs={8} className="d-flex align-item-center justify-content-center"
->
+                <Col
+                  sm={8}
+                  xs={8}
+                  className="d-flex align-item-center justify-content-center"
+                >
                   <Input
                     name="amount"
                     type="number"
@@ -138,7 +159,7 @@ console.log(receipt.transactionHash)});
                 <Col sm={4} xs={4}>
                   <button
                     onClick={handleSubmit}
-                 className="btn-primary btn-lg btn"
+                    className="btn-primary btn-lg btn"
                   >
                     Donate
                   </button>
@@ -148,11 +169,7 @@ console.log(receipt.transactionHash)});
           ) : (
             <div className="mt-3 mb-2">
               <p>Connect your wallet for donation</p>
-              <button
-                className="btn-primary btn-lg btn"
-                onClick={connected}
-              
-              >
+              <button className="btn-primary btn-lg btn" onClick={connected}>
                 Connect Wallet
               </button>
             </div>
@@ -163,17 +180,18 @@ console.log(receipt.transactionHash)});
           <p className="text-center">Scan the QR code to donate</p>
           <div
             style={{
-              background: 'white',
-              padding: '5px',
-              display: 'flex',
-              justifyContent: 'center',
+              background: "#8080803b",
+              paddingTop: "2rem",
+              paddingBottom: "2rem",
+              marginBottom: "1rem",
+              display: "flex",
+              justifyContent: "center",
             }}
           >
             <QRCode
-              value={props.getStore().walletAddress || 'Wallet not selected'}
+              value={props.getStore().walletAddress || "Wallet not selected"}
             />
           </div>
-       
         </div>
       </div>
     </div>
