@@ -75,6 +75,10 @@ const FundraiseRegisterPage = (props) => {
       toast.info('Please add at least one wallet.');
       return;
     }
+    if (value.excerpt?.length > 100) {
+      toast.info('Tagline Cannot be more than 100 words.');
+      return;
+    }
 
     const formData = new FormData();
     formData.append('title', value.title);
@@ -163,7 +167,8 @@ const FundraiseRegisterPage = (props) => {
                           className="form-control"
                           name="title"
                           id="fname"
-                          placeholder="Max 50 words"
+                          placeholder="Max 50 letters"
+                          maxLength={50}
                           onChange={changeHandler}
                         />
                       </div>
@@ -176,7 +181,8 @@ const FundraiseRegisterPage = (props) => {
                           className="form-control"
                           name="excerpt"
                           id="fname"
-                          placeholder="Max 100 words"
+                          placeholder="Max 100 letters"
+                          maxLength={100}
                           onChange={changeHandler}
                         />
                       </div>

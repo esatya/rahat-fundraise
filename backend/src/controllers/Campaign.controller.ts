@@ -388,7 +388,7 @@ export const getCampaignById = async (req: IRequest, res: IResponse) => {
     const campaign = await Campaign.findOne({
       _id: campaignId,
       //   status: 'PUBLISHED',
-    });
+    }).populate('creator');
 
     if (!campaign) {
       throw new Error(`Campaign not found.`);

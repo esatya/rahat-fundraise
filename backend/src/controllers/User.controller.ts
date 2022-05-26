@@ -7,9 +7,12 @@ import { IRequest, IResponse } from '../interfaces/vendors';
 
 import User from '../models/User.model';
 import transporter from '../services/mail.service';
-import { secret, senderEmail } from '../config/keys';
+import { SITE_KEY, secret, senderEmail, HCAPTCHA_SECRET } from '../config/keys';
 import { convertUserData, generateOTP } from '../utils/helper';
 import { TOKEN_EXPIRATION_DATE } from '../config/constants';
+import axios from 'axios';
+
+const LOGIN_URL = 'https://stage.rahat-fundraise.pages.dev/login';
 
 export const registerUser = async (req: IRequest, res: IResponse) => {
   try {
@@ -46,15 +49,17 @@ export const registerUser = async (req: IRequest, res: IResponse) => {
       from: senderEmail,
       to: email,
       subject: 'Welcome to Rahat',
-      text: `
+
+      html: `
+      
 Dear ${alias},
-
+<br/><br/>
 Thank you for signing up to Rahat Crowdfunding platform. Rahat Crowdfunding platform is an opensource platform which will help you collect fund for the needy people. 
-
-Please click here to login to your fundraiser account. 
-
+<br/><br/>
+Please click here to <a href="${LOGIN_URL}" target="_blank">login</a> to your fundraiser account. 
+<br/><br/>
 Thank you. 
-
+<br/><br/>
 Regrads, 
 Rahat Team `,
     };
@@ -83,6 +88,20 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ ok: false, errors: errors.array() });
     }
 
+    const captchaResponse = await axios.post(
+      'https://hcaptcha.com/siteverify',
+      new URLSearchParams({
+        response: req.body.captchaToken,
+        secret: HCAPTCHA_SECRET,
+      }),
+    );
+
+    if (!captchaResponse.data || !captchaResponse.data.success) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'Captcha could not be verified. Please try again.',
+      });
+    }
     const email: string = req.body.email;
     const user: TUser = await User.findOne({ email });
 
@@ -289,6 +308,24 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({
         error: 'Must have one valid field to update',
       });
+    }
+
+    if (req.body.email) {
+      let existingUser: TUser = await User.findOne({
+        email: req.body.email,
+      });
+      if (existingUser) {
+        throw new Error(`This email is already registered.`);
+      }
+    }
+
+    if (req.body.alias) {
+      let existingUser = await User.findOne({
+        alias: req.body.alias,
+      });
+      if (existingUser) {
+        throw new Error(`Username already taken.`);
+      }
     }
 
     const imageUrl = req.file ? `/uploads/users/${req.file.filename}` : null;
