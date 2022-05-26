@@ -129,8 +129,8 @@ const CauseSidebar = (props) => {
             >
               <StepZilla
                 steps={steps}
-                backButtonCls="btn btn-lg pull-left custom-color"
-                nextButtonCls="btn btn-primary btn-lg pull-right"
+                backButtonCls="btn btn-md pull-left btn-primary "
+                nextButtonCls="btn btn-primary btn-md pull-right"
               />
             </div>
           </div>

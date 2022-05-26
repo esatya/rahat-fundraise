@@ -11,6 +11,7 @@ import Footer from '../../components/footer';
 import PageTitle from '../../components/pagetitle';
 import UserContext from '../../context/user-context';
 import Scrollbar from '../../components/scrollbar';
+import web3 from'web3';
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
@@ -44,12 +45,18 @@ const FundraiseRegisterPage = (props) => {
 
   const handleWalletSave = (event) => {
     event.preventDefault();
-    setWallets(
-      wallets.concat({
-        name: value?.walletType || 'Ethereum',
-        walletAddress: value?.walletAddress,
-      }),
-    );
+   const isValidAddress= web3.utils.isAddress(value.walletAddress);
+    if(isValidAddress){
+      setWallets(
+        wallets.concat({
+          name: value?.walletType || 'Ethereum',
+          walletAddress: value?.walletAddress,
+        }),
+      );
+    }else
+    {
+      toast.warning('Please enter correct wallet address.');
+    }
     setValue((previous) => {
       return {
         ...previous,
@@ -72,14 +79,18 @@ const FundraiseRegisterPage = (props) => {
 
   const registerFundraise = async (saveAsDraft) => {
     if (wallets?.length <= 0) {
-      toast.info('Please add at least one wallet.');
+      toast.warning('Please add at least one wallet.');
       return;
     }
     if (value.excerpt?.length > 100) {
-      toast.info('Tagline Cannot be more than 100 words.');
+      toast.warning('Tagline Cannot be more than 100 words.');
       return;
     }
 
+    if (value.title?.length <= 0) {
+      toast.warning('Please enter the title');
+      return;
+    }
     const formData = new FormData();
     formData.append('title', value.title);
     formData.append('excerpt', value.excerpt);
@@ -132,7 +143,7 @@ const FundraiseRegisterPage = (props) => {
                     <h2>Enter details of your campaign?</h2>
                     <div className="row">
                       <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                        <label for="fname" class="form-label">
+                        <label htmlFor="fname" className="form-label">
                           Enter an amount
                         </label>
                         <input
@@ -145,7 +156,7 @@ const FundraiseRegisterPage = (props) => {
                         />
                       </div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                        <label for="fname" class="form-label">
+                        <label htmlFor="fname" className="form-label">
                           Campaign End Date
                         </label>
                         <input
@@ -159,7 +170,7 @@ const FundraiseRegisterPage = (props) => {
                       </div>
 
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
-                        <label for="fname" class="form-label">
+                        <label htmlFor="fname" className="form-label">
                           Title
                         </label>
                         <input
@@ -173,7 +184,7 @@ const FundraiseRegisterPage = (props) => {
                         />
                       </div>
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
-                        <label for="fname" class="form-label">
+                        <label htmlFor="fname" className="form-label">
                           Tagline
                         </label>
                         <input
@@ -187,7 +198,7 @@ const FundraiseRegisterPage = (props) => {
                         />
                       </div>
                       <div className="col-lg-12 col-12 form-group">
-                        <label for="fname" class="form-label">
+                        <label htmlFor="fname" className="form-label">
                           Share Your Story
                         </label>
 
@@ -206,12 +217,12 @@ const FundraiseRegisterPage = (props) => {
                         />
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-12 form-group">
-                        <label for="formFileSm" class="form-label">
+                        <label htmlFor="formFileSm" className="form-label">
                           Upload photo that best defines your fundraiser
                           campaign
                         </label>
                         <input
-                          class="form-control form-control-sm"
+                          className="form-control form-control-sm"
                           id="formFileSm"
                           type="file"
                           accept=".jpg,.jpeg,.png"
@@ -223,7 +234,7 @@ const FundraiseRegisterPage = (props) => {
                         <div className="col-lg-5 col-md-5 col-sm-5 col-5">
                           <select
                             id="inputState"
-                            class="form-select"
+                            className="form-select"
                             name="walletType"
                             value={value?.walletType}
                             onChange={changeHandler}
@@ -256,7 +267,7 @@ const FundraiseRegisterPage = (props) => {
                       <div className="mt-3">
                         <div className="mb-2">Linked Wallets</div>
                         {wallets?.map((wallet, index) => (
-                          <p className="mb-0">
+                          <p className="mb-0" key={index}>
                             {wallet?.name}: {wallet?.walletAddress}{' '}
                             <span
                               className="text-danger c-p"

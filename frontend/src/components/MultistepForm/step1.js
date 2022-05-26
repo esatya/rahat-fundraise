@@ -15,12 +15,12 @@ const Step1 = (props) => {
       <div className="row">
         <form id="Form" className="form-horizontal">
           <div className="form-group col-md-12 content form-block-holder">
-            <label className="control-label col-md-12">
-              Select Your Crypto
+            <label className="control-label col-md-12 mt-2">
+             <strong>Select Fundraiser's Wallet</strong> 
             </label>
-            <div className="mt-2">
+            <div className="mt-2 mb-4">
               <select
-                id="crypto"
+                id="crypto" className='form-select'
                 name="walletAddress"
                 value={props.getStore().walletAddress}
                 onChange={handleChange}

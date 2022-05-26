@@ -34,7 +34,7 @@ const Step2 = (props) => {
           />
           {!props.getStore().isAnonymous && (
             <div className="form-group content form-block-holder mb-4">
-              <label className="control-label col-md-6">Full Name</label>
+              <label className="control-label col-md-6 mt-2">Full Name</label>
               <div>
                 <input
                   name="fullName"
@@ -47,7 +47,7 @@ const Step2 = (props) => {
                   onChange={handleChange}
                 />
               </div>
-              <label className="control-label col-md-6">Email</label>
+              <label className="control-label col-md-6 mt-2">Email</label>
               <div>
                 <input
                   name="email"
@@ -60,7 +60,7 @@ const Step2 = (props) => {
                   onChange={handleChange}
                 />
               </div>
-              <label className="control-label col-md-6">Country</label>
+              <label className="control-label col-md-6 mt-2">Country</label>
               <div>
                 <select
                   id="country"
@@ -71,7 +71,7 @@ const Step2 = (props) => {
                   defaultValue=" "
                 >
                   {Object.entries(COUNTRY_LIST).map((country) => (
-                    <option value={country[0]}>{country[1]}</option>
+                    <option key={country[0]} value={country[0]}>{country[1]}</option>
                   ))}
                 </select>
               </div>

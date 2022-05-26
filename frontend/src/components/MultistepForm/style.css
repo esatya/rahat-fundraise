@@ -25,3 +25,23 @@
     /* margin: var(--space-2) 0; */
     line-height: 1;
 }
+
+ol.progtrckr li.progtrckr-done{
+    border-bottom: 4px solid #2876B3;
+}
+
+ol.progtrckr li.progtrckr-done:before{
+    background-color:#2876B3;
+}
+.MuiCheckbox-colorSecondary.Mui-checked{
+    color:#2876B3 !important;
+}
+
+ol.progtrckr li.progtrckr-doing:hover:before{
+    color:#2876B3 !important;
+
+}
+ol.progtrckr li.progtrckr-todo:hover:before{
+    color:#2876B3 !important;
+
+}

@@ -42,9 +42,10 @@ const EventSection = (props) => {
                   <div className="wpo-campaign-item">
                     <div className="wpo-campaign-img">
                       <img
-                        height={175}
+                        height={250}
                         src={`${process.env.REACT_APP_API_BASE_URL}${Cause.image}`}
                         alt=""
+                        style={{width:"100%",objectFit:'cover'}}
                       />
                       {/* <span className="thumb">{Cause.thumb}</span> */}
                     </div>

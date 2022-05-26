@@ -65,6 +65,8 @@ const UserCampaigns = (props) => {
                             src={`${process.env.REACT_APP_API_BASE_URL}${Cause.image}`}
                             alt=""
                             className="single-campaign-image"
+                            height={250}
+                            style={{width:"100%",objectFit:'cover'}}
                           />
                         ) : (
                           <div className="single-campaign-image"></div>
