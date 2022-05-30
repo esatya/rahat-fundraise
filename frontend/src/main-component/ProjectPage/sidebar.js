@@ -75,7 +75,7 @@ const CauseSidebar = (props) => {
                 </p>
                 <p className="mt-4">
                   Thank you for your generous contribution of{' '}
-                  <strong>{sampleStore?.amount || 0} ETH</strong> to{' '}
+                  <strong>{sampleStore?.amount || 0} BNB</strong> to{' '}
                   <strong>{props.campaign?.title}</strong>.
                 </p>
               </div>
