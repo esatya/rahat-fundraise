@@ -134,7 +134,7 @@ const OtpPage = (props) => {
         </Grid>
         <p className="mt-3">
           If you didn't receive the code,{' '}
-          <span href="#" onClick={resendOTP}>
+          <span onClick={resendOTP} className="c-p text-primary">
             resend
           </span>
           .
