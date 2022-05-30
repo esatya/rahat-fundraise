@@ -441,27 +441,27 @@ const EditFundraise = (props) => {
                           </div>
                         </div>
 
-                        <div className="d-flex flex-row mt-4">
+                        <div className="d-flex flex-row mt-4 flex-wrap">
                           <button
-                            className="btn btn-success me-3"
+                            className="btn btn-success me-3 my-2"
                             onClick={PublishCampaign}
                           >
                             Publish Campaign
                           </button>
                           <button
-                            className="btn btn-primary me-3"
+                            className="btn btn-primary me-3 my-2"
                             onClick={MoveToDraft}
                           >
                             Move to Draft
                           </button>
                           <button
-                            className="btn btn-primary me-3"
+                            className="btn btn-primary me-3 my-2"
                             onClick={MoveToArchive}
                           >
                             Move to Archive
                           </button>
                           <button
-                            className="btn btn-primary me-3"
+                            className="btn btn-primary me-3 my-2"
                             onClick={CloseCampaign}
                           >
                             Close Campaign
