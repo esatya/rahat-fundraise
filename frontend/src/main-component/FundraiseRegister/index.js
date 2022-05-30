@@ -12,6 +12,7 @@ import PageTitle from '../../components/pagetitle';
 import UserContext from '../../context/user-context';
 import Scrollbar from '../../components/scrollbar';
 import web3 from'web3';
+import bnbImage from '../../images/icon/binance.png'
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
@@ -20,7 +21,7 @@ const FundraiseRegisterPage = (props) => {
     story: EditorState.createEmpty(),
     target: '',
     expiryDate: '',
-    walletType: 'Ethereum',
+    walletType: 'Binance',
     walletAddress: '',
   });
 
@@ -142,36 +143,11 @@ const FundraiseRegisterPage = (props) => {
                   <div className="wpo-donations-details">
                     <h2>Enter details of your campaign?</h2>
                     <div className="row">
-                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                        <label htmlFor="fname" className="form-label">
-                          Enter an amount
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          name="target"
-                          id="fname"
-                          placeholder=""
-                          onChange={changeHandler}
-                        />
-                      </div>
-                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                        <label htmlFor="fname" className="form-label">
-                          Campaign End Date
-                        </label>
-                        <input
-                          type="date"
-                          min={dayjs().add('1', 'day').format('YYYY-MM-DD')}
-                          className="form-control"
-                          name="expiryDate"
-                          id="expiryDate"
-                          onChange={changeHandler}
-                        />
-                      </div>
+                  
 
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
                         <label htmlFor="fname" className="form-label">
-                          Title
+                         <strong>Title</strong> 
                         </label>
                         <input
                           type="text"
@@ -185,7 +161,7 @@ const FundraiseRegisterPage = (props) => {
                       </div>
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
                         <label htmlFor="fname" className="form-label">
-                          Tagline
+                          <strong>Tagline</strong>
                         </label>
                         <input
                           type="text"
@@ -199,7 +175,7 @@ const FundraiseRegisterPage = (props) => {
                       </div>
                       <div className="col-lg-12 col-12 form-group">
                         <label htmlFor="fname" className="form-label">
-                          Share Your Story
+                         <strong>Share Your Story</strong> 
                         </label>
 
                         <Editor
@@ -239,8 +215,7 @@ const FundraiseRegisterPage = (props) => {
                             value={value?.walletType}
                             onChange={changeHandler}
                           >
-                            <option>Ethereum</option>
-                            <option>Bitcoin</option>
+                            <option > Binance</option>
                           </select>
                         </div>
                         <div className="col-lg-5 col-md-5 col-sm-5 col-5 ">
@@ -265,18 +240,46 @@ const FundraiseRegisterPage = (props) => {
                       </div>
 
                       <div className="mt-3">
-                        <div className="mb-2">Linked Wallets</div>
+                        <div className="mb-2"><strong>Linked Wallets</strong></div>
                         {wallets?.map((wallet, index) => (
                           <p className="mb-0" key={index}>
-                            {wallet?.name}: {wallet?.walletAddress}{' '}
+                         <small>  <img src={bnbImage} height={20} style={{marginTop:"-0.3rem"}}/>&nbsp;{wallet?.name}: {wallet?.walletAddress}</small>
                             <span
                               className="text-danger c-p"
                               onClick={() => removeWallet(index)}
                             >
-                              <i className="fa fa-trash"></i>
+                             &nbsp; <i className="fa fa-trash"></i>
                             </span>
                           </p>
                         ))}
+                      </div>
+                    </div>
+                    <div className='row mt-4'>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                        <label htmlFor="fname" className="form-label">
+                         <strong> Enter an amount</strong>
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          name="target"
+                          id="fname"
+                          placeholder="Enter amount in BNB"
+                          onChange={changeHandler}
+                        />
+                      </div>
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                        <label htmlFor="fname" className="form-label">
+                          <strong>Campaign End Date</strong>
+                        </label>
+                        <input
+                          type="date"
+                          min={dayjs().add('1', 'day').format('YYYY-MM-DD')}
+                          className="form-control"
+                          name="expiryDate"
+                          id="expiryDate"
+                          onChange={changeHandler}
+                        />
                       </div>
                     </div>
                   </div>
