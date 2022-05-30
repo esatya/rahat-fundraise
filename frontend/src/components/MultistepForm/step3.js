@@ -15,7 +15,7 @@ import { getLatestPrice } from "../../modules/charges/services";
 
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
-  const { account, library } = useWeb3React();
+  const { account, library,chainId } = useWeb3React();
   const [fiatPrice,setFiatPrice]=useState()
   const [loading,setLoading]=useState(false);
   
@@ -23,25 +23,33 @@ const Step3 = (props) => {
     const current_unit_price = await getLatestPrice({ token: 'bnb', currency:'usd' });
     setFiatPrice(current_unit_price.USD*props.getStore().amount)
   } 
-  
   const connected = async () => {
     await connectMetaMask();
-    props.updateStore({
-      ...props.getStore(),
-      yourWalletAddress: account,
-    });
   };
+  
+  const checkNetwork=useCallback(()=>{
+    if(!chainId) return;
+    if(chainId===97){
+     props.updateStore({
+       ...props.getStore(),
+       yourWalletAddress: account,
+     });
+    }
+    else{
+     toast.warning("Please select different network!");
+   }
+  },[chainId])
+
+	useEffect(() => {
+		checkNetwork();
+	}, [checkNetwork]);
+
 
 	useEffect(() => {
 		fetchAndSetFiatPrice();
 	}, [fetchAndSetFiatPrice]);
 
 
-  useEffect(() => {
-    props.updateStore({
-      yourWalletAddress: account,
-    });
-  }, [account]);
 
   const copyAddress = () => {
     const copyText = document.getElementById("wallet");
