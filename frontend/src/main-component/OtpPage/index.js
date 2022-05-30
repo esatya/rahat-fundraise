@@ -63,8 +63,9 @@ const OtpPage = (props) => {
     }
   };
 
-  const resendOTP = async () => {
+  const resendOTP = async (e) => {
     try {
+      e.preventDefault();
       if (value?.isOTPSending) {
         toast.info('OTP already queued.');
         return;
@@ -133,9 +134,9 @@ const OtpPage = (props) => {
         </Grid>
         <p className="mt-3">
           If you didn't receive the code,{' '}
-          <a href="#" onClick={resendOTP}>
+          <span href="#" onClick={resendOTP}>
             resend
-          </a>
+          </span>
           .
         </p>
       </Grid>
