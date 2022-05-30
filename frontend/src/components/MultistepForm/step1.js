@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { shortenString } from '../../helper/helper';
 
 const Step1 = (props) => {
+  
+
   const handleChange = (e) => {
     props.updateStore({
       ...props.getStore(),
       [e.target.name]: e.target.value,
     });
   };
+
+  const defaultNetwork=useCallback(()=>{
+    if(!props?.campaign?.wallets?.length) return
+      props.updateStore({
+        ...props.getStore(),
+        walletAddress: props?.campaign?.wallets?.[0]?.walletAddress
+      });
+  },[props.campaign])
+
+	useEffect(() => {
+		defaultNetwork();
+	}, [defaultNetwork]);
 
   return (
     <div className="step step3">
@@ -24,12 +38,10 @@ const Step1 = (props) => {
                 name="walletAddress"
                 value={props.getStore().walletAddress}
                 onChange={handleChange}
-                defaultValue="Select"
               >
-                <option>Select wallet</option>
                 {props.campaign?.wallets?.map((wallet, index) => {
                   return (
-                    <option key={index} value={wallet.walletAddress}>
+                    <option key={index} value={wallet.walletAddress} >
                       {wallet.name +
                         ' - ' +
                         shortenString(wallet?.walletAddress)}
