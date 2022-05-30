@@ -203,6 +203,7 @@ function SettingsPage(props) {
                                   <Form.Group className="mb-3">
                                     <Form.Label>Phone</Form.Label>
                                     <FormControl
+                                      type="number"
                                       placeholder="Enter Your Phone Number"
                                       aria-label="phone"
                                       aria-describedby="basic-addon2"

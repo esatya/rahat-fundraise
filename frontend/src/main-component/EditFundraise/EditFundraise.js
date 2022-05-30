@@ -130,7 +130,11 @@ const EditFundraise = (props) => {
         },
       ).then((res) => res.json());
 
-      props.history.push(`/fundraise/${campaignId}`);
+      if (resData.ok) {
+        toast.success('Saved Updates.');
+      } else {
+        throw new Error(resData?.msg || 'Something went wrong.');
+      }
     } catch (error) {
       return toast.error(error.message);
     }
@@ -287,7 +291,7 @@ const EditFundraise = (props) => {
                       <div className="row">
                         <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                           <label for="fname" class="form-label">
-                            Enter an amount
+                            Target Amount
                           </label>
                           <input
                             type="text"

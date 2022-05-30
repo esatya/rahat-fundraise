@@ -6,7 +6,7 @@ const CampaignCard = ({ Cause, citem }) => {
     <div className="col-lg-4 col-md-6 col-12" key={citem}>
       <div className="wpo-campaign-single">
         <div className="wpo-campaign-item">
-          <div className="wpo-campaign-img">
+          <div className="wpo-campaign-img position-relative">
             {Cause.image ? (
               <img
                 src={`${process.env.REACT_APP_API_BASE_URL}${Cause.image}`}
@@ -18,6 +18,11 @@ const CampaignCard = ({ Cause, citem }) => {
             ) : (
               <div className="single-campaign-image"></div>
             )}
+            <div
+              className={`position-absolute campaign-status campaign-${Cause?.status?.toLowerCase()}`}
+            >
+              {Cause.status?.toLowerCase()}
+            </div>
           </div>
           <div className="wpo-campaign-content">
             <div className="wpo-campaign-text-top">
@@ -42,10 +47,10 @@ const CampaignCard = ({ Cause, citem }) => {
               </div>
               <ul>
                 <li>
-                  <span className="pe-1">Goal: </span> ${Cause.target}
+                  <span className="pe-1">Goal: </span> {Cause.target} ETH
                 </li>
                 <li>
-                  <span className="pe-1">Raised: </span> ${Cause.amount}
+                  <span className="pe-1">Raised: </span> {Cause.amount} ETH
                 </li>
               </ul>
               <div className="campaign-btn">

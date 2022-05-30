@@ -11,7 +11,7 @@ import Footer from '../../components/footer';
 import PageTitle from '../../components/pagetitle';
 import UserContext from '../../context/user-context';
 import Scrollbar from '../../components/scrollbar';
-import web3 from'web3';
+import web3 from 'web3';
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
@@ -45,16 +45,15 @@ const FundraiseRegisterPage = (props) => {
 
   const handleWalletSave = (event) => {
     event.preventDefault();
-   const isValidAddress= web3.utils.isAddress(value.walletAddress);
-    if(isValidAddress){
+    const isValidAddress = web3.utils.isAddress(value.walletAddress);
+    if (isValidAddress) {
       setWallets(
         wallets.concat({
           name: value?.walletType || 'Ethereum',
           walletAddress: value?.walletAddress,
         }),
       );
-    }else
-    {
+    } else {
       toast.warning('Please enter correct wallet address.');
     }
     setValue((previous) => {
@@ -144,7 +143,7 @@ const FundraiseRegisterPage = (props) => {
                     <div className="row">
                       <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                         <label htmlFor="fname" className="form-label">
-                          Enter an amount
+                          Target Amount
                         </label>
                         <input
                           type="number"
