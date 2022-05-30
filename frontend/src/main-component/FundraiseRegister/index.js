@@ -234,7 +234,7 @@ const FundraiseRegisterPage = (props) => {
                             className="btn btn-primary submit-btn"
                             onClick={handleWalletSave}
                           >
-                            Add
+                            Add Wallet
                           </button>
                         </div>
                       </div>
