@@ -53,13 +53,13 @@ const Header = (props) => {
                   <MobileMenu />
                 </div>
               </div>
-              <div className="col-lg-3 col-md-6 col-6">
+              <div className="col-lg-3 col-md-6 col-5">
                 <div className="navbar-header">
                   <Link onClick={ClickHandler} className="navbar-brand" to="/">
                     <img
                       src={'https://rahat.io/images/logo.png'}
                       alt="rahat logo"
-                      style={{ width: '200px' }}
+                      style={{ width: '170px' }}
                     />
                   </Link>
                 </div>
@@ -90,92 +90,90 @@ const Header = (props) => {
                 </div>
               </div>
               <div className="col-lg-3 col-md-2 col-2">
-                <div className="search-toggle-btn">
-                  <div
-                    className="cart-search-contact"
-                    style={{ textAlign: 'right' }}
-                  >
-                    {user?.isLoggedIn ? (
-                      <div
-                        id="de-click-menu-profile"
-                        className="de-menu-profile"
-                        onClick={() => toggleDropdown()}
-                        style={{ marginLeft: '10px' }}
-                      >
-                        <img
-                          src={
-                            user?.data?.image
-                              ? `${process.env.REACT_APP_API_BASE_URL}${user?.data?.image}`
-                              : 'https://assets.rumsan.com/rumsan-group/new-project-1.png'
-                          }
-                          style={{ width: '50px', height: '50px' }}
-                          alt=""
-                        />
+                <div
+                  className="cart-search-contact"
+                  style={{ textAlign: 'right', whiteSpace: 'nowrap' }}
+                >
+                  {user?.isLoggedIn ? (
+                    <div
+                      id="de-click-menu-profile"
+                      className="de-menu-profile"
+                      onClick={() => toggleDropdown()}
+                      style={{ marginLeft: '10px' }}
+                    >
+                      <img
+                        src={
+                          user?.data?.image
+                            ? `${process.env.REACT_APP_API_BASE_URL}${user?.data?.image}`
+                            : 'https://assets.rumsan.com/rumsan-group/new-project-1.png'
+                        }
+                        style={{ width: '50px', height: '50px' }}
+                        alt=""
+                      />
 
-                        {state.showpop && (
-                          <div className="popshow">
-                            <div className="d-name"></div>
+                      {state.showpop && (
+                        <div className="popshow">
+                          <div className="d-name"></div>
 
-                            <ul className="de-submenu-profile">
-                              <li>
-                                <NavLink
-                                  to="/myfundraise"
-                                  style={{
-                                    background: 'none',
-                                    boxShadow: 'none',
-                                    padding: '0px',
-                                    margin: '0px',
-                                  }}
-                                >
-                                  <span>
-                                    <i className="fa fa-bullhorn"></i> My
-                                    Fundraiser
-                                  </span>
-                                </NavLink>
-                              </li>
-
-                              <li>
-                                <NavLink
-                                  to="/profile"
-                                  style={{
-                                    background: 'none',
-                                    boxShadow: 'none',
-                                    padding: '0px',
-                                    margin: '0px',
-                                  }}
-                                >
-                                  <span>
-                                    <i
-                                      className="fa fa-user fa-sm"
-                                      style={{ paddingLeft: '7px' }}
-                                    ></i>
-                                    My Profile
-                                  </span>
-                                </NavLink>
-                              </li>
-                              <li>
-                                <span
-                                  onClick={() => {
-                                    handleSignOut();
-                                  }}
-                                >
-                                  <i className="fa fa-sign-out"></i> Sign Out
+                          <ul className="de-submenu-profile">
+                            <li>
+                              <NavLink
+                                to="/myfundraise"
+                                style={{
+                                  background: 'none',
+                                  boxShadow: 'none',
+                                  padding: '0px',
+                                  margin: '0px',
+                                }}
+                              >
+                                <span>
+                                  <i className="fa fa-bullhorn"></i> My
+                                  Fundraiser
                                 </span>
-                              </li>
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <Link
-                        onClick={ClickHandler}
-                        className="theme-btn"
-                        to="/login"
-                      >
-                        Sign In
-                      </Link>
-                    )}
-                  </div>
+                              </NavLink>
+                            </li>
+
+                            <li>
+                              <NavLink
+                                to="/profile"
+                                style={{
+                                  background: 'none',
+                                  boxShadow: 'none',
+                                  padding: '0px',
+                                  margin: '0px',
+                                }}
+                              >
+                                <span>
+                                  <i
+                                    className="fa fa-user fa-sm"
+                                    style={{ paddingLeft: '7px' }}
+                                  ></i>
+                                  My Profile
+                                </span>
+                              </NavLink>
+                            </li>
+                            <li>
+                              <span
+                                onClick={() => {
+                                  handleSignOut();
+                                }}
+                              >
+                                <i className="fa fa-sign-out"></i> Sign Out
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      onClick={ClickHandler}
+                      className="theme-btn"
+                      to="/login"
+                    >
+                      Sign In
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
