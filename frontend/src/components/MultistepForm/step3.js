@@ -6,6 +6,7 @@ import SimpleReactValidator from "simple-react-validator";
 import { toast } from "react-toastify";
 import "./style.css";
 import { FormGroup, Label, Col, Input, Form } from "reactstrap";
+import {Spinner} from 'reactstrap';
 
 import { AppContext } from "../../modules/contexts";
 import { useWeb3React } from "@web3-react/core";
@@ -16,6 +17,7 @@ const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
   const { account, library } = useWeb3React();
   const [fiatPrice,setFiatPrice]=useState()
+  const [loading,setLoading]=useState(false);
   
   const fetchAndSetFiatPrice= async()=>{
     const current_unit_price = await getLatestPrice({ token: 'bnb', currency:'usd' });
@@ -66,12 +68,11 @@ const Step3 = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    toast.info('Please Wait your transaction is being processed...!!', {
+    setLoading(true);
+    toast.info('Please keep patience, your transaction is being processed!!', {
       position: "bottom-right",
       autoClose: 25000,
       hideProgressBar: true,
-      loading:true
       });
 
     const weiAmount = library.utils.toWei(props.getStore().amount);
@@ -119,6 +120,7 @@ const Step3 = (props) => {
         });
         toast.dismiss()
         toast.success("Donation Complete successfully!");
+        setLoading(false);
       }
     } else {
       validator.showMessages();
@@ -175,7 +177,10 @@ const Step3 = (props) => {
                 </Col>
               </FormGroup>
               <FormGroup>
-              <Col sm={12} >
+                <Col sm={12} className="d-flex justify-content-center align-item-center">
+                <Spinner animation="border" className={loading?'d-block':'d-none'} />
+                </Col>
+              <Col sm={12} className="text-center">
                   <button
                     onClick={handleSubmit}
                     className="btn-primary btn-lg btn btn-block mt-3"
