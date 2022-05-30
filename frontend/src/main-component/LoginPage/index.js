@@ -168,7 +168,7 @@ const LoginPage = (props) => {
                 />
               </Grid>
               <Grid className='formFooter' style={{justifyContent:'center',marginTop:'0px'}}>
-              <Spinner animation="border" className={value.isLoading?'d-block':'d-none'} />
+              <Spinner animation="border" className={value.isLoading?'d-block':'d-none'} size="sm" variant="primary"/>
               </Grid>
               <Grid className="formFooter">
                 <Button

@@ -178,7 +178,7 @@ const Step3 = (props) => {
               </FormGroup>
               <FormGroup>
                 <Col sm={12} className="d-flex justify-content-center align-item-center">
-                <Spinner animation="border" className={loading?'d-block':'d-none'} />
+                <Spinner animation="border" className={loading?'d-block':'d-none'}  variant="primary" size="sm"/>
                 </Col>
               <Col sm={12} className="text-center">
                   <button

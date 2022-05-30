@@ -124,7 +124,7 @@ const OtpPage = (props) => {
           <input type="text" name="otpNumber" onChange={handleChange} />
         </p>
         <Grid className='d-flex justify-content-center'>
-              <Spinner animation="border" className={value.isLoading?'d-block mb-2':'d-none'} />
+              <Spinner animation="border" className={value.isLoading?'d-block mb-2':'d-none'}  size="sm" variant="primary" />
               </Grid>
         <Grid className="d-flex justify-content-center">
           <Button
