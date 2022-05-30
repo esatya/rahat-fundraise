@@ -26,7 +26,6 @@ const Step1 = (props) => {
                 onChange={handleChange}
                 defaultValue="Select"
               >
-                <option value="">Select Wallet</option>
                 {props.campaign?.wallets?.map((wallet, index) => {
                   return (
                     <option key={index} value={wallet.walletAddress}>
