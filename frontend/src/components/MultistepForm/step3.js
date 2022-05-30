@@ -12,6 +12,7 @@ import { AppContext } from "../../modules/contexts";
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
 import { getLatestPrice } from "../../modules/charges/services";
+import {CHAIN_ID} from "../../constants/blockchainConstants"
 
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
@@ -29,7 +30,7 @@ const Step3 = (props) => {
   
   const checkNetwork=useCallback(()=>{
     if(!chainId) return;
-    if(chainId===97){
+    if(chainId===CHAIN_ID.TESTNET.BINANCE){
      props.updateStore({
        ...props.getStore(),
        yourWalletAddress: account,
