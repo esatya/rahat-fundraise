@@ -83,7 +83,7 @@ const Header = (props) => {
                     </li>
                     {user?.isLoggedIn && (
                       <li className="menu-item-has-children">
-                        <Link to="/myfundraise">Fundraiser</Link>
+                        <Link to="/myfundraise">My Fundraiser</Link>
                       </li>
                     )}
                   </ul>
