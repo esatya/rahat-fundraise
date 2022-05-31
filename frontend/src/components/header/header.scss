@@ -121,3 +121,9 @@ $default_background: #212428;
     }
   }
 
+
+  @media (max-width: 440px) {
+    .wpo-site-header .navbar-header .navbar-brand img {
+      max-width: 150px !important;
+    }
+  }
