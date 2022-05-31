@@ -93,7 +93,7 @@ const FundraiseRegisterPage = (props) => {
     }
     const formData = new FormData();
     formData.append('title', value.title);
-    formData.append('excerpt', value.excerpt);
+    formData.append('excerpt', value.excerpt || '');
     formData.append(
       'story',
       JSON.stringify(convertToRaw(value.story.getCurrentContent())),
