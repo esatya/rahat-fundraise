@@ -13,6 +13,8 @@ import PageTitle from '../../components/pagetitle';
 import Scrollbar from '../../components/scrollbar';
 import UserContext from '../../context/user-context';
 import { isJson } from '../../helper/helper';
+import web3 from'web3';
+import bnbImage from '../../images/icon/binance.png'
 
 const EditFundraise = (props) => {
   const [value, setValue] = useState({
@@ -23,13 +25,14 @@ const EditFundraise = (props) => {
     target: '',
     expiryDate: '',
     wallets: [],
-    walletType: 'Ethereum',
+    walletType: 'Binance',
     walletAddress: '',
     image: '',
   });
   const [image, setImage] = useState(null);
 
   const campaignId = props.match.params.id;
+  const [wallets, setWallets] = useState([]);
 
   const { user } = useContext(UserContext);
 
@@ -64,21 +67,29 @@ const EditFundraise = (props) => {
     }
   }, [user, campaignId]);
 
+
   const handleWalletSave = (event) => {
     event.preventDefault();
+    const isValidAddress = web3.utils.isAddress(value.walletAddress);
+if(isValidAddress){
+  setValue((previous) => {
+    return {
+      ...previous,
+      wallets: previous?.wallets?.concat({
+        name: previous?.walletType || 'Ethereum',
+        walletAddress: previous?.walletAddress,
+      }),
+      walletType: 'Ethereum',
+      walletAddress: '',
+    };
+  });
+}
+else{
+  toast.warning('Please enter correct wallet address.');
 
-    setValue((previous) => {
-      return {
-        ...previous,
-        wallets: previous?.wallets?.concat({
-          name: previous?.walletType || 'Ethereum',
-          walletAddress: previous?.walletAddress,
-        }),
-        walletType: 'Ethereum',
-        walletAddress: '',
-      };
-    });
+}
   };
+
 
   const removeWallet = (index) => {
     const newWallets = value.wallets?.filter((item, idx) => index !== idx);
@@ -289,38 +300,10 @@ const EditFundraise = (props) => {
                     <div className="wpo-donations-details">
                       <h2>Enter details of your campaign</h2>
                       <div className="row">
-                        <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                          <label for="fname" class="form-label">
-                            Target Amount
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="target"
-                            id="fname"
-                            placeholder=""
-                            value={value.target}
-                            onChange={changeHandler}
-                          />
-                        </div>
-                        <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                          <label for="expiryDate" class="form-label">
-                            Campaign End Date
-                          </label>
-                          <input
-                            type="date"
-                            min={dayjs().add('1', 'day').format('YYYY-MM-DD')}
-                            className="form-control"
-                            name="expiryDate"
-                            id="expiryDate"
-                            placeholder=""
-                            value={value.expiryDate}
-                            onChange={changeHandler}
-                          />
-                        </div>
+                   
 
                         <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
-                          <label for="fname" class="form-label">
+                          <label htmlFor="fname" className="form-label">
                             Title
                           </label>
                           <input
@@ -334,7 +317,7 @@ const EditFundraise = (props) => {
                           />
                         </div>
                         <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
-                          <label for="fname" class="form-label">
+                          <label htmlFor="fname" className="form-label">
                             Tagline
                           </label>
                           <input
@@ -348,7 +331,7 @@ const EditFundraise = (props) => {
                           />
                         </div>
                         <div className="col-lg-12 col-12 form-group">
-                          <label for="fname" class="form-label">
+                          <label htmlFor="fname" className="form-label">
                             Share Your Story
                           </label>
                           <Editor
@@ -374,12 +357,12 @@ const EditFundraise = (props) => {
                           />
                         </div>
                         <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
-                          <label for="formFileSm" class="form-label">
+                          <label htmlFor="formFileSm" className="form-label">
                             Upload photo that best defines your fundraiser
                             campaign
                           </label>
                           <input
-                            class="form-control form-control-sm"
+                            className="form-control form-control-sm"
                             id="formFileSm"
                             type="file"
                             accept=".jpg,.jpeg,.png"
@@ -391,13 +374,12 @@ const EditFundraise = (props) => {
                           <div className="col-lg-5 col-md-5 col-sm-5 col-5">
                             <select
                               id="inputState"
-                              class="form-select"
+                              className="form-select"
                               name="walletType"
                               value={value?.walletType}
                               onChange={changeHandler}
                             >
-                              <option>Ethereum</option>
-                              <option>Bitcoin</option>
+                              <option>Binance</option>
                             </select>
                           </div>
                           <div className="col-lg-5 col-md-5 col-sm-5 col-5 ">
@@ -416,7 +398,7 @@ const EditFundraise = (props) => {
                               className="btn btn-primary submit-btn"
                               onClick={handleWalletSave}
                             >
-                              Add
+                              Add Wallet
                             </button>
                           </div>
                         </div>
@@ -424,19 +406,53 @@ const EditFundraise = (props) => {
                         <div className="mt-3">
                           <div className="mb-2">Linked Wallets</div>
                           {value?.wallets?.map((wallet, index) => (
-                            <p className="mb-0">
-                              {wallet?.name}: {wallet?.walletAddress}{' '}
-                              <span
-                                className="text-danger c-p"
-                                onClick={() => removeWallet(index)}
-                              >
-                                <i className="fa fa-trash"></i>
-                              </span>
-                            </p>
+                            <p className="mb-0" key={index}>
+                            <small>  <img src={bnbImage} height={20} style={{marginTop:"-0.3rem"}}/>&nbsp;{wallet?.name}: {wallet?.walletAddress}</small>
+                               <span
+                                 className="text-danger c-p"
+                                 onClick={() => removeWallet(index)}
+                               >
+                                &nbsp; <i className="fa fa-trash"></i>
+                               </span>
+                             </p>
                           ))}
                         </div>
 
-                        <div className="mt-3">
+              
+                      </div>
+                      <div className='row mt-4'>
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                          <label htmlFor="fname" className="form-label">
+                            Target Amount
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="target"
+                            id="fname"
+                            placeholder=""
+                            value={value.target}
+                            onChange={changeHandler}
+                          />
+                        </div>
+                        <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                          <label htmlFor="expiryDate" className="form-label">
+                            Campaign End Date
+                          </label>
+                          <input
+                            type="date"
+                            min={dayjs().add('1', 'day').format('YYYY-MM-DD')}
+                            className="form-control"
+                            name="expiryDate"
+                            id="expiryDate"
+                            placeholder=""
+                            value={value.expiryDate}
+                            onChange={changeHandler}
+                          />
+                        </div>
+                      </div>
+                      <div className='row mt-4'>
+                      <div className="mt-3">
                           <div className="mb-2">
                             Campaign Status:{' '}
                             <span className="fw-bold">
@@ -473,12 +489,12 @@ const EditFundraise = (props) => {
                         </div>
                       </div>
                     </div>
-
+{/* 
                     <div className="submit-area">
                       <button type="submit" className="theme-btn submit-btn">
                         Save
                       </button>
-                    </div>
+                    </div> */}
                   </form>
                 </div>
               </div>
