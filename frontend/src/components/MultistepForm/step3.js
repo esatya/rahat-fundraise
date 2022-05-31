@@ -20,6 +20,7 @@ const Step3 = (props) => {
   const { account, library, chainId} = useWeb3React();
   const [fiatPrice, setFiatPrice] = useState();
   const [loading, setLoading] = useState(false);
+  const [fundraiserWalletBalance,setFundraiserWalletBalance]=useState(null);
 
   const fetchAndSetFiatPrice = async () => {
     const current_unit_price = await getLatestPrice({
@@ -60,10 +61,25 @@ const Step3 = (props) => {
     })
   );
 
-  const fetchMyBalance = useCallback(async () => {
+  const fetchMyBalance= useCallback(async () => {
     const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_PARAMS[97][0].rpcUrls[0]));
    const balance= await web3.eth.getBalance(props.getStore().walletAddress)
-	}, []);
+  const newBalance= web3.utils.fromWei(balance, 'ether');
+   //  setFundraiserWalletBalance(newBalance);
+  //  console.log(newBalance)
+   if(newBalance)
+   {
+    props.setDonated(!props.donated);
+    props.onChange({});
+    props.refreshData();
+    props.updateStore({
+      ...props.getStore(),
+      amount:newBalance
+      // donorAddress: account,
+      // transactionHash: receipt.transactionHash,
+    });    
+  }
+  	}, []);
 
 
   const handleChange = (e) => {
