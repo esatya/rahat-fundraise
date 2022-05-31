@@ -135,7 +135,7 @@ const FundraiseRegisterPage = (props) => {
           <div className="row justify-content-center">
             <div className="col-lg-8">
               <div className="wpo-donate-header">
-                <h2>Register Here To Organize A Campaign</h2>
+                <h2>Create your fundraising campaign</h2>
               </div>
               <div id="Donations" className="tab-pane">
                 <form onSubmit={SubmitHandler}>
