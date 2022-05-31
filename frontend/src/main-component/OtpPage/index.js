@@ -5,6 +5,7 @@ import UserContext from '../../context/user-context';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { USER_UPDATE_TYPES } from '../../helper/constants';
+import {Spinner} from 'reactstrap'
 
 const OtpPage = (props) => {
   const [value, setValue] = useState({
@@ -123,6 +124,9 @@ const OtpPage = (props) => {
         <p>
           <input type="text" name="otpNumber" onChange={handleChange} />
         </p>
+        <Grid className='d-flex justify-content-center'>
+              <Spinner animation="border" className={value.isLoading?'d-block mb-2':'d-none'}  size="sm" variant="primary" />
+              </Grid>
         <Grid className="d-flex justify-content-center">
           <Button
             className="cBtnTheme"

@@ -9,6 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import SimpleReactValidator from 'simple-react-validator';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import {Spinner} from 'reactstrap'
 
 import './style.scss';
 
@@ -145,6 +146,9 @@ const LoginPage = (props) => {
                   }
                   label="Remember Me"
                 />
+              </Grid>
+              <Grid className='formFooter' style={{justifyContent:'center',marginTop:'0px'}}>
+              <Spinner animation="border" className={value.isLoading?'d-block':'d-none'} size="sm" variant="primary"/>
               </Grid>
               <Grid className="formFooter">
                 <Button
