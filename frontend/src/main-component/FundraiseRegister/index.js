@@ -46,16 +46,15 @@ const FundraiseRegisterPage = (props) => {
 
   const handleWalletSave = (event) => {
     event.preventDefault();
-   const isValidAddress= web3.utils.isAddress(value.walletAddress);
-    if(isValidAddress){
+    const isValidAddress = web3.utils.isAddress(value.walletAddress);
+    if (isValidAddress) {
       setWallets(
         wallets.concat({
           name: value?.walletType || 'Ethereum',
           walletAddress: value?.walletAddress,
         }),
       );
-    }else
-    {
+    } else {
       toast.warning('Please enter correct wallet address.');
     }
     setValue((previous) => {
@@ -143,7 +142,33 @@ const FundraiseRegisterPage = (props) => {
                   <div className="wpo-donations-details">
                     <h2>Enter details of your campaign?</h2>
                     <div className="row">
-                  
+
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                        <label htmlFor="fname" className="form-label">
+                          Target Amount
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          name="target"
+                          id="fname"
+                          placeholder=""
+                          onChange={changeHandler}
+                        />
+                      </div>
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                        <label htmlFor="fname" className="form-label">
+                          Campaign End Date
+                        </label>
+                        <input
+                          type="date"
+                          min={dayjs().add('1', 'day').format('YYYY-MM-DD')}
+                          className="form-control"
+                          name="expiryDate"
+                          id="expiryDate"
+                          onChange={changeHandler}
+                        />
+                      </div>
 
                       <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
                         <label htmlFor="fname" className="form-label">
