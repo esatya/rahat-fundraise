@@ -1,0 +1,3 @@
+export const CAMPAIGN_OPTIONS = ['DRAFT', 'PUBLISHED', 'ARCHIVE', 'CLOSED'];
+
+export const TOKEN_EXPIRATION_DATE = '30d';
