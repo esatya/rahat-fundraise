@@ -1,4 +1,4 @@
-import React, { useContext, useState,useCallback } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import QRCode from "react-qr-code";
@@ -6,40 +6,44 @@ import SimpleReactValidator from "simple-react-validator";
 import { toast } from "react-toastify";
 import "./style.css";
 import { FormGroup, Label, Col, Input, Form } from "reactstrap";
+import { Spinner } from "reactstrap";
 
 import { AppContext } from "../../modules/contexts";
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
 import { getLatestPrice } from "../../modules/charges/services";
+import { CHAIN_ID,NETWORK_PARAMS } from "../../constants/blockchainConstants";
+import Web3 from 'web3';
 
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
-  const { account, library } = useWeb3React();
-  const [fiatPrice,setFiatPrice]=useState()
-  
-  const fetchAndSetFiatPrice= async()=>{
-    const current_unit_price = await getLatestPrice({ token: 'bnb', currency:'usd' });
-    setFiatPrice(current_unit_price.USD*props.getStore().amount)
-  } 
-  
+  const { account, library, chainId} = useWeb3React();
+  const [fiatPrice, setFiatPrice] = useState();
+  const [loading, setLoading] = useState(false);
+  let prevBalance;
+
+  const fetchAndSetFiatPrice = async () => {
+    const current_unit_price = await getLatestPrice({
+      token: "bnb",
+      currency: "usd",
+    });
+    setFiatPrice(current_unit_price.USD * props.getStore().amount);
+  };
   const connected = async () => {
     await connectMetaMask();
-    props.updateStore({
-      ...props.getStore(),
-      yourWalletAddress: account,
-    });
   };
 
-	useEffect(() => {
-		fetchAndSetFiatPrice();
-	}, [fetchAndSetFiatPrice]);
-
-
-  useEffect(() => {
-    props.updateStore({
-      yourWalletAddress: account,
-    });
-  }, [account]);
+  const checkNetwork = useCallback(() => {
+    if (!chainId) return;
+    if (chainId === CHAIN_ID.TESTNET.BINANCE) {
+      props.updateStore({
+        ...props.getStore(),
+        yourWalletAddress: account,
+      });
+    } else {
+      toast.warning("Please select different network!");
+    }
+  }, [chainId]);
 
   const copyAddress = () => {
     const copyText = document.getElementById("wallet");
@@ -57,6 +61,26 @@ const Step3 = (props) => {
     })
   );
 
+
+  const fetchMyBalance= useCallback(async () => {
+    const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_PARAMS[97][0].rpcUrls[0]));
+   const balance= await web3.eth.getBalance(props.getStore().walletAddress)
+  const newBalance= web3.utils.fromWei(balance, 'ether');
+  if(prevBalance && prevBalance!==newBalance){
+    props.setDonated(!props.donated);
+      props.onChange({});
+      props.refreshData();
+      props.updateStore({
+        ...props.getStore(),
+        amount:newBalance-prevBalance
+        // donorAddress: account,
+        // transactionHash: receipt.transactionHash,
+      });    
+  }
+  prevBalance=newBalance;
+  	}, []);
+
+
   const handleChange = (e) => {
     props.updateStore({
       ...props.getStore(),
@@ -66,22 +90,20 @@ const Step3 = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    toast.info('Please Wait your transaction is being processed...!!', {
+    setLoading(true);
+    toast.info("Please keep patience, your transaction is being processed!!", {
       position: "bottom-right",
       autoClose: 25000,
       hideProgressBar: true,
-      loading:true
-      });
+    });
 
     const weiAmount = library.utils.toWei(props.getStore().amount);
-    const receipt= await library.eth
-      .sendTransaction({
-        from: account,
-        to: props.getStore().walletAddress,
-        value: weiAmount,
-      })
-  
+    const receipt = await library.eth.sendTransaction({
+      from: account,
+      to: props.getStore().walletAddress,
+      value: weiAmount,
+    });
+
     if (validator.allValid()) {
       const body = {
         ...props.getStore(),
@@ -117,14 +139,30 @@ const Step3 = (props) => {
           donorAddress: account,
           transactionHash: receipt.transactionHash,
         });
-        toast.dismiss()
+        toast.dismiss();
         toast.success("Donation Complete successfully!");
+        setLoading(false);
       }
     } else {
       validator.showMessages();
       return toast.error("Empty field is not allowed!");
     }
   };
+
+  useEffect(() => {
+    checkNetwork();
+  }, [checkNetwork]);
+
+  useEffect(() => {
+    fetchAndSetFiatPrice();
+  }, [fetchAndSetFiatPrice]);
+
+  useEffect(() => {
+		const interval = setInterval(() => {
+			fetchMyBalance();
+		}, 5000);
+		return () => clearInterval(interval);
+	}, [fetchMyBalance]);
 
   return (
     <div className="step step7">
@@ -140,42 +178,58 @@ const Step3 = (props) => {
                 <Col sm={12}>
                   <p className="text-center">
                     <small>
-                    <strong>Your wallet Address is:</strong>
-                    <a
-                      id="wallet"
-                      onClick={() => {
-                        copyAddress();
-                      }}
-                      style={{ cursor: "pointer",color:'#4f555a'}}
-                      className={
-                        props.getStore().yourWalletAddress ? "d-block " : "d-none"
-                      }
-                      title="Click to copy Wallet address"
-                    >
-                      {props.getStore().yourWalletAddress}
-                    </a>
+                      <strong>Your wallet Address is:</strong>
+                      <a
+                        id="wallet"
+                        onClick={() => {
+                          copyAddress();
+                        }}
+                        style={{ cursor: "pointer", color: "#4f555a" }}
+                        className={
+                          props.getStore().yourWalletAddress
+                            ? "d-block "
+                            : "d-none"
+                        }
+                        title="Click to copy Wallet address"
+                      >
+                        {props.getStore().yourWalletAddress}
+                      </a>
                     </small>
                   </p>
                 </Col>
               </FormGroup>
               <FormGroup row className="p-3 bg-light">
-              <Col
-                  sm={8}
-                >
+                <Col sm={8}>
                   <Input
                     name="amount"
                     type="number"
                     placeholder="Enter Amount in BNB"
                     onChange={handleChange}
                   />
-                
                 </Col>
-                <Col sm={4} className="d-flex justify-content-center align-item-center">
-                  <small><strong>Price in USD:</strong> ${fiatPrice?fiatPrice.toFixed(2):"0"}</small>
+                <Col
+                  sm={4}
+                  className="d-flex justify-content-center align-item-center"
+                >
+                  <small>
+                    <strong>Price in USD:</strong> $
+                    {fiatPrice ? fiatPrice.toFixed(2) : "0"}
+                  </small>
                 </Col>
               </FormGroup>
               <FormGroup>
-              <Col sm={12} >
+                <Col
+                  sm={12}
+                  className="d-flex justify-content-center align-item-center"
+                >
+                  <Spinner
+                    animation="border"
+                    className={loading ? "d-block" : "d-none"}
+                    variant="primary"
+                    size="sm"
+                  />
+                </Col>
+                <Col sm={12} className="text-center">
                   <button
                     onClick={handleSubmit}
                     className="btn-primary btn-lg btn btn-block mt-3"
@@ -188,7 +242,10 @@ const Step3 = (props) => {
           ) : (
             <div className="mt-3 mb-2">
               <p>Connect your wallet for donation</p>
-              <button className="btn-primary btn-lg btn btn-outline" onClick={connected}>
+              <button
+                className="btn-primary btn-lg btn btn-outline"
+                onClick={connected}
+              >
                 Connect Wallet
               </button>
             </div>
@@ -211,7 +268,18 @@ const Step3 = (props) => {
               value={props.getStore().walletAddress || "Wallet not selected"}
             />
           </div>
-          <p className={props.getStore().walletAddress?'d-block text-center':'d-none'} ><small><strong>Fundraiser's Wallet:</strong> {props.getStore().walletAddress?props.getStore().walletAddress:""}</small></p>
+          <p
+            className={
+              props.getStore().walletAddress ? "d-block text-center" : "d-none"
+            }
+          >
+            <small>
+              <strong>Fundraiser's Wallet:</strong>{" "}
+              {props.getStore().walletAddress
+                ? props.getStore().walletAddress
+                : ""}
+            </small>
+          </p>
         </div>
       </div>
     </div>
