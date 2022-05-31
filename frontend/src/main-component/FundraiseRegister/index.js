@@ -11,8 +11,8 @@ import Footer from '../../components/footer';
 import PageTitle from '../../components/pagetitle';
 import UserContext from '../../context/user-context';
 import Scrollbar from '../../components/scrollbar';
-import web3 from'web3';
-import bnbImage from '../../images/icon/binance.png'
+import web3 from 'web3';
+import bnbImage from '../../images/icon/binance.png';
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
@@ -140,39 +140,11 @@ const FundraiseRegisterPage = (props) => {
               <div id="Donations" className="tab-pane">
                 <form onSubmit={SubmitHandler}>
                   <div className="wpo-donations-details">
-                    <h2>Enter details of your campaign?</h2>
+                    <h2>Enter details of your campaign</h2>
                     <div className="row">
-
-                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                      <div className="col-lg-12 col-12 form-group clearfix">
                         <label htmlFor="fname" className="form-label">
-                          Target Amount
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          name="target"
-                          id="fname"
-                          placeholder=""
-                          onChange={changeHandler}
-                        />
-                      </div>
-                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                        <label htmlFor="fname" className="form-label">
-                          Campaign End Date
-                        </label>
-                        <input
-                          type="date"
-                          min={dayjs().add('1', 'day').format('YYYY-MM-DD')}
-                          className="form-control"
-                          name="expiryDate"
-                          id="expiryDate"
-                          onChange={changeHandler}
-                        />
-                      </div>
-
-                      <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
-                        <label htmlFor="fname" className="form-label">
-                         <strong>Title</strong> 
+                          <strong>Title</strong>
                         </label>
                         <input
                           type="text"
@@ -184,7 +156,7 @@ const FundraiseRegisterPage = (props) => {
                           onChange={changeHandler}
                         />
                       </div>
-                      <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
+                      {/* <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
                         <label htmlFor="fname" className="form-label">
                           <strong>Tagline</strong>
                         </label>
@@ -197,10 +169,10 @@ const FundraiseRegisterPage = (props) => {
                           maxLength={100}
                           onChange={changeHandler}
                         />
-                      </div>
+                      </div> */}
                       <div className="col-lg-12 col-12 form-group">
                         <label htmlFor="fname" className="form-label">
-                         <strong>Share Your Story</strong> 
+                          <strong>Share Your Story</strong>
                         </label>
 
                         <Editor
@@ -218,7 +190,7 @@ const FundraiseRegisterPage = (props) => {
                         />
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-12 form-group">
-                        <label htmlFor="formFileSm" className="form-label">
+                        <label htmlFor="formFileSm" className="form-label mt-3">
                           Upload photo that best defines your fundraiser
                           campaign
                         </label>
@@ -232,7 +204,13 @@ const FundraiseRegisterPage = (props) => {
                       </div>
 
                       <div className="row align-items-center">
-                        <div className="col-lg-5 col-md-5 col-sm-5 col-5">
+                        <div
+                          className="col-lg-5 col-md-5 col-sm-5 col-12"
+                          style={{ marginBottom: '30px' }}
+                        >
+                          <label htmlFor="fname" className="form-label">
+                            <strong>Your blockchain network</strong>
+                          </label>
                           <select
                             id="inputState"
                             className="form-select"
@@ -240,13 +218,19 @@ const FundraiseRegisterPage = (props) => {
                             value={value?.walletType}
                             onChange={changeHandler}
                           >
-                            <option > Binance</option>
+                            <option>Binance</option>
                           </select>
                         </div>
-                        <div className="col-lg-5 col-md-5 col-sm-5 col-5 ">
+                        <div
+                          className="col-lg-5 col-md-5 col-sm-5 col-7"
+                          style={{ marginBottom: '30px' }}
+                        >
+                          <label htmlFor="fname" className="form-label">
+                            <strong>Your Wallet address</strong>
+                          </label>
                           <input
                             type="text"
-                            placeholder="Wallet Address"
+                            placeholder="Wallet address"
                             className=" my-auto"
                             name="walletAddress"
                             value={value?.walletAddress}
@@ -254,35 +238,45 @@ const FundraiseRegisterPage = (props) => {
                             style={{ height: 35 }}
                           />
                         </div>
-                        <div className="col-lg-2 col-md-2 col-sm-2 col-2">
+                        <div className="col-lg-2 col-md-2 col-sm-2 col-5">
                           <button
                             className="btn btn-primary submit-btn"
                             onClick={handleWalletSave}
                           >
-                            Add Wallet
+                            Add
                           </button>
                         </div>
                       </div>
 
                       <div className="mt-3">
-                        <div className="mb-2"><strong>Linked Wallets</strong></div>
+                        <div className="mb-2">
+                          <strong>Linked Wallets</strong>
+                        </div>
                         {wallets?.map((wallet, index) => (
                           <p className="mb-0" key={index}>
-                         <small>  <img src={bnbImage} height={20} style={{marginTop:"-0.3rem"}}/>&nbsp;{wallet?.name}: {wallet?.walletAddress}</small>
+                            <small>
+                              {' '}
+                              <img
+                                src={bnbImage}
+                                height={20}
+                                style={{ marginTop: '-0.3rem' }}
+                              />
+                              &nbsp;{wallet?.name}: {wallet?.walletAddress}
+                            </small>
                             <span
                               className="text-danger c-p"
                               onClick={() => removeWallet(index)}
                             >
-                             &nbsp; <i className="fa fa-trash"></i>
+                              &nbsp; <i className="fa fa-trash"></i>
                             </span>
                           </p>
                         ))}
                       </div>
                     </div>
-                    <div className='row mt-4'>
-                    <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                    <div className="row mt-4">
+                      <div className="col-lg-6 col-12 form-group">
                         <label htmlFor="fname" className="form-label">
-                         <strong> Enter an amount</strong>
+                          <strong>How much do you want to raise?</strong>
                         </label>
                         <input
                           type="number"
@@ -293,7 +287,7 @@ const FundraiseRegisterPage = (props) => {
                           onChange={changeHandler}
                         />
                       </div>
-                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                      <div className="col-lg-6 col-12 form-group">
                         <label htmlFor="fname" className="form-label">
                           <strong>Campaign End Date</strong>
                         </label>
