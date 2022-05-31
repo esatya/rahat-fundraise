@@ -156,7 +156,7 @@ const FundraiseRegisterPage = (props) => {
                           onChange={changeHandler}
                         />
                       </div>
-                      {/* <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
+                      <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
                         <label htmlFor="fname" className="form-label">
                           <strong>Tagline</strong>
                         </label>
@@ -169,7 +169,7 @@ const FundraiseRegisterPage = (props) => {
                           maxLength={100}
                           onChange={changeHandler}
                         />
-                      </div> */}
+                      </div>
                       <div className="col-lg-12 col-12 form-group">
                         <label htmlFor="fname" className="form-label">
                           <strong>Share Your Story</strong>
