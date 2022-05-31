@@ -68,35 +68,15 @@ const LoginPage = (props) => {
         ).then((res) => res.json());
 
         if (resData?.data?.email) {
-          const email = resData.data.email;
+          setValue({
+            email: '',
+            password: '',
+            remember: false,
+          });
+          validator.hideMessages();
+          props.history.push('/otp', { email: value.email });
 
-          const otpResult = await fetch(
-            `${process.env.REACT_APP_API_BASE_URL}/api/user/otp`,
-            {
-              method: 'POST',
-              body: JSON.stringify({
-                email: email,
-              }),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            },
-          );
-          const otpRes = await otpResult.json();
-
-          if (otpRes.ok) {
-            setValue({
-              email: '',
-              password: '',
-              remember: false,
-            });
-            validator.hideMessages();
-            props.history.push('/otp', { email: value.email });
-
-            toast.success('OTP has been sent to your email');
-          } else {
-            throw new Error('Failed to send OTP.');
-          }
+          toast.success('OTP has been sent to your email');
         } else {
           throw new Error(resData?.msg);
         }
