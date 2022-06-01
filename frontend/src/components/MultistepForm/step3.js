@@ -12,12 +12,12 @@ import { AppContext } from "../../modules/contexts";
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
 import { getLatestPrice } from "../../modules/charges/services";
-import { CHAIN_ID,NETWORK_PARAMS } from "../../constants/blockchainConstants";
-import Web3 from 'web3';
+import { CHAIN_ID, NETWORK_PARAMS } from "../../constants/blockchainConstants";
+import Web3 from "web3";
 
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
-  const { account, library, chainId} = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
   const [fiatPrice, setFiatPrice] = useState();
   const [loading, setLoading] = useState(false);
   let prevBalance;
@@ -36,7 +36,7 @@ const Step3 = (props) => {
   const checkNetwork = useCallback(() => {
     if (!chainId) return;
     if (chainId === CHAIN_ID.TESTNET.BINANCE) {
-        props.updateStore({
+      props.updateStore({
         ...props.getStore(),
         yourWalletAddress: account,
       });
@@ -61,52 +61,64 @@ const Step3 = (props) => {
     })
   );
 
-  const checkTxInBlock = async (web3,account,blockNumber) => {
+  const checkTxInBlock = async (web3, account, blockNumber) => {
     let block = await web3.eth.getBlock(blockNumber);
 
-    if(block && block.transactions){
-      const transactions = await Promise.all(block.transactions.map(async (el,i)=>{
-        const tx = await web3.eth.getTransactionReceipt(el);
-        return {to:tx.to, hash:tx.transactionHash,from:tx.from,value:tx.value };
-      }));
-      if(transactions) {
-      const reqTx = transactions.find((el)=>account.toLowerCase() === el.to.toLowerCase())
-      if(!reqTx) return {to:'anonymous', hash:Date.now(),from:'anonymous'};
-      return reqTx;
+    if (block && block.transactions) {
+      const transactions = await Promise.all(
+        block.transactions.map(async (el, i) => {
+          const tx = await web3.eth.getTransactionReceipt(el);
+          return {
+            to: tx.to,
+            hash: tx.transactionHash,
+            from: tx.from,
+            value: tx.value,
+          };
+        })
+      );
+      if (transactions) {
+        const reqTx = transactions.find(
+          (el) => account?.toLowerCase() === el?.to?.toLowerCase()
+        );
+        if (!reqTx)
+          return { to: "anonymous", hash: Date.now(), from: "anonymous" };
+        return reqTx;
+      }
     }
-    }
-    return {to:'anonymous', hash:Date.now(),from:'anonymous'};
-    
-  }
+    return { to: "anonymous", hash: Date.now(), from: "anonymous" };
+  };
 
-  const updateDonationOnDb = async (body)=> {
-      const resData = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
-        {
-          method: "POST",
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      ).then((res) => res.json());
-          toast.dismiss();
-        toast.success("Donation Complete successfully!");
-        setLoading(false);
+  const updateDonationOnDb = async (body) => {
+    const resData = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res) => res.json());
+    toast.dismiss();
+    toast.success("Donation Complete successfully!");
+    setLoading(false);
 
-      return resData;
-  }
+    return resData;
+  };
 
-
-  const fetchMyBalance= useCallback(async () => {
-   
-    const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_PARAMS[97][0].rpcUrls[0]));
-   const balance= await web3.eth.getBalance(props.getStore().walletAddress)
-  const newBalance= web3.utils.fromWei(balance, 'ether');
-  if(prevBalance && prevBalance!==newBalance){
-        const blockNumber = await web3.eth.getBlockNumber();
-        const txData =  await checkTxInBlock(web3,props.getStore().walletAddress,blockNumber);
-        console.log({txData});
+  const fetchMyBalance = useCallback(async () => {
+    const web3 = new Web3(
+      new Web3.providers.HttpProvider(NETWORK_PARAMS[97][0].rpcUrls[0])
+    );
+    const balance = await web3.eth.getBalance(props.getStore().walletAddress);
+    const newBalance = web3.utils.fromWei(balance, "ether");
+    if (prevBalance && prevBalance !== newBalance) {
+      const blockNumber = await web3.eth.getBlockNumber();
+      const txData = await checkTxInBlock(
+        web3,
+        props.getStore().walletAddress,
+        blockNumber
+      );
       const body = {
         ...props.getStore(),
         donor: {
@@ -114,27 +126,25 @@ const Step3 = (props) => {
           email: props.getStore().email,
           country: props.getStore().country,
         },
-        transactionId: txData.hash,
+        transactionId: `${txData.hash}`,
         campaignId: props.campaign.id,
-        amount: newBalance-prevBalance
-      }; 
+        amount: newBalance - prevBalance,
+        walletAddress:txData.from
+      };
       const res = await updateDonationOnDb(body);
-      if(!res) return; 
-    props.setDonated(!props.donated);
+      if (!res) return;
+      props.setDonated(!props.donated);
       props.onChange({});
       props.refreshData();
       props.updateStore({
         ...props.getStore(),
-        amount:newBalance-prevBalance,
+        amount: newBalance - prevBalance,
         donorAddress: txData.from,
-        transactionHash: txData.hash,
-      });  
-        
-  
-  }
-  prevBalance=newBalance;
-  	}, []);
-
+        transactionHash: `${txData.hash}`,
+      });
+    }
+    prevBalance = newBalance;
+  }, []);
 
   const handleChange = (e) => {
     props.updateStore({
@@ -159,7 +169,7 @@ const Step3 = (props) => {
       value: weiAmount,
     });
 
-    return receipt
+    return receipt;
 
     // if (validator.allValid()) {
     //   const body = {
@@ -215,11 +225,11 @@ const Step3 = (props) => {
   }, [fetchAndSetFiatPrice]);
 
   useEffect(() => {
-		const interval = setInterval(() => {
-			fetchMyBalance();
-		}, 5000);
-		return () => clearInterval(interval);
-	}, [fetchMyBalance]);
+    const interval = setInterval(() => {
+      fetchMyBalance();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [fetchMyBalance]);
 
   return (
     <div className="step step7">

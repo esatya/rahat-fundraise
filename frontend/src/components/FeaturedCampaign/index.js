@@ -39,7 +39,7 @@ const CauseSection = (props) => {
         <div className="wpo-campaign-wrap">
           <div className="row">
             {featuredCampaigns?.slice(0, 3).map((Cause, citem) => (
-              <CampaignCard Cause={Cause} citem={citem} />
+              <CampaignCard Cause={Cause} citem={citem} key={citem}/>
             ))}
           </div>
         </div>

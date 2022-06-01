@@ -72,7 +72,7 @@ const Step2 = (props) => {
                 >
                   {Object.entries(COUNTRY_LIST).map((country) => (
                     <option key={country[0]} value={country[0]}>
-                      {country[0]}
+                      {country[1]}
                     </option>
                   ))}
                 </select>
