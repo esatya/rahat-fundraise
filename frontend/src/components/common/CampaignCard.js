@@ -47,10 +47,10 @@ const CampaignCard = ({ Cause, citem }) => {
               </div>
               <ul>
                 <li>
-                  <span className="pe-1">Goal: </span> {Cause.target} ETH
+                  <span className="pe-1">Goal: </span> {Cause.target} BNB
                 </li>
                 <li>
-                  <span className="pe-1">Raised: </span> {Cause.amount} ETH
+                  <span className="pe-1">Raised: </span> {Cause.amount} BNB
                 </li>
               </ul>
               <div className="campaign-btn">
