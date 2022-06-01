@@ -272,11 +272,11 @@ const CauseTabs = ({ campaign, donated }) => {
                           <ul>
                             <li>
                               <span className="pe-1">Raised: </span>
-                              {campaign?.amount} ETH
+                              {campaign?.amount} BNB
                             </li>
                             <li>
                               <span className="pe-1">Goal: </span>
-                              {campaign?.target} ETH
+                              {campaign?.target} BNB
                             </li>
                             <li>
                               <span>Donor: </span> 0
@@ -358,7 +358,7 @@ const CauseTabs = ({ campaign, donated }) => {
                                   </td>
                                   <td>
                                     <a
-                                      href="#"
+                                      href={`https://testnet.bscscan.com/tx/${donation.transactionId?donation.transactionId:''}`}
                                       target="_blank"
                                       className="text-decoration-underline text-default"
                                     >
