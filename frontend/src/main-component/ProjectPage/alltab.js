@@ -358,7 +358,7 @@ const CauseTabs = ({ campaign, donated }) => {
                                   </td>
                                   <td>
                                     <a
-                                      href="#"
+                                      href={`https://testnet.bscscan.com/tx/${donation.transactionId?donation.transactionId:''}`}
                                       target="_blank"
                                       className="text-decoration-underline text-default"
                                     >
