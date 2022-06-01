@@ -9,6 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import SimpleReactValidator from 'simple-react-validator';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import {Spinner} from 'reactstrap'
 
 import './style.scss';
 
@@ -68,35 +69,15 @@ const LoginPage = (props) => {
         ).then((res) => res.json());
 
         if (resData?.data?.email) {
-          const email = resData.data.email;
+          setValue({
+            email: '',
+            password: '',
+            remember: false,
+          });
+          validator.hideMessages();
+          props.history.push('/otp', { email: value.email });
 
-          const otpResult = await fetch(
-            `${process.env.REACT_APP_API_BASE_URL}/api/user/otp`,
-            {
-              method: 'POST',
-              body: JSON.stringify({
-                email: email,
-              }),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            },
-          );
-          const otpRes = await otpResult.json();
-
-          if (otpRes.ok) {
-            setValue({
-              email: '',
-              password: '',
-              remember: false,
-            });
-            validator.hideMessages();
-            props.history.push('/otp', { email: value.email });
-
-            toast.success('OTP has been sent to your email');
-          } else {
-            throw new Error('Failed to send OTP.');
-          }
+          toast.success('OTP has been sent to your email');
         } else {
           throw new Error(resData?.msg);
         }
@@ -165,6 +146,9 @@ const LoginPage = (props) => {
                   }
                   label="Remember Me"
                 />
+              </Grid>
+              <Grid className='formFooter' style={{justifyContent:'center',marginTop:'0px'}}>
+              <Spinner animation="border" className={value.isLoading?'d-block':'d-none'} size="sm" variant="primary"/>
               </Grid>
               <Grid className="formFooter">
                 <Button

@@ -5,6 +5,7 @@ import UserContext from '../../context/user-context';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { USER_UPDATE_TYPES } from '../../helper/constants';
+import {Spinner} from 'reactstrap'
 
 const OtpPage = (props) => {
   const [value, setValue] = useState({
@@ -63,8 +64,9 @@ const OtpPage = (props) => {
     }
   };
 
-  const resendOTP = async () => {
+  const resendOTP = async (e) => {
     try {
+      e.preventDefault();
       if (value?.isOTPSending) {
         toast.info('OTP already queued.');
         return;
@@ -122,6 +124,9 @@ const OtpPage = (props) => {
         <p>
           <input type="text" name="otpNumber" onChange={handleChange} />
         </p>
+        <Grid className='d-flex justify-content-center'>
+              <Spinner animation="border" className={value.isLoading?'d-block mb-2':'d-none'}  size="sm" variant="primary" />
+              </Grid>
         <Grid className="d-flex justify-content-center">
           <Button
             className="cBtnTheme"
@@ -133,9 +138,9 @@ const OtpPage = (props) => {
         </Grid>
         <p className="mt-3">
           If you didn't receive the code,{' '}
-          <a href="#" onClick={resendOTP}>
+          <span onClick={resendOTP} className="c-p text-primary">
             resend
-          </a>
+          </span>
           .
         </p>
       </Grid>
