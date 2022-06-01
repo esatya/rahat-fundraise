@@ -30,36 +30,6 @@ const Footer = (props) => {
                   technologies. We support and invest in promising ideas and
                   innovators to make a bigger impact.
                 </p>
-
-                <div className="company-logo">
-                  <a href="https://hamrolifebank.com/" target="_blank">
-                      <img src="https://assets.rumsan.com/esatya/hlb-blk-rumsan.png" />
-                  </a>
-                  <a href="https://askbhunte.com/"  target="_blank"> 
-                      <img
-                        src="https://assets.rumsan.com/askbhunte/assets/askbhunte-sq.png"
-                        alt=""
-                      />
-                  </a>
-                  <a href="https://agriclear.io/"  target="_blank">
-                      <img
-                        src="https://assets.rumsan.com/esatya/agriclear-sq.png"
-                        alt=""
-                      />
-                  </a>
-                  <a href="https://esatya.io/"  target="_blank">
-                      <img
-                        src="https://assets.rumsan.com/esatya/esatya-square-logo-500x500.png"
-                        alt=""
-                      />
-                  </a>
-                  <a href="https://lonetreenepal.com/"  target="_blank">
-                      <img
-                        src="https://assets.rumsan.com/rumsan-test/lonetree-100x100.png"
-                        alt=""
-                      />
-                  </a>
-                </div>
               </div>
             </div>
             <div className="col col-lg-2 col-md-6 col-sm-12 col-12">

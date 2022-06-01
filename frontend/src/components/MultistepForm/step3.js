@@ -61,21 +61,73 @@ const Step3 = (props) => {
     })
   );
 
+  const checkTxInBlock = async (web3,account) => {
+    let block = await web3.eth.getBlock('latest');
+
+    if(block && block.transactions){
+      const transactions = await Promise.all(block.transactions.map(async (el,i)=>{
+        const tx = await web3.eth.getTransactionReceipt(el);
+        return {to:tx.to, hash:tx.transactionHash,from:tx.from,value:tx.value };
+      }));
+      if(transactions) {
+      const reqTx = transactions.find((el)=>account.toLowerCase() === el.to.toLowerCase())
+      if(!reqTx) return {to:'anonymous', hash:'anonymous',from:'anonymous'};
+      return reqTx;
+    }
+    }
+    return {to:'anonymous', hash:'anonymous',from:'anonymous'};
+    
+  }
+
+  const updateDonationOnDb = async (body)=> {
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
+        {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((res) => res.json());
+
+      return resData;
+  }
+
 
   const fetchMyBalance= useCallback(async () => {
+   
     const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_PARAMS[97][0].rpcUrls[0]));
    const balance= await web3.eth.getBalance(props.getStore().walletAddress)
   const newBalance= web3.utils.fromWei(balance, 'ether');
+
   if(prevBalance && prevBalance!==newBalance){
+        const txData =  await checkTxInBlock(web3,props.getStore().walletAddress);
+        console.log({txData});
+      const body = {
+        ...props.getStore(),
+        donor: {
+          fullName: props.getStore().fullName,
+          email: props.getStore().email,
+          country: props.getStore().country,
+        },
+        transactionId: txData.hash,
+        campaignId: props.campaign.id,
+        amount: newBalance-prevBalance
+      }; 
+      const res = await updateDonationOnDb(body);
+      if(!res) return; 
     props.setDonated(!props.donated);
       props.onChange({});
       props.refreshData();
       props.updateStore({
         ...props.getStore(),
-        amount:newBalance-prevBalance
-        // donorAddress: account,
-        // transactionHash: receipt.transactionHash,
-      });    
+        amount:newBalance-prevBalance,
+        donorAddress: txData.from,
+        transactionHash: txData.hash,
+      });  
+        
+  
   }
   prevBalance=newBalance;
   	}, []);

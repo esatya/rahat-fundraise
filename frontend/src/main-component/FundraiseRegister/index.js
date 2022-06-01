@@ -135,7 +135,7 @@ const FundraiseRegisterPage = (props) => {
           <div className="row justify-content-center">
             <div className="col-lg-8">
               <div className="wpo-donate-header">
-                <h2>Register Here To Organize A Campaign</h2>
+                <h2>Create your fundraising campaign</h2>
               </div>
               <div id="Donations" className="tab-pane">
                 <form onSubmit={SubmitHandler}>
@@ -156,7 +156,7 @@ const FundraiseRegisterPage = (props) => {
                           onChange={changeHandler}
                         />
                       </div>
-                      {/* <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
+                      <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group">
                         <label htmlFor="fname" className="form-label">
                           <strong>Tagline</strong>
                         </label>
@@ -169,7 +169,7 @@ const FundraiseRegisterPage = (props) => {
                           maxLength={100}
                           onChange={changeHandler}
                         />
-                      </div> */}
+                      </div>
                       <div className="col-lg-12 col-12 form-group">
                         <label htmlFor="fname" className="form-label">
                           <strong>Share Your Story</strong>
