@@ -8,6 +8,7 @@ export const COOKIE_VALUES = {
 };
 
 export const COUNTRY_LIST = {
+  '': '',
   AF: 'Afghanistan',
   AL: 'Albania',
   DZ: 'Algeria',

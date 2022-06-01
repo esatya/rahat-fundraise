@@ -65,13 +65,15 @@ const Step2 = (props) => {
                 <select
                   id="country"
                   name="country"
-                  className="form-control"
+                  className="form-select"
                   value={props.getStore().country}
                   onChange={handleChange}
-                  defaultValue=" "
+                  defaultValue=""
                 >
                   {Object.entries(COUNTRY_LIST).map((country) => (
-                    <option key={country[0]} value={country[0]}>{country[1]}</option>
+                    <option key={country[0]} value={country[0]}>
+                      {country[0]}
+                    </option>
                   ))}
                 </select>
               </div>
