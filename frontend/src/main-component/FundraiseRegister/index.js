@@ -50,7 +50,7 @@ const FundraiseRegisterPage = (props) => {
     if (isValidAddress) {
       setWallets(
         wallets.concat({
-          name: value?.walletType || 'Ethereum',
+          name: value?.walletType || 'Binance',
           walletAddress: value?.walletAddress,
         }),
       );
@@ -60,7 +60,7 @@ const FundraiseRegisterPage = (props) => {
     setValue((previous) => {
       return {
         ...previous,
-        walletType: 'Ethereum',
+        walletType: 'Binance',
         walletAddress: '',
       };
     });
