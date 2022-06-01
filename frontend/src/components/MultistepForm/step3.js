@@ -290,7 +290,7 @@ const Step3 = (props) => {
                 >
                   <Spinner
                     animation="border"
-                    className={loading ? "d-block" : "d-none"}
+                    className={loading ? "d-block mt-2" : "d-none"}
                     variant="primary"
                     size="sm"
                   />
