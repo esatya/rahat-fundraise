@@ -36,7 +36,7 @@ const Step3 = (props) => {
   const checkNetwork = useCallback(() => {
     if (!chainId) return;
     if (chainId === CHAIN_ID.TESTNET.BINANCE) {
-      props.updateStore({
+        props.updateStore({
         ...props.getStore(),
         yourWalletAddress: account,
       });
@@ -61,8 +61,8 @@ const Step3 = (props) => {
     })
   );
 
-  const checkTxInBlock = async (web3,account) => {
-    let block = await web3.eth.getBlock('latest');
+  const checkTxInBlock = async (web3,account,blockNumber) => {
+    let block = await web3.eth.getBlock(blockNumber);
 
     if(block && block.transactions){
       const transactions = await Promise.all(block.transactions.map(async (el,i)=>{
@@ -71,11 +71,11 @@ const Step3 = (props) => {
       }));
       if(transactions) {
       const reqTx = transactions.find((el)=>account.toLowerCase() === el.to.toLowerCase())
-      if(!reqTx) return {to:'anonymous', hash:'anonymous',from:'anonymous'};
+      if(!reqTx) return {to:'anonymous', hash:Date.now(),from:'anonymous'};
       return reqTx;
     }
     }
-    return {to:'anonymous', hash:'anonymous',from:'anonymous'};
+    return {to:'anonymous', hash:Date.now(),from:'anonymous'};
     
   }
 
@@ -90,6 +90,9 @@ const Step3 = (props) => {
           },
         }
       ).then((res) => res.json());
+          toast.dismiss();
+        toast.success("Donation Complete successfully!");
+        setLoading(false);
 
       return resData;
   }
@@ -100,9 +103,9 @@ const Step3 = (props) => {
     const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_PARAMS[97][0].rpcUrls[0]));
    const balance= await web3.eth.getBalance(props.getStore().walletAddress)
   const newBalance= web3.utils.fromWei(balance, 'ether');
-
   if(prevBalance && prevBalance!==newBalance){
-        const txData =  await checkTxInBlock(web3,props.getStore().walletAddress);
+        const blockNumber = await web3.eth.getBlockNumber();
+        const txData =  await checkTxInBlock(web3,props.getStore().walletAddress,blockNumber);
         console.log({txData});
       const body = {
         ...props.getStore(),
@@ -156,49 +159,51 @@ const Step3 = (props) => {
       value: weiAmount,
     });
 
-    if (validator.allValid()) {
-      const body = {
-        ...props.getStore(),
-        donor: {
-          fullName: props.getStore().fullName,
-          email: props.getStore().email,
-          country: props.getStore().country,
-        },
-        transactionId: receipt.transactionHash,
-        campaignId: props.campaign.id,
-      };
-      const resData = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
-        {
-          method: "POST",
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      ).then((res) => res.json());
+    return receipt
 
-      validator.hideMessages();
+    // if (validator.allValid()) {
+    //   const body = {
+    //     ...props.getStore(),
+    //     donor: {
+    //       fullName: props.getStore().fullName,
+    //       email: props.getStore().email,
+    //       country: props.getStore().country,
+    //     },
+    //     transactionId: receipt.transactionHash,
+    //     campaignId: props.campaign.id,
+    //   };
+    //   const resData = await fetch(
+    //     `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
+    //     {
+    //       method: "POST",
+    //       body: JSON.stringify(body),
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     }
+    //   ).then((res) => res.json());
 
-      // Catch the API response and set the below value as per API
+    //   validator.hideMessages();
 
-      if (resData.data) {
-        props.setDonated(!props.donated);
-        props.onChange({});
-        props.refreshData();
-        props.updateStore({
-          ...props.getStore(),
-          donorAddress: account,
-          transactionHash: receipt.transactionHash,
-        });
-        toast.dismiss();
-        toast.success("Donation Complete successfully!");
-        setLoading(false);
-      }
-    } else {
-      validator.showMessages();
-      return toast.error("Empty field is not allowed!");
-    }
+    //   // Catch the API response and set the below value as per API
+
+    //   if (resData.data) {
+    //     props.setDonated(!props.donated);
+    //     props.onChange({});
+    //     props.refreshData();
+    //     props.updateStore({
+    //       ...props.getStore(),
+    //       donorAddress: account,
+    //       transactionHash: receipt.transactionHash,
+    //     });
+    //     toast.dismiss();
+    //     toast.success("Donation Complete successfully!");
+    //     setLoading(false);
+    //   }
+    // } else {
+    //   validator.showMessages();
+    //   return toast.error("Empty field is not allowed!");
+    // }
   };
 
   useEffect(() => {
