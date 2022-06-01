@@ -63,7 +63,6 @@ const Step3 = (props) => {
 
   const checkTxInBlock = async (web3, account, blockNumber) => {
     let block = await web3.eth.getBlock(blockNumber);
-
     if (block && block.transactions) {
       const transactions = await Promise.all(
         block.transactions.map(async (el, i) => {
@@ -112,7 +111,9 @@ const Step3 = (props) => {
     );
     const balance = await web3.eth.getBalance(props.getStore().walletAddress);
     const newBalance = web3.utils.fromWei(balance, "ether");
+    if(!prevBalance) prevBalance = newBalance;
     if (prevBalance && prevBalance !== newBalance) {
+      prevBalance = newBalance;
       const blockNumber = await web3.eth.getBlockNumber();
       const txData = await checkTxInBlock(
         web3,
@@ -143,7 +144,7 @@ const Step3 = (props) => {
         transactionHash: `${txData.hash}`,
       });
     }
-    prevBalance = newBalance;
+    
   }, []);
 
   const handleChange = (e) => {
@@ -169,51 +170,49 @@ const Step3 = (props) => {
       value: weiAmount,
     });
 
-    return receipt;
+    if (validator.allValid()) {
+      const body = {
+        ...props.getStore(),
+        donor: {
+          fullName: props.getStore().fullName,
+          email: props.getStore().email,
+          country: props.getStore().country,
+        },
+        transactionId: receipt.transactionHash,
+        campaignId: props.campaign.id,
+      };
+      const resData = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
+        {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((res) => res.json());
 
-    // if (validator.allValid()) {
-    //   const body = {
-    //     ...props.getStore(),
-    //     donor: {
-    //       fullName: props.getStore().fullName,
-    //       email: props.getStore().email,
-    //       country: props.getStore().country,
-    //     },
-    //     transactionId: receipt.transactionHash,
-    //     campaignId: props.campaign.id,
-    //   };
-    //   const resData = await fetch(
-    //     `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
-    //     {
-    //       method: "POST",
-    //       body: JSON.stringify(body),
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   ).then((res) => res.json());
+      validator.hideMessages();
 
-    //   validator.hideMessages();
+      // Catch the API response and set the below value as per API
 
-    //   // Catch the API response and set the below value as per API
-
-    //   if (resData.data) {
-    //     props.setDonated(!props.donated);
-    //     props.onChange({});
-    //     props.refreshData();
-    //     props.updateStore({
-    //       ...props.getStore(),
-    //       donorAddress: account,
-    //       transactionHash: receipt.transactionHash,
-    //     });
-    //     toast.dismiss();
-    //     toast.success("Donation Complete successfully!");
-    //     setLoading(false);
-    //   }
-    // } else {
-    //   validator.showMessages();
-    //   return toast.error("Empty field is not allowed!");
-    // }
+      if (resData.data) {
+        props.setDonated(!props.donated);
+        props.onChange({});
+        props.refreshData();
+        props.updateStore({
+          ...props.getStore(),
+          donorAddress: account,
+          transactionHash: receipt.transactionHash,
+        });
+        toast.dismiss();
+        toast.success("Donation Complete successfully!");
+        setLoading(false);
+      }
+    } else {
+      validator.showMessages();
+      return toast.error("Empty field is not allowed!");
+    }
   };
 
   useEffect(() => {
@@ -224,12 +223,12 @@ const Step3 = (props) => {
     fetchAndSetFiatPrice();
   }, [fetchAndSetFiatPrice]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchMyBalance();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [fetchMyBalance]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     fetchMyBalance();
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, [fetchMyBalance]);
 
   return (
     <div className="step step7">
