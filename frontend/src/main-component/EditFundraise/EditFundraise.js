@@ -76,10 +76,10 @@ if(isValidAddress){
     return {
       ...previous,
       wallets: previous?.wallets?.concat({
-        name: previous?.walletType || 'Ethereum',
+        name: previous?.walletType || 'Binance',
         walletAddress: previous?.walletAddress,
       }),
-      walletType: 'Ethereum',
+      walletType: 'Binance',
       walletAddress: '',
     };
   });
