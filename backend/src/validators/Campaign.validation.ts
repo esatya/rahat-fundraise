@@ -5,7 +5,7 @@ import { CAMPAIGN_OPTIONS } from '../config/constants';
 
 export const addNewCampaignValidationRules: ValidationChain[] = [
   body('title').isString().isLength({ min: 5 }),
-  body('excerpt').isString().isLength({ max: 100 }),
+  body('excerpt').isString().optional(),
   body('story').isString().optional(),
   body('fundRaiser').isString().optional(),
   body('wallets').isString().toArray().optional(),
@@ -19,7 +19,7 @@ export const addNewCampaignValidationRules: ValidationChain[] = [
 export const updateCampaignValidationRules: ValidationChain[] = [
   param('campaignId').isString().custom(isObjectIdValidator),
   body('title').isString().isLength({ min: 5 }).optional(),
-  body('excerpt').isString().isLength({ max: 100 }).optional(),
+  body('excerpt').isString().optional(),
   body('story').isString().optional(),
   body('fundRaiser').isString().optional(),
   body('wallets').isString().toArray().optional(),

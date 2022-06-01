@@ -7,7 +7,7 @@ import { CAMPAIGN_OPTIONS } from '../config/constants';
 const CampaignModel = new mongoose.Schema<ICampaign>(
   {
     title: { type: String, minLength: 5, required: true },
-    excerpt: { type: String, maxLength: 100, required: true },
+    excerpt: { type: String, maxLength: 100, default: '' },
     story: String,
     image: String,
     fundRaiser: String,
