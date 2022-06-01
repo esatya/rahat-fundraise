@@ -271,12 +271,12 @@ const CauseTabs = ({ campaign, donated }) => {
                           </div>
                           <ul>
                             <li>
-                              <span className="pe-1">Raised: </span> $
-                              {campaign?.amount}
+                              <span className="pe-1">Raised: </span>
+                              {campaign?.amount} ETH
                             </li>
                             <li>
-                              <span className="pe-1">Goal: </span> $
-                              {campaign?.target}
+                              <span className="pe-1">Goal: </span>
+                              {campaign?.target} ETH
                             </li>
                             <li>
                               <span>Donor: </span> 0
@@ -286,6 +286,7 @@ const CauseTabs = ({ campaign, donated }) => {
                         <div className="case-b-text">
                           {isJson(campaign?.story) ? (
                             <div
+                              className="text-break"
                               dangerouslySetInnerHTML={{
                                 __html: convertCommentFromJSONToHTML(
                                   campaign?.story,
@@ -293,7 +294,7 @@ const CauseTabs = ({ campaign, donated }) => {
                               }}
                             />
                           ) : (
-                            <p>{campaign?.story}</p>
+                            <p className="text-wrap">{campaign?.story}</p>
                           )}
                         </div>
                       </div>
@@ -317,58 +318,58 @@ const CauseTabs = ({ campaign, donated }) => {
                         <div className="row">
                           <table>
                             <thead>
-                            <tr>
-                              <th>Wallet Address</th>
-                              <th>Amount</th>
-                              <th>Donation Date</th>
-                              <th>Transaction Id</th>
-                            </tr>
+                              <tr>
+                                <th>Wallet Address</th>
+                                <th>Amount</th>
+                                <th>Donation Date</th>
+                                <th>Transaction Id</th>
+                              </tr>
                             </thead>
                             <tbody>
-                            {/* <hr
+                              {/* <hr
                               style={{
                                 height: '2px',
                                 width: '100%',
                                 color: '#217ec2',
                               }}
                             /> */}
-                            {donations?.map((donation) => (
-                              <tr key={donation.id}>
-                                <td>
-                                  <span
-                                    onClick={() =>
-                                      copyAddress(donation.walletAddress)
+                              {donations?.map((donation) => (
+                                <tr key={donation.id}>
+                                  <td>
+                                    <span
+                                      onClick={() =>
+                                        copyAddress(donation.walletAddress)
+                                      }
+                                      className="c-p-primary"
+                                    >
+                                      {shortenString(donation.walletAddress)}
+                                      <span className=" ps-1">
+                                        <i className="fa fa-copy "></i>
+                                      </span>
+                                    </span>
+                                  </td>
+                                  <td>{`$${donation.amount}`}</td>
+                                  <td>
+                                    {
+                                      new Date(donation.createdDate)
+                                        .toISOString()
+                                        .split('T')[0]
                                     }
-                                    className="c-p-primary"
-                                  >
-                                    {shortenString(donation.walletAddress)}
-                                    <span className=" ps-1">
-                                      <i className="fa fa-copy "></i>
-                                    </span>
-                                  </span>
-                                </td>
-                                <td>{`$${donation.amount}`}</td>
-                                <td>
-                                  {
-                                    new Date(donation.createdDate)
-                                      .toISOString()
-                                      .split('T')[0]
-                                  }
-                                </td>
-                                <td>
-                                  <a
-                                    href="#"
-                                    target="_blank"
-                                    className="text-decoration-underline text-default"
-                                  >
-                                    {shortenString(donation.transactionId)}
-                                    <span className=" ps-1">
-                                      <i className="fa fa-paperclip"></i>
-                                    </span>
-                                  </a>
-                                </td>
-                              </tr>
-                            ))}
+                                  </td>
+                                  <td>
+                                    <a
+                                      href="#"
+                                      target="_blank"
+                                      className="text-decoration-underline text-default"
+                                    >
+                                      {shortenString(donation.transactionId)}
+                                      <span className=" ps-1">
+                                        <i className="fa fa-paperclip"></i>
+                                      </span>
+                                    </a>
+                                  </td>
+                                </tr>
+                              ))}
                             </tbody>
                           </table>
                         </div>
