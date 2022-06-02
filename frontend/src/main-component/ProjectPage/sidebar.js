@@ -103,7 +103,7 @@ const CauseSidebar = (props) => {
                     Email : <strong>{sampleStore?.email}</strong>
                   </p>
                   <p className="height-height">
-                    Address : <strong>{sampleStore?.address}</strong>
+                    Address : <strong>{sampleStore?.country}</strong>
                   </p>
                 </div>
               )}
