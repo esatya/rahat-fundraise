@@ -359,7 +359,7 @@ const CauseTabs = ({ campaign, donated }) => {
                                   <td>
                                     <a
                                       href={`https://testnet.bscscan.com/tx/${donation.transactionId?donation.transactionId:''}`}
-                                      target="_blank"
+                                      target="_blank" rel="noopener noreferrer"
                                       className="text-decoration-underline text-default"
                                     >
                                       {shortenString(donation.transactionId)}

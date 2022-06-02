@@ -260,6 +260,7 @@ const FundraiseRegisterPage = (props) => {
                                 src={bnbImage}
                                 height={20}
                                 style={{ marginTop: '-0.3rem' }}
+                                alt=""
                               />
                               &nbsp;{wallet?.name}: {wallet?.walletAddress}
                             </small>
