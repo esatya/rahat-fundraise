@@ -20,7 +20,9 @@ const Step3 = (props) => {
   const { account, library, chainId } = useWeb3React();
   const [fiatPrice, setFiatPrice] = useState();
   const [loading, setLoading] = useState(false);
+  const [isQrPayment,setIsQrPayment]=useState(true)
   let prevBalance;
+
 
   const fetchAndSetFiatPrice = async () => {
     const current_unit_price = await getLatestPrice({
@@ -111,41 +113,42 @@ const Step3 = (props) => {
     );
     const balance = await web3.eth.getBalance(props.getStore().walletAddress);
     const newBalance = web3.utils.fromWei(balance, "ether");
-    if(!prevBalance) prevBalance = newBalance;
-    if (prevBalance && prevBalance !== newBalance) {
-      prevBalance = newBalance;
-      const blockNumber = await web3.eth.getBlockNumber();
-      const txData = await checkTxInBlock(
-        web3,
-        props.getStore().walletAddress,
-        blockNumber
-      );
-      const body = {
-        ...props.getStore(),
-        donor: {
-          fullName: props.getStore().fullName,
-          email: props.getStore().email,
-          country: props.getStore().country,
-        },
-        transactionId: `${txData.hash}`,
-        campaignId: props.campaign.id,
-        amount: newBalance - prevBalance,
-        walletAddress:txData.from
-      };
-      const res = await updateDonationOnDb(body);
-      if (!res) return;
-      props.setDonated(!props.donated);
-      props.onChange({});
-      props.refreshData();
-      props.updateStore({
-        ...props.getStore(),
-        amount: newBalance - prevBalance,
-        donorAddress: txData.from,
-        transactionHash: `${txData.hash}`,
-      });
+      if(!prevBalance) prevBalance = newBalance;
+      if (prevBalance && isQrPayment && prevBalance !== newBalance) {
+        const blockNumber = await web3.eth.getBlockNumber();
+        const txData = await checkTxInBlock(
+          web3,
+          props.getStore().walletAddress,
+          blockNumber
+        );
+        const body = {
+          ...props.getStore(),
+          donor: {
+            fullName: props.getStore().fullName,
+            email: props.getStore().email,
+            country: props.getStore().country,
+          },
+          transactionId: `${txData.hash}`,
+          campaignId: props.campaign.id,
+          amount:  Math.abs(newBalance - prevBalance),
+          walletAddress:txData.from
+        };
+        const res = await updateDonationOnDb(body);
+        if (res.data) {
+          props.setDonated(!props.donated);
+          props.onChange({});
+          props.refreshData();
+          props.updateStore({
+            ...props.getStore(),
+            transactionHash: res.data.transactionId,
+            walletAddress:res.data.walletAddress,
+            amount: Math.abs(res.data.amount),
+          });
+          setLoading(false);
+        }
+        prevBalance = newBalance;
     }
-    
-  }, []);
+  }, [isQrPayment]);
 
   const handleChange = (e) => {
     props.updateStore({
@@ -157,6 +160,7 @@ const Step3 = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setIsQrPayment(false);
     toast.info("Please keep patience, your transaction is being processed!!", {
       position: "bottom-right",
       autoClose: 25000,
@@ -223,12 +227,12 @@ const Step3 = (props) => {
     fetchAndSetFiatPrice();
   }, [fetchAndSetFiatPrice]);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetchMyBalance();
-  //   }, 5000);
-  //   return () => clearInterval(interval);
-  // }, [fetchMyBalance]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchMyBalance();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [fetchMyBalance]);
 
   return (
     <div className="step step7">
