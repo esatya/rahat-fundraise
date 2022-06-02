@@ -3,7 +3,7 @@ import React, { useState, Fragment, useEffect, useContext } from 'react';
 import dayjs from 'dayjs';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import { stateToHTML } from 'draft-js-export-html';
+// import { stateToHTML } from 'draft-js-export-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import Logo from '../../images/logo.png';
@@ -32,7 +32,7 @@ const EditFundraise = (props) => {
   const [image, setImage] = useState(null);
 
   const campaignId = props.match.params.id;
-  const [wallets, setWallets] = useState([]);
+  // const [wallets, setWallets] = useState([]);
 
   const { user } = useContext(UserContext);
 
@@ -407,7 +407,7 @@ else{
                           <div className="mb-2">Linked Wallets</div>
                           {value?.wallets?.map((wallet, index) => (
                             <p className="mb-0" key={index}>
-                            <small>  <img src={bnbImage} height={20} style={{marginTop:"-0.3rem"}}/>&nbsp;{wallet?.name}: {wallet?.walletAddress}</small>
+                            <small>  <img src={bnbImage} height={20} style={{marginTop:"-0.3rem"}} alt=""/>&nbsp;{wallet?.name}: {wallet?.walletAddress}</small>
                                <span
                                  className="text-danger c-p"
                                  onClick={() => removeWallet(index)}

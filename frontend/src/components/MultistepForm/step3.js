@@ -1,11 +1,11 @@
 import React, { useContext, useState, useCallback } from "react";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 
 import QRCode from "react-qr-code";
 import SimpleReactValidator from "simple-react-validator";
 import { toast } from "react-toastify";
 import "./style.css";
-import { FormGroup, Label, Col, Input, Form } from "reactstrap";
+import { FormGroup, Col, Input} from "reactstrap";
 import { Spinner } from "reactstrap";
 
 import { AppContext } from "../../modules/contexts";
