@@ -266,7 +266,7 @@ const FundraiseRegisterPage = (props) => {
                                 style={{ marginTop: "-0.3rem" }}
                                 alt=""
                               />
-                              &nbsp;{wallet?.name}: {wallet?.walletAddress}
+                              &nbsp;<strong>{wallet?.name}</strong>: {wallet?.walletAddress}
                             </small>
                             <span
                               className="text-danger c-p"
