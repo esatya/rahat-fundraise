@@ -39,8 +39,8 @@ const Step3 = (props) => {
 
   const checkNetwork = useCallback(async() => {
     if (!chainId) return;
-    const param_options = await getNetworkConnectParams(chainId);
-    if (param_options?.chainId && chainId===parseInt(param_options.chainId, 16)) {
+    const param_options = await getNetworkConnectParams(97);
+    if (param_options?.chainId && chainId!=97) {
       await window.ethereum.request({
         method: 'wallet_addEthereumChain',  
         params: [param_options]
@@ -50,9 +50,7 @@ const Step3 = (props) => {
         ...props.getStore(),
         yourWalletAddress: account,
       });
-    } else {
-      toast.warning(`Please select different network!`);
-    }
+    } 
   }, [chainId]);
 
   const copyAddress = () => {
@@ -116,11 +114,13 @@ const Step3 = (props) => {
   };
 
   const fetchMyBalance = useCallback(async () => {
+    const param_options = await getNetworkConnectParams(chainId);
     const web3 = new Web3(
-      new Web3.providers.HttpProvider(NETWORK_PARAMS[97][0].rpcUrls[0])
+      new Web3.providers.HttpProvider(param_options?.rpcUrls[0])
     );
     const balance = await web3.eth.getBalance(props.getStore().walletAddress);
     const newBalance = web3.utils.fromWei(balance, "ether");
+    console.log(newBalance,"balance")
       if(!prevBalance) prevBalance = newBalance;
       if (prevBalance && isQrPayment && prevBalance !== newBalance) {
         const blockNumber = await web3.eth.getBlockNumber();
@@ -156,7 +156,7 @@ const Step3 = (props) => {
         }
         prevBalance = newBalance;
     }
-  }, [isQrPayment]);
+  }, [isQrPayment,chainId]);
 
   const handleChange = (e) => {
     props.updateStore({
