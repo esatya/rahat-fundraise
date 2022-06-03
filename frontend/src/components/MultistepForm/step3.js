@@ -12,8 +12,10 @@ import { AppContext } from "../../modules/contexts";
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
 import { getLatestPrice } from "../../modules/charges/services";
-import { CHAIN_ID, NETWORK_PARAMS } from "../../constants/blockchainConstants";
+import { NETWORK_PARAMS } from "../../constants/blockchainConstants";
+import { getNetworkConnectParams } from "../../utils/chains";
 import Web3 from "web3";
+
 
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
@@ -35,15 +37,21 @@ const Step3 = (props) => {
     await connectMetaMask();
   };
 
-  const checkNetwork = useCallback(() => {
+  const checkNetwork = useCallback(async() => {
     if (!chainId) return;
-    if (chainId === CHAIN_ID.TESTNET.BINANCE) {
+    const param_options = await getNetworkConnectParams(chainId);
+    if (param_options?.chainId && chainId===parseInt(param_options.chainId, 16)) {
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',  
+        params: [param_options]
+      });
+      toast.success(`Switched your Network to ${param_options.chainName}`);
       props.updateStore({
         ...props.getStore(),
         yourWalletAddress: account,
       });
     } else {
-      toast.warning("Please select different network!");
+      toast.warning(`Please select different network!`);
     }
   }, [chainId]);
 
