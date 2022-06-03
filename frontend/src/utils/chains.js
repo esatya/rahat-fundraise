@@ -22,6 +22,17 @@ export const supportedChains = {
         rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
         blockExplorerUrls: ['https://testnet.bscscan.com']
       },
+      56:  {
+        chainId: '0x38',
+        chainName: 'Binance SmartChain Mainnet',
+        nativeCurrency: {
+          name: 'BNB',
+          symbol: 'bnb',
+          decimals: 18
+        },
+        rpcUrls: ['https://bsc-dataseed.binance.org'],
+        blockExplorerUrls: ['https://bscscan.com']
+      },
 
 	80001: {
         chainId: '0x13881',
@@ -34,16 +45,6 @@ export const supportedChains = {
         rpcUrls: ['https://rpc-mumbai.maticvigil.com'],
         blockExplorerUrls: ['https://mumbai.polygonscan.com/']
       },
-	  56:  {
-        chainId: '0x38',
-        chainName: 'Binance SmartChain Mainnet',
-        nativeCurrency: {
-          name: 'BNB',
-          symbol: 'bnb',
-          decimals: 18
-        },
-        rpcUrls: ['https://bsc-dataseed.binance.org'],
-        blockExplorerUrls: ['https://bscscan.com']
-      }
+
 };
 export const getNetworkConnectParams=chainId=>supportedChains[chainId]
