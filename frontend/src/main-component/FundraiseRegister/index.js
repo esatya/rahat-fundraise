@@ -13,6 +13,7 @@ import UserContext from "../../context/user-context";
 import Scrollbar from "../../components/scrollbar";
 import web3 from "web3";
 import bnbImage from "../../images/icon/binance.png";
+import polyImage from "../../images/icon/polymatic.jpg";
 import { supportedChains } from "../../utils/chains";
 
 const FundraiseRegisterPage = (props) => {
@@ -260,7 +261,7 @@ const FundraiseRegisterPage = (props) => {
                             <small>
                               {" "}
                               <img
-                                src={bnbImage}
+                                src={wallet?.name?.includes('Binance')?bnbImage:polyImage}
                                 height={20}
                                 style={{ marginTop: "-0.3rem" }}
                                 alt=""
