@@ -12,8 +12,7 @@ import { AppContext } from "../../modules/contexts";
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
 import { getLatestPrice } from "../../modules/charges/services";
-import { NETWORK_PARAMS } from "../../constants/blockchainConstants";
-import { getNetworkConnectParams } from "../../utils/chains";
+import { getNetworkConnectParams} from "../../utils/chains";
 import Web3 from "web3";
 
 
@@ -25,7 +24,6 @@ const Step3 = (props) => {
   const [isQrPayment,setIsQrPayment]=useState(true)
   let prevBalance;
 
-
   const fetchAndSetFiatPrice = async () => {
     const current_unit_price = await getLatestPrice({
       token: "bnb",
@@ -33,24 +31,26 @@ const Step3 = (props) => {
     });
     setFiatPrice(current_unit_price.USD * props.getStore().amount);
   };
+
   const connected = async () => {
     await connectMetaMask();
   };
 
   const checkNetwork = useCallback(async() => {
     if (!chainId) return;
-    const param_options = await getNetworkConnectParams(97);
-    if (param_options?.chainId && chainId!=97) {
+   const networkId= props.getStore().networkId
+    const param_options = await getNetworkConnectParams(networkId);
+    if (param_options?.chainId && chainId!=networkId) {
       await window.ethereum.request({
         method: 'wallet_addEthereumChain',  
         params: [param_options]
       });
       toast.success(`Switched your Network to ${param_options.chainName}`);
-      props.updateStore({
-        ...props.getStore(),
-        yourWalletAddress: account,
-      });
     } 
+    props.updateStore({
+      ...props.getStore(),
+      yourWalletAddress: account,
+    });
   }, [chainId]);
 
   const copyAddress = () => {
@@ -120,7 +120,6 @@ const Step3 = (props) => {
     );
     const balance = await web3.eth.getBalance(props.getStore().walletAddress);
     const newBalance = web3.utils.fromWei(balance, "ether");
-    console.log(newBalance,"balance")
       if(!prevBalance) prevBalance = newBalance;
       if (prevBalance && isQrPayment && prevBalance !== newBalance) {
         const blockNumber = await web3.eth.getBlockNumber();
@@ -235,12 +234,12 @@ const Step3 = (props) => {
     fetchAndSetFiatPrice();
   }, [fetchAndSetFiatPrice]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchMyBalance();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [fetchMyBalance]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     fetchMyBalance();
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, [fetchMyBalance]);
 
   return (
     <div className="step step7">

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 // import TextField from '@material-ui/core/TextField';
 import { shortenString } from '../../helper/helper';
+import { supportedChains} from "../../utils/chains";
 
 const Step1 = (props) => {
   
@@ -16,13 +17,31 @@ const Step1 = (props) => {
     if(!props?.campaign?.wallets?.length) return
       props.updateStore({
         ...props.getStore(),
-        walletAddress: props?.campaign?.wallets?.[0]?.walletAddress
+        walletAddress: props?.campaign?.wallets?.[0]?.walletAddress,
       });
   },[props.campaign])
+
+  const networkName=useCallback(()=>{
+   const name= document.getElementById(`${props.getStore().walletAddress}`)
+   const netName=name?.innerHTML.split("-")[0].trim()
+   {Object.keys(supportedChains).map((el, i) => {
+    if (supportedChains[el].chainName===netName){
+      props.updateStore({
+        ...props.getStore(),
+        networkId:el?el:'-'
+      })    
+    }
+ })}
+  },[props.getStore().walletAddress])
+
 
 	useEffect(() => {
 		defaultNetwork();
 	}, [defaultNetwork]);
+
+  useEffect(() => {
+		networkName();
+	}, [networkName]);
 
   return (
     <div className="step step3">
@@ -41,7 +60,7 @@ const Step1 = (props) => {
               >
                 {props.campaign?.wallets?.map((wallet, index) => {
                   return (
-                    <option key={index} value={wallet.walletAddress} >
+                    <option id={wallet.walletAddress} key={index}  value={wallet.walletAddress} >
                       {wallet.name +
                         ' - ' +
                         shortenString(wallet?.walletAddress)}
