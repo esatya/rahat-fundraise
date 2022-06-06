@@ -36,7 +36,7 @@ export const getDonationsForCampaign = async (
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { campaignId } = req.body;
+    const { campaignId } = req.params;
 
     const donations = await Donation.find({ campaignId });
 
@@ -62,7 +62,9 @@ export const addDonation = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const campaign = await Campaign.findById(req.body.campaignId);
+    const campaign = await Campaign.findById(req.body.campaignId).populate(
+      'creator',
+    );
 
     if (!campaign) {
       throw new Error(`Campaign not found.`);
@@ -77,6 +79,27 @@ export const addDonation = async (req: IRequest, res: IResponse) => {
     await campaign.save({
       validateModifiedOnly: true,
     });
+
+    const message = {
+      from: senderEmail,
+      to: campaign?.creator?.email,
+      subject: 'Donation Recieved',
+      text: `
+Hello ${campaign?.creator?.alias},
+
+You have received ${req.body.amount} from ${
+        req.body.isAnonymous
+          ? 'Anonymous donor.'
+          : req.body.donor.fullName || req.body.donor.email || 'Donor'
+      }.
+
+Thank you. 
+
+Regrads, 
+Rahat Team `,
+    };
+
+    const mailResult = await transporter.sendMail(message);
 
     return res.json({
       ok: true,

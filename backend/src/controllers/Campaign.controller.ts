@@ -1,14 +1,17 @@
 import { validationResult } from 'express-validator';
 
-import { TCampaign } from '../types';
+import User from '../models/User.model';
 import Campaign from '../models/Campaign.model';
 
+import { TCampaign, TUser } from '../types';
 import { ICampaign } from '../interfaces/models';
 import { IRequest, IResponse } from '../interfaces/vendors';
 
 export const getCampaigns = async (req: IRequest, res: IResponse) => {
   try {
-    const campaigns = await Campaign.find({ status: 'PUBLISHED' });
+    const campaigns = await Campaign.find({ status: 'PUBLISHED' }).populate(
+      'creator',
+    );
 
     if (!campaigns) {
       throw new Error('Campaigns not found.');
@@ -36,12 +39,40 @@ export const addCampaign = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
+    const user: TUser = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(401).json({
+        ok: false,
+        error: 'You are not authorized to create this campaign',
+      });
+    }
+
+    const wallets = JSON.parse(req.body?.wallets) || [];
+
+    const imageUrl = req.file
+      ? `/uploads/campaigns/${req.file.filename}`
+      : null;
+
     const campaign: ICampaign = new Campaign({
       ...req.body,
+      image: imageUrl,
+      wallets: wallets,
       creator: req.userId,
     });
 
     const savedCampaign: ICampaign = await campaign.save();
+
+    const updatedCampaigns = [...user.campaigns, campaign];
+
+    await User.findByIdAndUpdate(
+      req.userId,
+      { campaigns: updatedCampaigns },
+      {
+        runValidators: true,
+        new: true,
+      },
+    );
 
     return res.json({
       ok: true,
@@ -88,9 +119,15 @@ export const updateCampaign = async (req: IRequest, res: IResponse) => {
       });
     }
 
+    const wallets = JSON.parse(req.body?.wallets) || [];
+
+    const imageUrl = req.file
+      ? `/uploads/campaigns/${req.file.filename}`
+      : campaign?.image;
+
     const updatedCampaign: TCampaign = await Campaign.findByIdAndUpdate(
       campaignId,
-      updatedData,
+      { ...updatedData, image: imageUrl, wallets: wallets },
       {
         runValidators: true,
         new: true,
@@ -350,8 +387,8 @@ export const getCampaignById = async (req: IRequest, res: IResponse) => {
     const campaignId = req.params.campaignId;
     const campaign = await Campaign.findOne({
       _id: campaignId,
-      status: 'PUBLISHED',
-    });
+      //   status: 'PUBLISHED',
+    }).populate('creator');
 
     if (!campaign) {
       throw new Error(`Campaign not found.`);

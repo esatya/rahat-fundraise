@@ -5,13 +5,13 @@ import { CAMPAIGN_OPTIONS } from '../config/constants';
 
 export const addNewCampaignValidationRules: ValidationChain[] = [
   body('title').isString().isLength({ min: 5 }),
-  body('excerpt').isString().isLength({ max: 100 }),
+  body('excerpt').isString().optional(),
   body('story').isString().optional(),
   body('fundRaiser').isString().optional(),
-  body('wallet').isArray().optional(),
-  body('wallet.*.*').isString(),
-  body('target').isNumeric().toFloat(),
-  body('amount').isNumeric().toFloat(),
+  body('wallets').isString().toArray().optional(),
+  body('wallets.*.*').isString(),
+  body('target').isFloat().toFloat(),
+  body('amount').isFloat().toFloat().optional(),
   body('status').isString().toUpperCase().isIn(CAMPAIGN_OPTIONS).optional(),
   body('expiryDate').isISO8601({ strict: true }).isAfter(),
 ];
@@ -19,11 +19,11 @@ export const addNewCampaignValidationRules: ValidationChain[] = [
 export const updateCampaignValidationRules: ValidationChain[] = [
   param('campaignId').isString().custom(isObjectIdValidator),
   body('title').isString().isLength({ min: 5 }).optional(),
-  body('excerpt').isString().isLength({ max: 100 }).optional(),
+  body('excerpt').isString().optional(),
   body('story').isString().optional(),
   body('fundRaiser').isString().optional(),
-  body('wallet').isArray().optional(),
-  body('wallet.*.*').isString(),
+  body('wallets').isString().toArray().optional(),
+  body('wallets.*.*').isString(),
   body('target').isNumeric().toFloat().optional(),
   body('amount').isNumeric().toFloat().optional(),
   body('status').isString().toUpperCase().isIn(CAMPAIGN_OPTIONS).optional(),
@@ -54,4 +54,8 @@ export const updateCampaignAmountValidationRules: ValidationChain[] = [
 
 export const getCampaignByIdValidationRules: ValidationChain[] = [
   param('campaignId').isString().custom(isObjectIdValidator),
+];
+
+export const getCampaignsByUserValidationRules: ValidationChain[] = [
+  param('userId').isString().custom(isObjectIdValidator),
 ];

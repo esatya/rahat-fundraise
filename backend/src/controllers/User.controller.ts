@@ -7,22 +7,64 @@ import { IRequest, IResponse } from '../interfaces/vendors';
 
 import User from '../models/User.model';
 import transporter from '../services/mail.service';
-import { secret, senderEmail } from '../config/keys';
+import { SITE_KEY, secret, senderEmail, HCAPTCHA_SECRET } from '../config/keys';
 import { convertUserData, generateOTP } from '../utils/helper';
+import { TOKEN_EXPIRATION_DATE } from '../config/constants';
+import axios from 'axios';
+
+const LOGIN_URL = 'https://stage.rahat-fundraise.pages.dev/login';
 
 export const registerUser = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const imageUrl = req.file ? `/images/users/${req.file.filename}` : null;
+    const imageUrl = req.file ? `/uploads/users/${req.file.filename}` : null;
+
+    const email: string = req.body.email;
+    const alias: string = req.body.alias;
+    let existingUser: TUser = await User.findOne({
+      email,
+    });
+    if (existingUser) {
+      throw new Error(
+        `This email is already registered. Please sign in with the email address.`,
+      );
+    }
+
+    existingUser = await User.findOne({
+      alias,
+    });
+    if (existingUser) {
+      throw new Error(`Username already taken.`);
+    }
 
     const user: TUser = new User<IUser>({ ...req.body, image: imageUrl });
 
     const savedUser: IUser = await user.save();
+
+    const message = {
+      from: senderEmail,
+      to: email,
+      subject: 'Welcome to Rahat',
+
+      html: `
+      
+Dear ${alias},
+<br/><br/>
+Thank you for signing up to Rahat Crowdfunding platform. Rahat Crowdfunding platform is an opensource platform which will help you collect fund for the needy people. 
+<br/><br/>
+Please click here to <a href="${LOGIN_URL}" target="_blank">login</a> to your fundraiser account. 
+<br/><br/>
+Thank you. 
+<br/><br/>
+Regrads, 
+Rahat Team `,
+    };
+
+    const mailResult = await transporter.sendMail(message);
 
     return res.json({
       ok: true,
@@ -46,12 +88,50 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ ok: false, errors: errors.array() });
     }
 
+    const isPostmanRequest = req.body.isPostmanRequest || false;
+
+    if (!isPostmanRequest) {
+      const captchaResponse = await axios.post(
+        'https://hcaptcha.com/siteverify',
+        new URLSearchParams({
+          response: req.body.captchaToken,
+          secret: HCAPTCHA_SECRET,
+        }),
+      );
+
+      if (!captchaResponse.data || !captchaResponse.data.success) {
+        return res.status(400).json({
+          ok: false,
+          msg: 'Captcha could not be verified. Please try again.',
+        });
+      }
+    }
     const email: string = req.body.email;
     const user: TUser = await User.findOne({ email });
 
     if (!user) {
-      throw new Error(`User with ${email} not found.`);
+      throw new Error(`The email is not registered. Please sign up first.`);
     }
+
+    // Send OTP HERE
+
+    const OTP = generateOTP();
+
+    const message = {
+      from: senderEmail,
+      to: email,
+      subject: 'OTP for Login',
+      text: `Your Login OTP is ${OTP}. Do not share it with others.`,
+    };
+
+    user.otp = {
+      expiry: Date.now() + 5 * 60000,
+      number: OTP,
+    };
+
+    await user.save({ validateModifiedOnly: true });
+
+    const mailResult = await transporter.sendMail(message);
 
     return res.json({
       ok: true,
@@ -101,7 +181,7 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
 
     await user.save({ validateModifiedOnly: true });
 
-    await transporter.sendMail(message);
+    const mailResult = await transporter.sendMail(message);
 
     res.json({
       ok: true,
@@ -152,6 +232,7 @@ export const verifyOTP = async (req: IRequest, res: IResponse) => {
     const token = jsonwebtoken.sign(
       { id: user?._id, email: user?.email, alias: user?.alias },
       secret,
+      { expiresIn: TOKEN_EXPIRATION_DATE },
     );
 
     res.json({
@@ -253,9 +334,32 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       });
     }
 
+    if (req.body.email) {
+      let existingUser: TUser = await User.findOne({
+        email: req.body.email,
+      });
+      if (existingUser) {
+        throw new Error(`This email is already registered.`);
+      }
+    }
+
+    if (req.body.alias) {
+      let existingUser = await User.findOne({
+        alias: req.body.alias,
+      });
+      if (existingUser) {
+        throw new Error(`Username already taken.`);
+      }
+    }
+
+    const imageUrl = req.file ? `/uploads/users/${req.file.filename}` : null;
+    const updateQuery = imageUrl
+      ? { ...updatedData, image: imageUrl }
+      : updatedData;
+
     const updatedUser: TUser = await User.findByIdAndUpdate(
       req.userId,
-      updatedData,
+      updateQuery,
       {
         runValidators: true,
         new: true,
@@ -296,9 +400,9 @@ export const addWallet = async (req: IRequest, res: IResponse) => {
       throw new Error(`User does not exist.`);
     }
 
-    const wallet: string = req.body.wallet;
+    const walletId: string = req.body.walletId;
 
-    user.wallet = wallet;
+    user.walletId = walletId;
     const updatedUser: IUser = await user.save({ validateModifiedOnly: true });
 
     return res.json({
@@ -317,7 +421,7 @@ export const addWallet = async (req: IRequest, res: IResponse) => {
 
 export const getProfile = async (req: IRequest, res: IResponse) => {
   try {
-    const user: TUser = await User.findById(req.userId);
+    const user: TUser = await User.findById(req.userId).populate('campaigns');
 
     if (!user) {
       throw new Error(`User does not exist.`);
@@ -325,7 +429,7 @@ export const getProfile = async (req: IRequest, res: IResponse) => {
 
     return res.json({
       ok: true,
-      msg: 'Login Successful',
+      msg: 'User Data',
       data: convertUserData(user),
     });
   } catch (error) {
