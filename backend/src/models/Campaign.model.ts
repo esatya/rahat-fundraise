@@ -7,23 +7,23 @@ import { CAMPAIGN_OPTIONS } from '../config/constants';
 const CampaignModel = new mongoose.Schema<ICampaign>(
   {
     title: { type: String, minLength: 5, required: true },
-    excerpt: { type: String, maxLength: 100, required: true },
-    story: { type: String },
-    featured_image: { type: String },
-    fundRaiser: { type: String },
-    wallet: [
+    excerpt: { type: String, maxLength: 100, default: '' },
+    story: String,
+    image: String,
+    fundRaiser: String,
+    wallets: [
       {
         name: String,
         walletAddress: String,
       },
     ],
     target: { type: Number, required: true },
-    amount: { type: Number, required: true },
+    amount: { type: Number, default: 0 },
     status: {
       type: String,
       required: true,
       enum: CAMPAIGN_OPTIONS,
-      default: 'DRAFT',
+      default: 'PUBLISHED',
     },
     creator: {
       type: mongoose.Schema.Types.ObjectId,

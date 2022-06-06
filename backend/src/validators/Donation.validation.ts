@@ -1,14 +1,15 @@
-import { body, ValidationChain } from 'express-validator';
+import { body, param, ValidationChain } from 'express-validator';
 
 import { isObjectIdValidator } from '../utils/helper';
 
 export const getDonationsValidationRules: ValidationChain[] = [
-  body('campaignId').isString().custom(isObjectIdValidator),
+  param('campaignId').isString().custom(isObjectIdValidator),
 ];
 
 export const newDonationValidationRules: ValidationChain[] = [
-  body('donor').isObject(),
+  body('donor').isObject().optional(),
   body('amount').isNumeric().toFloat(),
+  body('email').isEmail().normalizeEmail().optional(),
   body('isAnonymous').toBoolean(true).optional(),
   body('donor.*.').isString().isLength({ min: 1 }).optional(),
   body('transactionId').notEmpty().isString(),

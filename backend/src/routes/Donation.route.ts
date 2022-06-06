@@ -27,7 +27,11 @@ router.get('/', getDonations);
 // @Route   post api/donation/campaign
 // @desc    All donations for a campaign
 // @access  Public
-router.post('/campaign', getDonationsValidationRules, getDonationsForCampaign);
+router.get(
+  '/campaign/:campaignId',
+  getDonationsValidationRules,
+  getDonationsForCampaign,
+);
 
 // @Route   POST api/donation/add
 // @desc    Add new donation

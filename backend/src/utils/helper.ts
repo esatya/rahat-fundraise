@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 import { IUser } from '../interfaces/models';
 
 export const convertUserData = (user: IUser) => {
-  const { updatedDate, createdDate, ...newUser } = user.toJSON();
-  return newUser;
+  //   const { updatedDate, createdDate, ...newUser } = user.toJSON();
+  return user.toJSON();
 };
 
 export const isObjectIdValidator = (value: string) => {
