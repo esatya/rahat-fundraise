@@ -34,17 +34,16 @@ export const supportedChains = {
         blockExplorerUrls: ['https://bscscan.com']
       },
 
-	80001: {
-        chainId: '0x13881',
-        chainName: 'Polygon Testnet',
-        nativeCurrency: {
-          name: 'MATIC',
-          symbol: 'MATIC',
-          decimals: 18
-        },
-        rpcUrls: ['https://rpc-mumbai.maticvigil.com'],
-        blockExplorerUrls: ['https://mumbai.polygonscan.com/']
-      },
-
+	80001:   {
+    chainId: '0x13881',
+    chainName: 'Polygon Testnet',
+    nativeCurrency: {
+      name: 'MATIC',
+      symbol: 'MATIC',
+      decimals: 18
+    },
+    rpcUrls: ['https://rpc-mumbai.maticvigil.com'],
+    blockExplorerUrls: ['https://mumbai.polygonscan.com/']
+  }
 };
 export const getNetworkConnectParams=chainId=>supportedChains[chainId]
