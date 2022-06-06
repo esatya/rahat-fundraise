@@ -4,12 +4,12 @@ import { shortenString } from '../../helper/helper';
 import { supportedChains} from "../../utils/chains";
 
 const Step1 = (props) => {
-  
 
   const handleChange = (e) => {
     props.updateStore({
       ...props.getStore(),
-      [e.target.name]: e.target.value,
+      walletAddress: JSON.parse(e.target.value).walletAddress,
+      networkName:  JSON.parse(e.target.value).name
     });
   };
 
@@ -18,21 +18,22 @@ const Step1 = (props) => {
       props.updateStore({
         ...props.getStore(),
         walletAddress: props?.campaign?.wallets?.[0]?.walletAddress,
+        networkName: props?.campaign?.wallets?.[0]?.name
       });
   },[props.campaign])
 
+
   const networkName=useCallback(()=>{
-   const name= document.getElementById(`${props.getStore().walletAddress}`)
-   const netName=name?.innerHTML.split("-")[0].trim()
    {Object.keys(supportedChains).map((el, i) => {
-    if (supportedChains[el].chainName===netName){
+    if (supportedChains[el].chainName===props.getStore().networkName){
       props.updateStore({
         ...props.getStore(),
-        networkId:el?el:'-'
+        networkId:el
       })    
     }
  })}
-  },[props.getStore().walletAddress])
+  },[props.getStore().walletAddress,props.getStore().networkName])
+
 
 
 	useEffect(() => {
@@ -54,13 +55,12 @@ const Step1 = (props) => {
             <div className="mt-2 mb-4">
               <select
                 id="crypto" className='form-select'
-                name="walletAddress"
-                value={props.getStore().walletAddress}
+                // value={{walletAddress:props.getStore().walletAddress,name:props.getStore().name}}
                 onChange={handleChange}
               >
                 {props.campaign?.wallets?.map((wallet, index) => {
                   return (
-                    <option id={wallet.walletAddress} key={index}  value={wallet.walletAddress} >
+                    <option id={wallet.walletAddress} key={index}  value={JSON.stringify({name:wallet.name,walletAddress:wallet.walletAddress})} >
                       {wallet.name +
                         ' - ' +
                         shortenString(wallet?.walletAddress)}
