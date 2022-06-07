@@ -18,4 +18,8 @@ module.exports = {
       await collection.deleteMany();
     }
   },
+
+  convertToObjectID(id: string) {
+    return mongoose.Types.ObjectId(id);
+  },
 };
