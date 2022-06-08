@@ -102,6 +102,7 @@ const FundraiseRegisterPage = (props) => {
     formData.append('expiryDate', dayjs(value.expiryDate).format('YYYY-MM-DD'));
     formData.append('image', image);
     formData.append('wallets', JSON.stringify(wallets));
+
     formData.append('status', saveAsDraft ? 'DRAFT' : 'PUBLISHED');
 
     try {
