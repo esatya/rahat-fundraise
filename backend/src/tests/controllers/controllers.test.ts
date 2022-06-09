@@ -6,17 +6,21 @@ const {
   getCreatedUser,
   getCreatedCampaign,
 } = require('../mongo');
+
 const {
   listUsers,
   addUser,
   getProfile,
+  registerUser,
 } = require('../../controllers/User.controller');
+
 const {
   addCampaign,
   getCampaigns,
   updateCampaignStatus,
   getCampaignById,
 } = require('../../controllers/Campaign.controller');
+
 const {
   getDonationsForCampaign,
   addDonation,
@@ -53,11 +57,74 @@ describe('User Controller', () => {
     });
   });
 
-  it('add new user', async () => {
+  it('register  new user', async () => {
     const mockRequest = {
       body: {
         alias: 'makai',
         email: 'test@test.com',
+      },
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+      json: jest.fn(),
+    };
+
+    await registerUser(mockRequest, mockResponse);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      ok: true,
+      msg: 'User Registered Successfully',
+      data: expect.anything(),
+    });
+  });
+
+  it('register with same email', async () => {
+    const mockRequest = {
+      body: {
+        alias: 'makai',
+        email: 'test@test.com',
+      },
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+      json: jest.fn(),
+    };
+
+    await registerUser(mockRequest, mockResponse);
+    expect(mockResponse.status).toBeCalledWith(401);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      ok: false,
+      msg: 'This email is already registered. Please sign in with the email address.',
+    });
+  });
+
+  it('register with same alias', async () => {
+    const mockRequest = {
+      body: {
+        alias: 'makai',
+        email: 'test2@test.com',
+      },
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+      json: jest.fn(),
+    };
+
+    await registerUser(mockRequest, mockResponse);
+    expect(mockResponse.status).toBeCalledWith(401);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      ok: false,
+      msg: 'Username already taken.',
+    });
+  });
+
+  it('add a different user', async () => {
+    const mockRequest = {
+      body: {
+        alias: 'makai2',
+        email: 'test2@test.com',
       },
     };
     const mockResponse = {
@@ -74,11 +141,11 @@ describe('User Controller', () => {
     });
   });
 
-  it('add new user with same email', async () => {
+  it('add a different user with same email', async () => {
     const mockRequest = {
       body: {
-        alias: 'makai',
-        email: 'test@test.com',
+        alias: 'makai23',
+        email: 'test2@test.com',
       },
     };
     const mockResponse = {
@@ -94,11 +161,11 @@ describe('User Controller', () => {
     });
   });
 
-  it('add new user with same alias', async () => {
+  it('add a different user with same alias', async () => {
     const mockRequest = {
       body: {
-        alias: 'makai',
-        email: 'test2@test.com',
+        alias: 'makai2',
+        email: 'test22@test.com',
       },
     };
     const mockResponse = {
@@ -109,6 +176,7 @@ describe('User Controller', () => {
 
     await addUser(mockRequest, mockResponse);
     expect(mockResponse.status).toBeCalledWith(400);
+
     expect(mockResponse.json).toHaveBeenCalledWith({
       error: 'alias already in use',
     });

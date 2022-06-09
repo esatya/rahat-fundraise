@@ -51,20 +51,22 @@ export const registerUser = async (req: IRequest, res: IResponse) => {
       subject: 'Welcome to Rahat',
 
       html: `
-      
-Dear ${alias},
-<br/><br/>
-Thank you for signing up to Rahat Crowdfunding platform. Rahat Crowdfunding platform is an opensource platform which will help you collect fund for the needy people. 
-<br/><br/>
-Please click here to <a href="${LOGIN_URL}" target="_blank">login</a> to your fundraiser account. 
-<br/><br/>
-Thank you. 
-<br/><br/>
-Regrads, 
-Rahat Team `,
+        Dear ${alias},
+        <br/><br/>
+        Thank you for signing up to Rahat Crowdfunding platform. Rahat Crowdfunding platform is an opensource platform which will help you collect fund for the needy people. 
+        <br/><br/>
+        Please click here to <a href="${LOGIN_URL}" target="_blank">login</a> to your fundraiser account. 
+        <br/><br/>
+        Thank you. 
+        <br/><br/>
+        Regrads, 
+        Rahat Team `,
     };
 
-    const mailResult = await transporter.sendMail(message);
+    // For testing skip
+    if (process.env.NODE_ENV !== 'test') {
+      await transporter.sendMail(message);
+    }
 
     return res.json({
       ok: true,
