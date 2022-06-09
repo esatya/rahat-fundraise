@@ -12,8 +12,9 @@ import { AppContext } from "../../modules/contexts";
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
 import { getLatestPrice } from "../../modules/charges/services";
-import { CHAIN_ID, NETWORK_PARAMS } from "../../constants/blockchainConstants";
+import { getNetworkConnectParams} from "../../utils/chains";
 import Web3 from "web3";
+
 
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
@@ -23,7 +24,6 @@ const Step3 = (props) => {
   const [isQrPayment,setIsQrPayment]=useState(true)
   let prevBalance;
 
-
   const fetchAndSetFiatPrice = async () => {
     const current_unit_price = await getLatestPrice({
       token: "bnb",
@@ -31,20 +31,26 @@ const Step3 = (props) => {
     });
     setFiatPrice(current_unit_price.USD * props.getStore().amount);
   };
+
   const connected = async () => {
     await connectMetaMask();
   };
 
-  const checkNetwork = useCallback(() => {
+  const checkNetwork = useCallback(async() => {
     if (!chainId) return;
-    if (chainId === CHAIN_ID.TESTNET.BINANCE) {
-      props.updateStore({
-        ...props.getStore(),
-        yourWalletAddress: account,
+   const networkId= props.getStore().networkId
+    const param_options = await getNetworkConnectParams(networkId);
+    if (param_options?.chainId && chainId!=networkId) {
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',  
+        params: [param_options]
       });
-    } else {
-      toast.warning("Please select different network!");
-    }
+      toast.success(`Switched your Network to ${param_options.chainName}`);
+    } 
+    props.updateStore({
+      ...props.getStore(),
+      yourWalletAddress: account,
+    });
   }, [chainId]);
 
   const copyAddress = () => {
@@ -108,8 +114,9 @@ const Step3 = (props) => {
   };
 
   const fetchMyBalance = useCallback(async () => {
+    const param_options = await getNetworkConnectParams(chainId);
     const web3 = new Web3(
-      new Web3.providers.HttpProvider(NETWORK_PARAMS[97][0].rpcUrls[0])
+      new Web3.providers.HttpProvider(param_options?.rpcUrls[0])
     );
     const balance = await web3.eth.getBalance(props.getStore().walletAddress);
     const newBalance = web3.utils.fromWei(balance, "ether");
@@ -148,7 +155,7 @@ const Step3 = (props) => {
         }
         prevBalance = newBalance;
     }
-  }, [isQrPayment]);
+  }, [isQrPayment,chainId]);
 
   const handleChange = (e) => {
     props.updateStore({
@@ -227,12 +234,12 @@ const Step3 = (props) => {
     fetchAndSetFiatPrice();
   }, [fetchAndSetFiatPrice]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchMyBalance();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [fetchMyBalance]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     fetchMyBalance();
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, [fetchMyBalance]);
 
   return (
     <div className="step step7">

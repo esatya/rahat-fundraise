@@ -1,28 +1,30 @@
-import { toast } from 'react-toastify';
-import React, { useState, Fragment, useContext } from 'react';
-import dayjs from 'dayjs';
-import { EditorState, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { toast } from "react-toastify";
+import React, { useState, Fragment, useContext, useEffect } from "react";
+import dayjs from "dayjs";
+import { EditorState, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-import Logo from '../../images/logo.png';
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/footer';
-import PageTitle from '../../components/pagetitle';
-import UserContext from '../../context/user-context';
-import Scrollbar from '../../components/scrollbar';
-import web3 from 'web3';
-import bnbImage from '../../images/icon/binance.png';
+import Logo from "../../images/logo.png";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/footer";
+import PageTitle from "../../components/pagetitle";
+import UserContext from "../../context/user-context";
+import Scrollbar from "../../components/scrollbar";
+import web3 from "web3";
+import bnbImage from "../../images/icon/binance.png";
+import polyImage from "../../images/icon/polymatic.jpg";
+import { supportedChains } from "../../utils/chains";
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
-    title: '',
-    excerpt: '',
+    title: "",
+    excerpt: "",
     story: EditorState.createEmpty(),
-    target: '',
-    expiryDate: '',
-    walletType: 'Binance',
-    walletAddress: '',
+    target: "",
+    expiryDate: "",
+    walletType: "Binance Smart Chain Testnet",
+    walletAddress: "",
   });
 
   const [wallets, setWallets] = useState([]);
@@ -40,7 +42,7 @@ const FundraiseRegisterPage = (props) => {
   };
 
   const removeWallet = (index) => {
-    const newWallets = value.wallets?.filter((item, idx) => index !== idx);
+    const newWallets = wallets?.filter((item, idx) => index !== idx);
     setWallets(newWallets);
   };
 
@@ -50,18 +52,18 @@ const FundraiseRegisterPage = (props) => {
     if (isValidAddress) {
       setWallets(
         wallets.concat({
-          name: value?.walletType || 'Binance',
+          name: value?.walletType || "Binance Smart Chain Testnet",
           walletAddress: value?.walletAddress,
-        }),
+        })
       );
     } else {
-      toast.warning('Please enter correct wallet address.');
+      toast.warning("Please enter correct wallet address.");
     }
     setValue((previous) => {
       return {
         ...previous,
-        walletType: 'Binance',
-        walletAddress: '',
+        walletType: "Binance Smart Chain Testnet",
+        walletAddress: "",
       };
     });
   };
@@ -79,47 +81,47 @@ const FundraiseRegisterPage = (props) => {
 
   const registerFundraise = async (saveAsDraft) => {
     if (wallets?.length <= 0) {
-      toast.warning('Please add at least one wallet.');
+      toast.warning("Please add at least one wallet.");
       return;
     }
     if (value.excerpt?.length > 100) {
-      toast.warning('Tagline Cannot be more than 100 words.');
+      toast.warning("Tagline Cannot be more than 100 words.");
       return;
     }
 
     if (value.title?.length <= 0) {
-      toast.warning('Please enter the title');
+      toast.warning("Please enter the title");
       return;
     }
     const formData = new FormData();
-    formData.append('title', value.title);
-    formData.append('excerpt', value.excerpt || '');
+    formData.append("title", value.title);
+    formData.append("excerpt", value.excerpt || "");
     formData.append(
-      'story',
-      JSON.stringify(convertToRaw(value.story.getCurrentContent())),
+      "story",
+      JSON.stringify(convertToRaw(value.story.getCurrentContent()))
     );
-    formData.append('target', value.target);
-    formData.append('expiryDate', dayjs(value.expiryDate).format('YYYY-MM-DD'));
-    formData.append('image', image);
-    formData.append('wallets', JSON.stringify(wallets));
-    formData.append('status', saveAsDraft ? 'DRAFT' : 'PUBLISHED');
+    formData.append("target", value.target);
+    formData.append("expiryDate", dayjs(value.expiryDate).format("YYYY-MM-DD"));
+    formData.append("image", image);
+    formData.append("wallets", JSON.stringify(wallets));
+    formData.append("status", saveAsDraft ? "DRAFT" : "PUBLISHED");
 
     try {
       const resData = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/api/campaign/add`,
         {
-          method: 'POST',
+          method: "POST",
           body: formData,
           headers: {
             Authorization: `Bearer ${user?.data?.token}`,
           },
-        },
+        }
       ).then((res) => res.json());
 
       if (resData?.ok) {
-        props.history.push('/myfundraise');
+        props.history.push("/myfundraise");
       } else {
-        throw new Error('Failed to register campaign.');
+        throw new Error("Failed to register campaign.");
       }
     } catch (error) {
       return toast.error(error.message);
@@ -129,7 +131,7 @@ const FundraiseRegisterPage = (props) => {
   return (
     <Fragment>
       <Navbar Logo={Logo} />
-      <PageTitle pageTitle={'Register'} pagesub={'Register'} />
+      <PageTitle pageTitle={"Register"} pagesub={"Register"} />
       <div className="wpo-donation-page-area section-padding">
         <div className="container">
           <div className="row justify-content-center">
@@ -206,7 +208,7 @@ const FundraiseRegisterPage = (props) => {
                       <div className="row align-items-center">
                         <div
                           className="col-lg-5 col-md-5 col-sm-5 col-12"
-                          style={{ marginBottom: '30px' }}
+                          style={{ marginBottom: "30px" }}
                         >
                           <label htmlFor="fname" className="form-label">
                             <strong>Your blockchain network</strong>
@@ -218,12 +220,14 @@ const FundraiseRegisterPage = (props) => {
                             value={value?.walletType}
                             onChange={changeHandler}
                           >
-                            <option>Binance</option>
+                            {Object.keys(supportedChains).map((el, i) => {
+                              return <option key={i} value={supportedChains[el].chainName}>{supportedChains[el].chainName}</option>;
+                            })}
                           </select>
                         </div>
                         <div
                           className="col-lg-5 col-md-5 col-sm-5 col-7"
-                          style={{ marginBottom: '30px' }}
+                          style={{ marginBottom: "30px" }}
                         >
                           <label htmlFor="fname" className="form-label">
                             <strong>Your Wallet address</strong>
@@ -255,14 +259,14 @@ const FundraiseRegisterPage = (props) => {
                         {wallets?.map((wallet, index) => (
                           <p className="mb-0" key={index}>
                             <small>
-                              {' '}
+                              {" "}
                               <img
-                                src={bnbImage}
+                                src={wallet?.name?.includes('Binance')?bnbImage:polyImage}
                                 height={20}
-                                style={{ marginTop: '-0.3rem' }}
+                                style={{ marginTop: "-0.3rem" }}
                                 alt=""
                               />
-                              &nbsp;{wallet?.name}: {wallet?.walletAddress}
+                              &nbsp;<strong>{wallet?.name}</strong>: {wallet?.walletAddress}
                             </small>
                             <span
                               className="text-danger c-p"
@@ -294,7 +298,7 @@ const FundraiseRegisterPage = (props) => {
                         </label>
                         <input
                           type="date"
-                          min={dayjs().add('1', 'day').format('YYYY-MM-DD')}
+                          min={dayjs().add("1", "day").format("YYYY-MM-DD")}
                           className="form-control"
                           name="expiryDate"
                           id="expiryDate"
