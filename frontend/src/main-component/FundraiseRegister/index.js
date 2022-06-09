@@ -100,6 +100,7 @@ const FundraiseRegisterPage = (props) => {
       "story",
       JSON.stringify(convertToRaw(value.story.getCurrentContent()))
     );
+
     formData.append("target", value.target);
     formData.append("expiryDate", dayjs(value.expiryDate).format("YYYY-MM-DD"));
     formData.append("image", image);

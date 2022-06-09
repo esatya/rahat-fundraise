@@ -251,6 +251,7 @@ export const verifyOTP = async (req: IRequest, res: IResponse) => {
       .json({ ok: false, msg: 'Something went wrong. Please try again.' });
   }
 };
+
 export const listUsers = async (req: IRequest, res: IResponse) => {
   try {
     const users: IUser[] = await User.find();
