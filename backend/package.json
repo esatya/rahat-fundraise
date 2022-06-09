@@ -11,7 +11,7 @@
     "lint:fix": "eslint --ext .ts . --fix",
     "format": "prettier --write .",
     "coverage": "jest --coverage",
-    "test:controllers": "cross-env NODE_ENV=development jest --runInBand --detectOpenHandles ./src/tests/controllers/ --coverage"
+    "test:controllers": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles ./src/tests/controllers/ --coverage"
   },
   "repository": {
     "type": "git",
