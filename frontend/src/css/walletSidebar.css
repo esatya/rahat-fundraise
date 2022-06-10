@@ -40,7 +40,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 2rem 2rem;
+	margin-top: 30px;
 }
 
 .offcanvas-header img {
@@ -168,7 +168,7 @@
 .offcanvas-header .btn-close {
 	padding: 0.5rem 0.5rem;
 	margin-top: -0.5rem;
-	margin-right: -0.5rem;
+	margin-right: 0.5rem;
 	margin-bottom: -0.5rem;
 }
 
@@ -212,9 +212,9 @@
 		top: 5.5rem;
 	}
 
-	.offcanvas-header {
+	/* .offcanvas-header {
 		padding: 2rem 1rem;
-	}
+	} */
 
 	#wallet-dropdown {
 		margin-right: 150px;
@@ -231,4 +231,10 @@
 	/* .navbar .logo .navbar-item {
 		margin-bottom: 8px;
 	} */
+}
+
+
+.customConnected {
+  background-color: #217ec2;
+  color: #fff;
 }

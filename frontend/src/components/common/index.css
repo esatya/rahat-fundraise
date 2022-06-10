@@ -1,0 +1,10 @@
+
+.wpo-campaign-area .campaign-btn ul li a.e-btn:hover {
+    background: #217ec2 !important;
+    color: #fff;
+}
+
+.campaign-published {
+    background-color: #217ec2 !important;
+    color: #fff !important;
+}

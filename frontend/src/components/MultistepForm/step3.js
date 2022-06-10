@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import './style.css';
 import { FormGroup, Col, Input } from 'reactstrap';
 import { Spinner } from 'reactstrap';
+import { shortenString } from '../../helper/helper';
 
 import { AppContext } from '../../modules/contexts';
 import { useWeb3React } from '@web3-react/core';
@@ -253,7 +254,7 @@ const Step3 = (props) => {
           {props.getStore()?.yourWalletAddress ? (
             <div className="mt-3 mb-2">
               <FormGroup row className="mt-3">
-                <Col sm={12}>
+                <Col sm={6}>
                   <p className="text-center">
                     <small>
                       <strong>Your wallet Address is:</strong>
@@ -270,13 +271,19 @@ const Step3 = (props) => {
                         }
                         title="Click to copy Wallet address"
                       >
-                        {props.getStore().yourWalletAddress}
+                        {shortenString(props.getStore().yourWalletAddress)}
                       </a>
                     </small>
                   </p>
                 </Col>
+                <Col sm={6}>
+                  <ConnectWallet
+                    name="My Wallet"
+                    customClass="btn btn-lg customButton"
+                  />
+                </Col>
               </FormGroup>
-              <FormGroup row className="p-3 bg-light">
+              <FormGroup row className="p-3 mt-3 bg-light">
                 <Col sm={8}>
                   <Input
                     name="amount"
