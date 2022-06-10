@@ -13,7 +13,7 @@ import {
   EXPLORERS,
 } from '../../constants/blockchainConstants';
 
-function ConnectWallet({ name }) {
+function ConnectWallet({ name, customClass }) {
   const { account } = useWeb3React();
 
   const [show, setShow] = useState(false);
@@ -64,19 +64,22 @@ function ConnectWallet({ name }) {
 
   return (
     <>
-      <button onClick={handleShow} className="theme-btn btn-lg">
+      <button
+        onClick={handleShow}
+        className={customClass ? customClass : 'theme-btn btn-lg'}
+      >
         {name}{' '}
       </button>
       {account ? (
         <Offcanvas show={show} onHide={handleClose} placement="end">
           <Offcanvas.Header closeButton>
-            <Link to="#">
+            {/* <Link to="#">
               <img
                 src="https://assets.rumsan.com/rumsan-group/agansing-rai.jpg"
                 alt="test images"
                 style={{ width: '50px', marginRight: '50px' }}
               />
-            </Link>
+            </Link> */}
             <Nav>
               <NavDropdown
                 id="nav-dropdown-dark-example"
@@ -150,9 +153,7 @@ function ConnectWallet({ name }) {
               <div className="wallet-balance">
                 <p>Total Balance</p>
                 <h4>$0.00 USD</h4>
-                <Button variant="warning" className="me-2">
-                  Add Funds
-                </Button>
+                <Button className="me-2 customConnected">Add Funds</Button>
               </div>
             </div>
             <hr />
