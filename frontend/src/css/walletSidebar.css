@@ -1,0 +1,234 @@
+.offcanvas {
+	position: fixed;
+	bottom: 0;
+	z-index: 1045;
+	display: flex;
+	flex-direction: column;
+	max-width: 120%;
+	visibility: hidden;
+	background-color: #fff;
+	background-clip: padding-box;
+	outline: 0;
+	transition: transform 0.3s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.offcanvas {
+		transition: none;
+	}
+}
+
+.offcanvas-backdrop {
+	position: fixed;
+	top: 5.4rem;
+	left: 0;
+	z-index: 1040;
+	width: 100vw;
+	height: 100vh;
+	background-color: #000;
+}
+
+.offcanvas-backdrop.fade {
+	opacity: 0;
+}
+
+.offcanvas-backdrop.show {
+	opacity: 0.5;
+}
+
+.offcanvas-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 2rem 2rem;
+}
+
+.offcanvas-header img {
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.offcanvas-title {
+	font-weight: 600;
+	font-size: 18px;
+	white-space: nowrap;
+	color: rgb(4, 17, 29);
+	margin-bottom: 0;
+	padding-left: 1rem;
+}
+
+.offcanvas-body {
+	flex-grow: 1;
+	padding: 1rem 2rem;
+	overflow-y: auto;
+}
+
+.offcanvas-body .wallet-options {
+	display: block;
+	padding: 10px 20px;
+	border: 1px solid rgb(229, 232, 235);
+	border-radius: 2%;
+	cursor: pointer;
+	margin: 0.5rem 1rem;
+}
+
+.offcanvas-body .wallet-options {
+	display: flex;
+	align-items: center;
+	padding: 8px 8px;
+	width: 100%;
+	color: rgb(4, 17, 29);
+	border-bottom: 1px solid rgb(229, 232, 235);
+}
+
+.offcanvas-body .wallet-options:hover {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.01), 0 6px 20px 0 rgba(0, 0, 0, 0.12);
+	transition: all ease 0.6s;
+}
+
+.offcanvas-body .wallet-options :last-child {
+	border-bottom: 1px solid rgb(255, 255, 255);
+}
+
+.offcanvas-body .wallet-options p {
+	padding-top: 15px;
+	font-weight: 600;
+}
+
+.offcanvas-body img {
+	width: 40px;
+	margin-right: 15px;
+	border-radius: 50%;
+}
+
+.offcanvas-body .wallet-balance {
+	display: flex;
+	flex-direction: column;
+	padding-top: 10px;
+	border: 1px solid rgb(229, 232, 235);
+	border-radius: 10px;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+}
+
+.offcanvas-body .wallet-balance button {
+	display: block;
+	width: 100%;
+	border: none;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	color: white;
+	padding: 14px 28px;
+	font-size: 16px;
+	cursor: pointer;
+	text-align: center;
+}
+
+.offcanvas-start {
+	top: 0;
+	left: 0;
+	width: 400px;
+	border-right: 1px solid rgba(0, 0, 0, 0.2);
+	transform: translateX(-100%);
+}
+
+.offcanvas-end {
+	top: 5.4rem;
+	right: 0;
+	width: 500px;
+	border-left: 1px solid rgba(0, 0, 0, 0.2);
+	transform: translateX(100%);
+	box-shadow: inset 0px 0px 10px rgba(100, 99, 99, 0.5);
+}
+
+.offcanvas-top {
+	top: 0;
+	right: 0;
+	left: 0;
+	height: 30vh;
+	max-height: 100%;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	transform: translateY(-100%);
+}
+
+.offcanvas-bottom {
+	right: 0;
+	left: 0;
+	height: 30vh;
+	max-height: 100%;
+	border-top: 1px solid rgba(0, 0, 0, 0.2);
+	transform: translateY(100%);
+}
+
+.offcanvas.show {
+	transform: none;
+}
+
+.offcanvas-header .btn-close {
+	padding: 0.5rem 0.5rem;
+	margin-top: -0.5rem;
+	margin-right: -0.5rem;
+	margin-bottom: -0.5rem;
+}
+
+.btn-close {
+	box-sizing: content-box;
+	width: 1em;
+	height: 1em;
+	padding: 0.25em 0.25em;
+	color: #000;
+	background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+	border: 0;
+	border-radius: 0.25rem;
+	opacity: 0.5;
+}
+
+/* a:hover,
+.portfolio-cat a:hover,
+.footer -menu li a:hover {
+	color: #6c757d !important;
+} */
+
+.nav-link,
+.nav-link:hover,
+.nav-link:focus,
+.nav-link:active {
+	color: #000;
+	font-weight: 800;
+}
+
+.dropdown-toggle::after {
+	left: 80px;
+}
+
+#wallet-dropdown {
+	margin-right: 200px;
+}
+
+@media only screen and (max-width: 768px) {
+	.offcanvas-end {
+		width: 100%;
+		top: 5.5rem;
+	}
+
+	.offcanvas-header {
+		padding: 2rem 1rem;
+	}
+
+	#wallet-dropdown {
+		margin-right: 150px;
+	}
+
+	.badge {
+		font-size: 0.62rem;
+	}
+
+	/* .btn-main.inline {
+		margin-right: 0px;
+		margin-top: -20px;
+	} */
+	/* .navbar .logo .navbar-item {
+		margin-bottom: 8px;
+	} */
+}
