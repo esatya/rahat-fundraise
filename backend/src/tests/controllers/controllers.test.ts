@@ -1,3 +1,6 @@
+import { getUserById } from '../../controllers/User.controller';
+import UserModel from '../../models/User.model';
+
 const {
   connectDatabase,
   closeDatabase,
@@ -12,6 +15,9 @@ const {
   addUser,
   getProfile,
   registerUser,
+  userLogin,
+  sendOTP,
+  verifyOTP,
 } = require('../../controllers/User.controller');
 
 const {
@@ -120,6 +126,173 @@ describe('User Controller', () => {
     });
   });
 
+  // it('login user with registered email', async () => {
+  //   const mockRequest = {
+  //     body: {
+  //       email: 'test@test.com',
+  //     },
+  //   };
+  //   const mockResponse = {
+  //     status: jest.fn().mockReturnThis(),
+  //     send: jest.fn(),
+  //     json: jest.fn(),
+  //   };
+  //   axios.get.mockResolvedValueOnce(mockRequest);
+  //   await userLogin(mockRequest, mockResponse);
+  //   expect(mockResponse.status).toBeCalledWith(401);
+  //   expect(mockResponse.json).toHaveBeenCalledWith({
+  //     ok: true,
+  //     msg: 'User Exists',
+  //     data: {
+  //       email: 'test@test.com',
+  //     },
+  //   });
+  // });
+
+  // it('login user with unregistered email', async () => {
+  //   const mockRequest = {
+  //     body: {
+  //       email: 'nomail@test.com',
+  //     },
+  //   };
+  //   const mockResponse = {
+  //     status: jest.fn().mockReturnThis(),
+  //     send: jest.fn(),
+  //     json: jest.fn(),
+  //   };
+
+  //   await userLogin(mockRequest, mockResponse);
+  //   expect(mockResponse.status).toBeCalledWith(401);
+  //   expect(mockResponse.json).toHaveBeenCalledWith({
+  //     ok: false,
+  //     msg: 'The email is not registered. Please sign up first.',
+  //   });
+  // });
+
+  it('sent OTP to registered email', async () => {
+    const mockRequest = {
+      body: {
+        email: 'test@test.com',
+      },
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+      json: jest.fn(),
+    };
+
+    await sendOTP(mockRequest, mockResponse);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      ok: true,
+      msg: 'OTP Sent',
+    });
+  });
+
+  it('sent OTP to unregistered email', async () => {
+    const mockRequest = {
+      body: {
+        email: 'nomail@test.com',
+      },
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+      json: jest.fn(),
+    };
+
+    await sendOTP(mockRequest, mockResponse);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      ok: false,
+      msg: 'User with nomail@test.com not found.',
+    });
+  });
+
+  it('verify OTP fail for unregistered email', async () => {
+    const mockRequest = {
+      body: {
+        email: 'nomail@test.com',
+      },
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+      json: jest.fn(),
+    };
+
+    await verifyOTP(mockRequest, mockResponse);
+    expect(mockResponse.status).toBeCalledWith(401);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      ok: false,
+      msg: 'User does not exist or OTP is invalid',
+    });
+  });
+
+  it('verify OTP fail for registered email with expired OTP', async () => {
+    const tempUser = await UserModel.findOne({ email: 'test@test.com' });
+    if (tempUser && tempUser.otp) {
+      const newExpiryDate = Date.now() - 6 * 60000;
+      await UserModel.findOneAndUpdate(
+        { email: 'test@test.com' },
+        {
+          'otp.expiry': newExpiryDate,
+        },
+      );
+    }
+
+    const mockRequest = {
+      body: {
+        email: 'test@test.com',
+        otpNumber: tempUser?.otp?.number,
+      },
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+      json: jest.fn(),
+    };
+
+    await verifyOTP(mockRequest, mockResponse);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      ok: false,
+      msg: 'Invalid/Expired OTP.',
+    });
+  });
+
+  it('verify OTP to login attempt email', async () => {
+    const otpRequest = {
+      body: {
+        email: 'test@test.com',
+      },
+    };
+    const otpResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+      json: jest.fn(),
+    };
+    await sendOTP(otpRequest, otpResponse);
+    const tempUser = await UserModel.findOne({ email: 'test@test.com' });
+    const mockRequest = {
+      body: {
+        email: 'test@test.com',
+        otpNumber: tempUser?.otp?.number,
+      },
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+      json: jest.fn(),
+    };
+
+    await verifyOTP(mockRequest, mockResponse);
+
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      ok: true,
+      token: expect.anything(),
+      msg: 'OTP Verified',
+      isEmailVerified: true,
+    });
+  });
+
   it('add a different user', async () => {
     const mockRequest = {
       body: {
@@ -199,6 +372,47 @@ describe('User Controller', () => {
       msg: 'User does not exist.',
     });
   });
+
+  // it('get user by id', async () => {
+  //   const mockRequest = {
+  //     params: {
+  //       id: user[0].id,
+  //     },
+  //   };
+  //   console.log(mockRequest);
+  //   const mockResponse = {
+  //     status: jest.fn().mockReturnThis(),
+  //     send: jest.fn(),
+  //     json: jest.fn(),
+  //   };
+
+  //   await getUserById(mockRequest, mockResponse);
+  //   expect(mockResponse.json).toBeCalledWith({
+  //     ok: true,
+  //     msg: 'User Found.',
+  //     data: expect.anything(),
+  //   });
+  // });
+
+  // it('get user by random id', async () => {
+  //   const mockRequest = {
+  //     params: {
+  //       id: '578df3efb61825131202a196',
+  //     },
+  //   };
+  //   const mockResponse = {
+  //     status: jest.fn().mockReturnThis(),
+  //     send: jest.fn(),
+  //     json: jest.fn(),
+  //   };
+
+  //   await getUserById(mockRequest, mockResponse);
+  //   expect(mockResponse.status).toBeCalledWith(401);
+  //   expect(mockResponse.json).toBeCalledWith({
+  //     ok: false,
+  //     msg: 'User does not exist.',
+  //   });
+  // });
 });
 
 describe('Campaign Controller', () => {
