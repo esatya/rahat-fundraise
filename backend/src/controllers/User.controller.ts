@@ -90,25 +90,27 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({ ok: false, errors: errors.array() });
     }
-    /* istanbul ignore next */
-    const isPostmanRequest = req.body.isPostmanRequest || false;
 
-    /* istanbul ignore next */
-    /* c8 ignore next */
-    if (!isPostmanRequest) {
-      const captchaResponse = await axios.post(
-        'https://hcaptcha.com/siteverify',
-        new URLSearchParams({
-          response: req.body.captchaToken,
-          secret: HCAPTCHA_SECRET,
-        }),
-      );
+    if (process.env.NODE_ENV !== 'test') {
+      /* istanbul ignore next */
+      const isPostmanRequest = req.body.isPostmanRequest || false;
 
-      if (!captchaResponse.data || !captchaResponse.data.success) {
-        return res.status(400).json({
-          ok: false,
-          msg: 'Captcha could not be verified. Please try again.',
-        });
+      /* istanbul ignore next */
+      if (!isPostmanRequest) {
+        const captchaResponse = await axios.post(
+          'https://hcaptcha.com/siteverify',
+          new URLSearchParams({
+            response: req.body.captchaToken,
+            secret: HCAPTCHA_SECRET,
+          }),
+        );
+
+        if (!captchaResponse.data || !captchaResponse.data.success) {
+          return res.status(400).json({
+            ok: false,
+            msg: 'Captcha could not be verified. Please try again.',
+          });
+        }
       }
     }
 
@@ -350,7 +352,7 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       let existingUser: TUser = await User.findOne({
         email: req.body.email,
       });
-      if (existingUser) {
+      if (existingUser && existingUser.id !== req.userId) {
         throw new Error(`This email is already registered.`);
       }
     }
@@ -359,7 +361,7 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       let existingUser = await User.findOne({
         alias: req.body.alias,
       });
-      if (existingUser) {
+      if (existingUser && existingUser.id !== req.userId) {
         throw new Error(`Username already taken.`);
       }
     }
@@ -492,7 +494,7 @@ export const getUsersByWalletId = async (req: IRequest, res: IResponse) => {
 
     const { walletId } = req.params;
 
-    const user: IUser | null = await User.findOne({ wallet: walletId });
+    const user: IUser | null = await User.findOne({ walletId: walletId });
 
     if (!user) {
       throw new Error(`User with wallet address ${walletId} not found.`);
