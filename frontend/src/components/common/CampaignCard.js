@@ -1,5 +1,7 @@
+import { style } from 'jade/lib/runtime';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../common/index.css';
 
 const CampaignCard = ({ Cause, citem }) => {
   return (
