@@ -1,5 +1,6 @@
 import CampaignModel from '../models/Campaign.model';
 import UserModel from '../models/User.model';
+import DonationModel from '../models/Donation.model';
 
 const mongoose = require('mongoose');
 
@@ -58,6 +59,24 @@ module.exports = {
     await campaign.save();
     const savedCampaigns = await CampaignModel.find().populate('creator');
     return savedCampaigns;
+  },
+
+  async getCreatedDonation(campaignId: string) {
+    const donation = new DonationModel({
+      transactionId: 'TrasnctionId 1' + Math.floor(Math.random() * 100000),
+      campaignId,
+      walletAddress: 'Wallet1',
+      donor: {
+        fullName: 'Full name',
+        email: 'test@test.com',
+        country: 'NP',
+      },
+      isVerified: false,
+      amount: 100,
+    });
+    await donation.save();
+    const savedDonations = await DonationModel.find();
+    return savedDonations;
   },
 
   convertToObjectID(id: string) {

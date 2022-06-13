@@ -11,7 +11,6 @@ import {
   verifyOTPValidationRules,
   addWalletValidationRules,
   updateUserValidationRules,
-  socialLoginValidationRules,
   getByWalletIdValidationRules,
 } from '../validators/User.validation';
 
@@ -23,7 +22,6 @@ import {
   verifyOTP,
   listUsers,
   getProfile,
-  socialLogin,
   getUserById,
   registerUser,
   updateUserById,
@@ -108,11 +106,6 @@ router.post('/update-by-id', isAuth, updateUserValidationRules, updateUserById);
 // @desc    Add Wallet - logged in user
 // @access  Public
 router.post('/add-wallet', isAuth, addWalletValidationRules, addWallet);
-
-// @Route   POST api/user/social-login
-// @desc    Social Login - Google
-// @access  Public
-router.post('/social-login', socialLoginValidationRules, socialLogin);
 
 // @Route   GET api/user/get-by-walletid
 // @desc    Get User By Wallet-ID
