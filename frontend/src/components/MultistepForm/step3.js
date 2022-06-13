@@ -1,33 +1,35 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useContext, useState, useCallback } from 'react';
 // import { v4 as uuidv4 } from "uuid";
 
-import QRCode from "react-qr-code";
-import SimpleReactValidator from "simple-react-validator";
-import { toast } from "react-toastify";
-import "./style.css";
-import { FormGroup, Col, Input} from "reactstrap";
-import { Spinner } from "reactstrap";
+import QRCode from 'react-qr-code';
+import SimpleReactValidator from 'simple-react-validator';
+import { toast } from 'react-toastify';
+import './style.css';
+import { FormGroup, Col, Input } from 'reactstrap';
+import { Spinner } from 'reactstrap';
+import { shortenString } from '../../helper/helper';
 
-import { AppContext } from "../../modules/contexts";
-import { useWeb3React } from "@web3-react/core";
-import { useEffect } from "react";
-import { getLatestPrice } from "../../modules/charges/services";
-import { getNetworkConnectParams} from "../../utils/chains";
-import Web3 from "web3";
+import { AppContext } from '../../modules/contexts';
+import { useWeb3React } from '@web3-react/core';
+import { useEffect } from 'react';
+import { getLatestPrice } from '../../modules/charges/services';
+import { getNetworkConnectParams } from '../../utils/chains';
+import Web3 from 'web3';
 
+import ConnectWallet from '../connectWalletSidebar';
 
 const Step3 = (props) => {
   const { connectMetaMask } = useContext(AppContext);
   const { account, library, chainId } = useWeb3React();
   const [fiatPrice, setFiatPrice] = useState();
   const [loading, setLoading] = useState(false);
-  const [isQrPayment,setIsQrPayment]=useState(true)
+  const [isQrPayment, setIsQrPayment] = useState(true);
   let prevBalance;
 
   const fetchAndSetFiatPrice = async () => {
     const current_unit_price = await getLatestPrice({
-      token: "bnb",
-      currency: "usd",
+      token: 'bnb',
+      currency: 'usd',
     });
     setFiatPrice(current_unit_price.USD * props.getStore().amount);
   };
@@ -36,17 +38,17 @@ const Step3 = (props) => {
     await connectMetaMask();
   };
 
-  const checkNetwork = useCallback(async() => {
+  const checkNetwork = useCallback(async () => {
     if (!chainId) return;
-   const networkId= props.getStore().networkId
+    const networkId = props.getStore().networkId;
     const param_options = await getNetworkConnectParams(networkId);
-    if (param_options?.chainId && chainId!=networkId) {
+    if (param_options?.chainId && chainId != networkId) {
       await window.ethereum.request({
-        method: 'wallet_addEthereumChain',  
-        params: [param_options]
+        method: 'wallet_addEthereumChain',
+        params: [param_options],
       });
       toast.success(`Switched your Network to ${param_options.chainName}`);
-    } 
+    }
     props.updateStore({
       ...props.getStore(),
       yourWalletAddress: account,
@@ -54,8 +56,8 @@ const Step3 = (props) => {
   }, [chainId]);
 
   const copyAddress = () => {
-    const copyText = document.getElementById("wallet");
-    const textArea = document.createElement("textarea");
+    const copyText = document.getElementById('wallet');
+    const textArea = document.createElement('textarea');
     textArea.value = copyText.textContent;
     document.body.appendChild(textArea);
     textArea.select();
@@ -65,8 +67,8 @@ const Step3 = (props) => {
 
   const [validator] = React.useState(
     new SimpleReactValidator({
-      className: "errorMessage",
-    })
+      className: 'errorMessage',
+    }),
   );
 
   const checkTxInBlock = async (web3, account, blockNumber) => {
@@ -81,33 +83,33 @@ const Step3 = (props) => {
             from: tx.from,
             value: tx.value,
           };
-        })
+        }),
       );
       if (transactions) {
         const reqTx = transactions.find(
-          (el) => account?.toLowerCase() === el?.to?.toLowerCase()
+          (el) => account?.toLowerCase() === el?.to?.toLowerCase(),
         );
         if (!reqTx)
-          return { to: "anonymous", hash: Date.now(), from: "anonymous" };
+          return { to: 'anonymous', hash: Date.now(), from: 'anonymous' };
         return reqTx;
       }
     }
-    return { to: "anonymous", hash: Date.now(), from: "anonymous" };
+    return { to: 'anonymous', hash: Date.now(), from: 'anonymous' };
   };
 
   const updateDonationOnDb = async (body) => {
     const resData = await fetch(
       `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
       {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(body),
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-      }
+      },
     ).then((res) => res.json());
     toast.dismiss();
-    toast.success("Donation Complete successfully!");
+    toast.success('Donation Complete successfully!');
     setLoading(false);
 
     return resData;
@@ -116,46 +118,46 @@ const Step3 = (props) => {
   const fetchMyBalance = useCallback(async () => {
     const param_options = await getNetworkConnectParams(chainId);
     const web3 = new Web3(
-      new Web3.providers.HttpProvider(param_options?.rpcUrls[0])
+      new Web3.providers.HttpProvider(param_options?.rpcUrls[0]),
     );
     const balance = await web3.eth.getBalance(props.getStore().walletAddress);
-    const newBalance = web3.utils.fromWei(balance, "ether");
-      if(!prevBalance) prevBalance = newBalance;
-      if (prevBalance && isQrPayment && prevBalance !== newBalance) {
-        const blockNumber = await web3.eth.getBlockNumber();
-        const txData = await checkTxInBlock(
-          web3,
-          props.getStore().walletAddress,
-          blockNumber
-        );
-        const body = {
+    const newBalance = web3.utils.fromWei(balance, 'ether');
+    if (!prevBalance) prevBalance = newBalance;
+    if (prevBalance && isQrPayment && prevBalance !== newBalance) {
+      const blockNumber = await web3.eth.getBlockNumber();
+      const txData = await checkTxInBlock(
+        web3,
+        props.getStore().walletAddress,
+        blockNumber,
+      );
+      const body = {
+        ...props.getStore(),
+        donor: {
+          fullName: props.getStore().fullName,
+          email: props.getStore().email,
+          country: props.getStore().country,
+        },
+        transactionId: `${txData.hash}`,
+        campaignId: props.campaign.id,
+        amount: Math.abs(newBalance - prevBalance),
+        walletAddress: txData.from,
+      };
+      const res = await updateDonationOnDb(body);
+      if (res.data) {
+        props.setDonated(!props.donated);
+        props.onChange({});
+        props.refreshData();
+        props.updateStore({
           ...props.getStore(),
-          donor: {
-            fullName: props.getStore().fullName,
-            email: props.getStore().email,
-            country: props.getStore().country,
-          },
-          transactionId: `${txData.hash}`,
-          campaignId: props.campaign.id,
-          amount:  Math.abs(newBalance - prevBalance),
-          walletAddress:txData.from
-        };
-        const res = await updateDonationOnDb(body);
-        if (res.data) {
-          props.setDonated(!props.donated);
-          props.onChange({});
-          props.refreshData();
-          props.updateStore({
-            ...props.getStore(),
-            transactionHash: res.data.transactionId,
-            walletAddress:res.data.walletAddress,
-            amount: Math.abs(res.data.amount),
-          });
-          setLoading(false);
-        }
-        prevBalance = newBalance;
+          transactionHash: res.data.transactionId,
+          walletAddress: res.data.walletAddress,
+          amount: Math.abs(res.data.amount),
+        });
+        setLoading(false);
+      }
+      prevBalance = newBalance;
     }
-  }, [isQrPayment,chainId]);
+  }, [isQrPayment, chainId]);
 
   const handleChange = (e) => {
     props.updateStore({
@@ -168,8 +170,8 @@ const Step3 = (props) => {
     e.preventDefault();
     setLoading(true);
     setIsQrPayment(false);
-    toast.info("Please keep patience, your transaction is being processed!!", {
-      position: "bottom-right",
+    toast.info('Please keep patience, your transaction is being processed!!', {
+      position: 'bottom-right',
       autoClose: 25000,
       hideProgressBar: true,
     });
@@ -195,12 +197,12 @@ const Step3 = (props) => {
       const resData = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/api/donation/add`,
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(body),
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-        }
+        },
       ).then((res) => res.json());
 
       validator.hideMessages();
@@ -217,12 +219,12 @@ const Step3 = (props) => {
           transactionHash: receipt.transactionHash,
         });
         toast.dismiss();
-        toast.success("Donation Complete successfully!");
+        toast.success('Donation Complete successfully!');
         setLoading(false);
       }
     } else {
       validator.showMessages();
-      return toast.error("Empty field is not allowed!");
+      return toast.error('Empty field is not allowed!');
     }
   };
 
@@ -246,13 +248,13 @@ const Step3 = (props) => {
       <div className="row">
         <div
           style={{
-            textAlign: "center",
+            textAlign: 'center',
           }}
         >
           {props.getStore()?.yourWalletAddress ? (
             <div className="mt-3 mb-2">
               <FormGroup row className="mt-3">
-                <Col sm={12}>
+                <Col sm={6}>
                   <p className="text-center">
                     <small>
                       <strong>Your wallet Address is:</strong>
@@ -261,21 +263,27 @@ const Step3 = (props) => {
                         onClick={() => {
                           copyAddress();
                         }}
-                        style={{ cursor: "pointer", color: "#4f555a" }}
+                        style={{ cursor: 'pointer', color: '#4f555a' }}
                         className={
                           props.getStore().yourWalletAddress
-                            ? "d-block "
-                            : "d-none"
+                            ? 'd-block '
+                            : 'd-none'
                         }
                         title="Click to copy Wallet address"
                       >
-                        {props.getStore().yourWalletAddress}
+                        {shortenString(props.getStore().yourWalletAddress)}
                       </a>
                     </small>
                   </p>
                 </Col>
+                <Col sm={6}>
+                  <ConnectWallet
+                    name="My Wallet"
+                    customClass="btn btn-lg customButton"
+                  />
+                </Col>
               </FormGroup>
-              <FormGroup row className="p-3 bg-light">
+              <FormGroup row className="p-3 mt-3 bg-light">
                 <Col sm={8}>
                   <Input
                     name="amount"
@@ -290,7 +298,7 @@ const Step3 = (props) => {
                 >
                   <small>
                     <strong>Price in USD:</strong> $
-                    {fiatPrice ? fiatPrice.toFixed(2) : "0"}
+                    {fiatPrice ? fiatPrice.toFixed(2) : '0'}
                   </small>
                 </Col>
               </FormGroup>
@@ -301,7 +309,7 @@ const Step3 = (props) => {
                 >
                   <Spinner
                     animation="border"
-                    className={loading ? "d-block mt-2" : "d-none"}
+                    className={loading ? 'd-block mt-2' : 'd-none'}
                     variant="primary"
                     size="sm"
                   />
@@ -319,12 +327,8 @@ const Step3 = (props) => {
           ) : (
             <div className="mt-3 mb-2">
               <p>Connect your wallet for donation</p>
-              <button
-                className="btn-primary btn-lg btn btn-outline"
-                onClick={connected}
-              >
-                Connect Wallet
-              </button>
+
+              <ConnectWallet name="Connect Wallet" />
             </div>
           )}
           <div className="text-center decoration">or</div>
@@ -333,28 +337,28 @@ const Step3 = (props) => {
           <p className="text-center">Scan the QR code to donate</p>
           <div
             style={{
-              background: "#8080803b",
-              paddingTop: "2rem",
-              paddingBottom: "2rem",
-              marginBottom: "1rem",
-              display: "flex",
-              justifyContent: "center",
+              background: '#8080803b',
+              paddingTop: '2rem',
+              paddingBottom: '2rem',
+              marginBottom: '1rem',
+              display: 'flex',
+              justifyContent: 'center',
             }}
           >
             <QRCode
-              value={props.getStore().walletAddress || "Wallet not selected"}
+              value={props.getStore().walletAddress || 'Wallet not selected'}
             />
           </div>
           <p
             className={
-              props.getStore().walletAddress ? "d-block text-center" : "d-none"
+              props.getStore().walletAddress ? 'd-block text-center' : 'd-none'
             }
           >
             <small>
-              <strong>Fundraiser's Wallet:</strong>{" "}
+              <strong>Fundraiser's Wallet:</strong>{' '}
               {props.getStore().walletAddress
                 ? props.getStore().walletAddress
-                : ""}
+                : ''}
             </small>
           </p>
         </div>
