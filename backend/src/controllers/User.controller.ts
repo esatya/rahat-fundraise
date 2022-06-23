@@ -51,20 +51,23 @@ export const registerUser = async (req: IRequest, res: IResponse) => {
       subject: 'Welcome to Rahat',
 
       html: `
-      
-Dear ${alias},
-<br/><br/>
-Thank you for signing up to Rahat Crowdfunding platform. Rahat Crowdfunding platform is an opensource platform which will help you collect fund for the needy people. 
-<br/><br/>
-Please click here to <a href="${LOGIN_URL}" target="_blank">login</a> to your fundraiser account. 
-<br/><br/>
-Thank you. 
-<br/><br/>
-Regrads, 
-Rahat Team `,
+        Dear ${alias},
+        <br/><br/>
+        Thank you for signing up to Rahat Crowdfunding platform. Rahat Crowdfunding platform is an opensource platform which will help you collect fund for the needy people. 
+        <br/><br/>
+        Please click here to <a href="${LOGIN_URL}" target="_blank">login</a> to your fundraiser account. 
+        <br/><br/>
+        Thank you. 
+        <br/><br/>
+        Regrads, 
+        Rahat Team `,
     };
 
-    const mailResult = await transporter.sendMail(message);
+    // For testing skip
+    if (process.env.NODE_ENV !== 'test') {
+      /* istanbul ignore next */
+      await transporter.sendMail(message);
+    }
 
     return res.json({
       ok: true,
@@ -88,24 +91,29 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ ok: false, errors: errors.array() });
     }
 
-    const isPostmanRequest = req.body.isPostmanRequest || false;
+    if (process.env.NODE_ENV !== 'test') {
+      /* istanbul ignore next */
+      const isPostmanRequest = req.body.isPostmanRequest || false;
 
-    if (!isPostmanRequest) {
-      const captchaResponse = await axios.post(
-        'https://hcaptcha.com/siteverify',
-        new URLSearchParams({
-          response: req.body.captchaToken,
-          secret: HCAPTCHA_SECRET,
-        }),
-      );
+      /* istanbul ignore next */
+      if (!isPostmanRequest) {
+        const captchaResponse = await axios.post(
+          'https://hcaptcha.com/siteverify',
+          new URLSearchParams({
+            response: req.body.captchaToken,
+            secret: HCAPTCHA_SECRET,
+          }),
+        );
 
-      if (!captchaResponse.data || !captchaResponse.data.success) {
-        return res.status(400).json({
-          ok: false,
-          msg: 'Captcha could not be verified. Please try again.',
-        });
+        if (!captchaResponse.data || !captchaResponse.data.success) {
+          return res.status(400).json({
+            ok: false,
+            msg: 'Captcha could not be verified. Please try again.',
+          });
+        }
       }
     }
+
     const email: string = req.body.email;
     const user: TUser = await User.findOne({ email });
 
@@ -130,8 +138,11 @@ export const userLogin = async (req: IRequest, res: IResponse) => {
     };
 
     await user.save({ validateModifiedOnly: true });
-
-    const mailResult = await transporter.sendMail(message);
+    // For testing skip
+    if (process.env.NODE_ENV !== 'test') {
+      /* istanbul ignore next */
+      const mailResult = await transporter.sendMail(message);
+    }
 
     return res.json({
       ok: true,
@@ -180,9 +191,11 @@ export const sendOTP = async (req: IRequest, res: IResponse) => {
     };
 
     await user.save({ validateModifiedOnly: true });
-
-    const mailResult = await transporter.sendMail(message);
-
+    // For testing skip
+    if (process.env.NODE_ENV !== 'test') {
+      /* istanbul ignore next */
+      const mailResult = await transporter.sendMail(message);
+    }
     res.json({
       ok: true,
       msg: 'OTP Sent',
@@ -251,9 +264,10 @@ export const verifyOTP = async (req: IRequest, res: IResponse) => {
       .json({ ok: false, msg: 'Something went wrong. Please try again.' });
   }
 };
+
 export const listUsers = async (req: IRequest, res: IResponse) => {
   try {
-    const users: IUser[] = await User.find();
+      const users: IUser[] = await User.find();
 
     if (!users) {
       throw new Error('Users not found.');
@@ -338,7 +352,7 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       let existingUser: TUser = await User.findOne({
         email: req.body.email,
       });
-      if (existingUser) {
+      if (existingUser && existingUser.id !== req.userId) {
         throw new Error(`This email is already registered.`);
       }
     }
@@ -347,7 +361,7 @@ export const updateUserById = async (req: IRequest, res: IResponse) => {
       let existingUser = await User.findOne({
         alias: req.body.alias,
       });
-      if (existingUser) {
+      if (existingUser && existingUser.id !== req.userId) {
         throw new Error(`Username already taken.`);
       }
     }
@@ -441,37 +455,6 @@ export const getProfile = async (req: IRequest, res: IResponse) => {
   }
 };
 
-export const socialLogin = async (req: IRequest, res: IResponse) => {
-  try {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ ok: false, errors: errors.array() });
-    }
-
-    const { email, social } = req.body;
-    const user: TUser = await User.findOne({
-      email,
-      social: { $in: [social] },
-    });
-
-    if (!user) {
-      throw new Error(`User with ${email} not found.`);
-    }
-    return res.json({
-      ok: true,
-      msg: 'Login successful',
-      data: convertUserData(user),
-    });
-  } catch (error) {
-    if (error instanceof Error) {
-      return res.status(401).json({ ok: false, msg: error.message });
-    }
-
-    return res.status(401).json({ ok: false, msg: 'User Route Error' });
-  }
-};
-
 // GET user by Id for admin purpose where all the information is visible to admin
 export const getUserById = async (req: IRequest, res: IResponse) => {
   try {
@@ -511,7 +494,7 @@ export const getUsersByWalletId = async (req: IRequest, res: IResponse) => {
 
     const { walletId } = req.params;
 
-    const user: IUser | null = await User.findOne({ wallet: walletId });
+    const user: IUser | null = await User.findOne({ walletId: walletId });
 
     if (!user) {
       throw new Error(`User with wallet address ${walletId} not found.`);

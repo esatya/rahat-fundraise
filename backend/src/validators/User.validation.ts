@@ -41,11 +41,6 @@ export const addWalletValidationRules: ValidationChain[] = [
   body('wallet').isString(),
 ];
 
-export const socialLoginValidationRules: ValidationChain[] = [
-  body('email').isEmail(),
-  body('social').isString(),
-];
-
 export const getByIdValidationRules: ValidationChain[] = [
   param('id').exists().isString().custom(isObjectIdValidator),
 ];

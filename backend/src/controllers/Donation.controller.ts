@@ -21,7 +21,9 @@ export const getDonations = async (req: IRequest, res: IResponse) => {
       data: donations,
     });
   } catch (error) {
-    return res.status(401).json({ ok: true, msg: 'User Route Error' });
+    if (error instanceof Error) {
+      return res.status(401).json({ ok: false, msg: error.message });
+    }
   }
 };
 
@@ -99,8 +101,11 @@ Regrads,
 Rahat Team `,
     };
 
-    const mailResult = await transporter.sendMail(message);
-
+    // For testing skip
+    if (process.env.NODE_ENV !== 'test') {
+      /* istanbul ignore next */
+      await transporter.sendMail(message);
+    }
     return res.json({
       ok: true,
       msg: 'Donation Added',
@@ -139,8 +144,11 @@ export const sendReceiptToEmail = async (req: IRequest, res: IResponse) => {
       text: `Thanks for the donation of ${donation.amount} to ${donation.campaignId.title}`,
     };
 
-    transporter.sendMail(message);
-
+    // For testing skip
+    if (process.env.NODE_ENV !== 'test') {
+      /* istanbul ignore next */
+      await transporter.sendMail(message);
+    }
     return res.json({
       ok: true,
       msg: `Receipt sent`,

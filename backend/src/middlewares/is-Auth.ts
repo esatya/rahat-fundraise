@@ -20,7 +20,8 @@ const isAuth = (req: IRequest, res: IResponse, next: INext) => {
     const decodedToken = jwt.verify(jwtToken, secret) as JwtPayload;
 
     req.userId = decodedToken['id'];
-  } catch (error) {
+    req.userEmail = decodedToken['email'];
+    } catch (error) {
     throw new Error('Invalid Token');
   }
 
