@@ -267,7 +267,7 @@ export const verifyOTP = async (req: IRequest, res: IResponse) => {
 
 export const listUsers = async (req: IRequest, res: IResponse) => {
   try {
-    const users: IUser[] = await User.find();
+      const users: IUser[] = await User.find();
 
     if (!users) {
       throw new Error('Users not found.');

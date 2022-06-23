@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema<IUser>(
     walletId: String,
     bio: String,
     isActive: { type: Boolean, default: false },
-    otp: {
+        otp: {
       expiry: { type: Number },
       number: { type: Number },
     },
