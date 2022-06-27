@@ -33,16 +33,21 @@ export const getCampaigns = async (req: IRequest, res: IResponse) => {
 
 export const addCampaign = async (req: IRequest, res: IResponse) => {
   try {
+    console.log('Inside add Campaign');
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
+      console.log('errors, validation',errors)
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const user: TUser = req.userId? await User.findById(req.userId): await User.findOne({email: req.userEmail});
-    req.userId = user?._id
+    const user: TUser = await User.findById(req.userId);
+
     if (!user) {
-      throw new Error('You are not authorized to create this campaign');
+      return res.status(401).json({
+        ok: false,
+        error: 'You are not authorized to create this campaign',
+      });
     }
 
     const wallets = JSON.parse(req.body?.wallets) || [];
