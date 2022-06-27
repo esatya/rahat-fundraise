@@ -1,0 +1,165 @@
+/*------------------------------------------------------------------
+[Master Stylesheet]
+Theme Name:     charitio - Multipurpose Charity Nonprofit HTML5 Template
+Version:        1.0.0
+-------------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+
+1. General
+	1.1 Theme Reset Style
+	1.2	Global Elements
+
+2. header
+	2.1 topbar
+	2.2 navigation
+
+3. content
+	3.1 wpo-hero-slider
+	3.2 wpo-features-section
+	3.3 wpo-about-sections
+	3.4 wpo-campaign-area
+	3.5 wpo-team-area
+	3.6 wpo-testimonial-area
+	3.7 wpo-cta-area
+	3.8 wpo-event-area
+	3.9 wpo-blog-section
+	3.10 partners-section
+
+4. wpo-footer
+
+5. Home-style-2
+   5.1 wpo-features-section-s2
+   5.2 wpo-about-section-s2
+   5.3 wpo-fun-fact-section
+   5.4 wpo-project-section
+
+6. Home-style-3
+	6.1 wpo-features-section-s3
+	6.2 wpo-about-section-s3
+	6.3 wpo-fun-fact-section-s2
+	6.4 wpo-campaign-area-s2
+	6.5 wpo-project-section-s2
+	6.6 wpo-testimonial-area-s2
+	6.7 wpo-event-area-s2
+	6.8 wpo-blog-section-s2
+
+7. Home-style-4
+   7.1 wpo-features-section-s4
+   7.2 wpo-about-section-s3
+   7.3 wpo-campaign-area-s3
+   7.4 wpo-campaign-area-s2
+   7.5 wpo-campaign-area-s2
+
+8. Home-style-5
+   8.1 wpo-features-section-s5
+   8.2 wpo-map-section
+   8.3 wpo-about-section-s5
+   8.4 wpo-team-area-s2
+   8.5 wpo-campaign-area-s4
+   8.6 wpo-blog-section-s3
+
+9. Home-style-6
+   9.1 wpo-about-section-s5
+   9.2 wpo-features-section-s6
+
+10. about-page
+
+11. volunteer page
+
+12. cause-single-page
+
+13. event-details-page
+
+14. wpo-service-single-section
+
+15. wpo-project-section
+
+16.	wpo-blog-pg-section
+
+17. wpo-blog-single-section
+
+18. wpo-contact-pg-section
+
+19. login-design
+
+20. error-404-section
+
+
+----------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------
+1. General
+----------------------------------------------------------------*/
+
+// helpers
+@import "helpers/variables";
+@import "helpers/functions";
+@import "helpers/mixins";
+
+// base
+@import "base/base";
+
+
+// components
+@import "components/section-title";
+@import "components/buttons";
+@import "components/form";
+@import "components/social-links";
+@import "components/page-title";
+@import "components/preloader";
+@import "components/blog-sidebar";
+@import "components/pagination";
+
+// layout
+@import "layout/header";
+@import "layout/hero-slider";
+@import "layout/footer";
+
+// components
+@import "components/sticky-header";
+
+
+// page
+@import "page/home-default";
+
+@import "page/_home-style2";
+
+@import "page/_home-style3";
+
+@import "page/_home-style4";
+
+@import "page/_home-style5";
+
+@import "page/_home-style6";
+
+
+@import "page/_about";
+
+@import "page/_team";
+
+@import "page/_cause-single";
+
+@import "page/_event-single";
+
+@import "page/_service";
+
+@import "page/_project";
+
+
+@import "page/_blog";
+
+@import "page/_blog-single";
+
+@import "page/_contact";
+
+@import "page/_auth-page";
+
+@import "page/_error-404";
+
+
+
