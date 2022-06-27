@@ -1,0 +1,89 @@
+/*--------------------------------------------------------------
+9. Home-style-6
+--------------------------------------------------------------*/
+
+/* 9.1 wpo-about-section-s5 */
+
+.wpo-about-section-s6{
+    padding-top: 120px;
+
+    @media(max-width:991px){
+     padding-top: 90px;
+    }
+    @media(max-width:767px){
+     padding-top: 70px;
+    }
+
+    &:before{
+        display: none;
+     }
+
+    .wpo-about-items{
+       background: none;
+    }
+
+    .wpo-about-items{
+
+        .wpo-about-wrap{
+            .wpo-about-img{
+                margin: 0;
+                position: relative;
+                z-index: 1;
+                padding: 0;
+                box-shadow: none;
+                
+                &::before{
+                    display: none;
+                }
+
+                .shp-1,
+                .shp-2{
+                    position: absolute;
+                    right: -10px;
+                    top: -10px;
+                    width: 199px;
+                    height: 199px; 
+                    @include linear-gradient-bg( to left, transparentize($theme-primary-color-s2, 0.25), darken($theme-primary-color-s2, 9%));
+                    z-index: -1;
+                }
+                .shp-2{
+                    right: auto;
+                    top: auto;
+                    left: -10px;
+                    bottom: -10px;
+                    width: 199px;
+                    height: 199px; 
+                    @include linear-gradient-bg( to left, transparentize($theme-primary-color, 0.25), darken($theme-primary-color, 9%));
+                }
+
+                img{
+                    border-radius:0px;
+                }
+    
+                @media(max-width:991px){
+                  margin-bottom: 30px;
+                }
+        
+            }
+
+            
+        }
+        .wpo-about-text{
+            padding-left: 20px;
+            max-width: 100%;
+
+            @media(max-width:991px){
+                padding-left: 0;
+                padding-top: 20px;
+            }
+        }
+    }
+
+
+}
+
+/* 9.2 wpo-features-section-s6  */
+
+.wpo-features-section-s6 {
+  background: $section-bg-color2;
+}

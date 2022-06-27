@@ -1,0 +1,147 @@
+@font-face {
+    font-family: "flaticon";
+    src: url("../fonts/flaticon.ttf?75713cd0fe92267c82649658f1a3b271") format("truetype"),
+url("../fonts/flaticon.woff?75713cd0fe92267c82649658f1a3b271") format("woff"),
+url("../fonts/flaticon.woff2?75713cd0fe92267c82649658f1a3b271") format("woff2"),
+url("../fonts/flaticon.eot?75713cd0fe92267c82649658f1a3b271#iefix") format("embedded-opentype"),
+url("../fonts/flaticon.svg?75713cd0fe92267c82649658f1a3b271#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.flaticon-salary:before {
+    content: "\f101";
+}
+.flaticon-vegetable:before {
+    content: "\f102";
+}
+.flaticon-water-tap:before {
+    content: "\f103";
+}
+.flaticon-medicine:before {
+    content: "\f104";
+}
+.flaticon-graduation-cap:before {
+    content: "\f105";
+}
+.flaticon-wallet-filled-money-tool:before {
+    content: "\f106";
+}
+.flaticon-right-quotes-symbol:before {
+    content: "\f107";
+}
+.flaticon-left-arrow:before {
+    content: "\f108";
+}
+.flaticon-right-arrow:before {
+    content: "\f109";
+}
+.flaticon-elephant:before {
+    content: "\f10a";
+}
+.flaticon-tiger:before {
+    content: "\f10b";
+}
+.flaticon-whale:before {
+    content: "\f10c";
+}
+.flaticon-target:before {
+    content: "\f10d";
+}
+.flaticon-search:before {
+    content: "\f10e";
+}
+.flaticon-chat-comment-oval-speech-bubble-with-text-lines:before {
+    content: "\f10f";
+}
+.flaticon-placeholder:before {
+    content: "\f110";
+}
+.flaticon-phone-call:before {
+    content: "\f111";
+}
+.flaticon-email:before {
+    content: "\f112";
+}
+.flaticon-facebook-app-symbol:before {
+    content: "\f113";
+}
+.flaticon-twitter:before {
+    content: "\f114";
+}
+.flaticon-linkedin:before {
+    content: "\f115";
+}
+.flaticon-instagram:before {
+    content: "\f116";
+}
+.flaticon-dolphin:before {
+    content: "\f117";
+}
+.flaticon-fish:before {
+    content: "\f118";
+}
+.flaticon-play-button:before {
+    content: "\f119";
+}
+.flaticon-checked:before {
+    content: "\f11a";
+}
+.flaticon-next:before {
+    content: "\f11b";
+}
+.flaticon-left-arrow-1:before {
+    content: "\f11c";
+}
+.flaticon-forest:before {
+    content: "\f11d";
+}
+.flaticon-ecology:before {
+    content: "\f11e";
+}
+.flaticon-eco-light:before {
+    content: "\f11f";
+}
+.flaticon-mail:before {
+    content: "\f120";
+}
+.flaticon-location:before {
+    content: "\f121";
+}
+.flaticon-google-plus:before {
+    content: "\f122";
+}
+.flaticon-user:before {
+    content: "\f123";
+}
+.flaticon-comment-white-oval-bubble:before {
+    content: "\f124";
+}
+.flaticon-calendar:before {
+    content: "\f125";
+}
+.flaticon-left-arrow-2:before {
+    content: "\f126";
+}
+.flaticon-right-arrow-1:before {
+    content: "\f127";
+}
+.flaticon-play:before {
+    content: "\f128";
+}
+.flaticon-right-quote-sign:before {
+    content: "\f129";
+}
+.flaticon-left-quote:before {
+    content: "\f12a";
+}
