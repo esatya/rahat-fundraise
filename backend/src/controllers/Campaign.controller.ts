@@ -9,7 +9,7 @@ import { IRequest, IResponse } from '../interfaces/vendors';
 
 export const getCampaigns = async (req: IRequest, res: IResponse) => {
   try {
-    const campaigns = await Campaign.find({ status: 'PUBLISHED' }).populate(
+    const campaigns = await Campaign.find({ status: 'PUBLISHED',createdAt:-1 }).populate(
       'creator',
     );
 
