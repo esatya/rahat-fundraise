@@ -14,6 +14,22 @@ import axios from 'axios';
 
 const LOGIN_URL = 'https://stage.rahat-fundraise.pages.dev/login';
 
+export const  checkIfUserExists = async (req: IRequest, res: IResponse) => {
+  console.log("Inside checkIfUserExists")
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log("The error are for validation", errors);
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const user = await User.findOne({$and: [{email: req.body.email}, {isAgency: true}]});
+  if(!user){
+    return res.status(200).json({ "userExists": false});
+  }
+  return res.status(200).json({ "userExists": true});
+
+
+}
+
 export const registerUser = async (req: IRequest, res: IResponse) => {
   try {
     const errors = validationResult(req);
