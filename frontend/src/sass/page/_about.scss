@@ -1,0 +1,185 @@
+/*--------------------------------------------------------------
+10. about-page
+--------------------------------------------------------------*/
+
+.wpo-about-video-area {
+    padding-top: 130px;
+
+    .wpo-about-video-item{
+    
+        h2 {
+            font-size: 36px;
+            max-width: 625px;
+            font-weight: 700;
+            text-align: center;
+            margin: auto;
+            line-height: 55px;
+            margin-top: 45px;
+        }
+    
+        span {
+            color: $theme-primary-color-s2;
+        }
+    } 
+    
+    
+    .row {
+        padding-bottom: 100px;
+        border-bottom: 1px solid #ebebeb;
+    }
+    
+    .wpo-about-video-img {
+        position: relative;
+    
+        &:before {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            content: "";
+            z-index: 1;
+        }
+    
+        &:after {
+            position: absolute;
+            left: -30px;
+            top: -30px;
+            width: 107%;
+            height: 56%;
+            @include linear-gradient-bg( to left, $theme-primary-color-s2, darken($theme-primary-color-s2, 10%));
+            content: "";
+            z-index: -1;
+        }
+    
+        img {
+            width: 100%;
+        }
+    }
+    
+    .video-holder button.wrap {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 255, 255, .5);
+        width: 83px;
+        height: 83px;
+        border-radius: 83px;
+        display: inline-block;
+        -webkit-animation: spineer 2s infinite;
+        animation: spineer 2s infinite;
+        z-index: 99;
+        border: 1px solid #fff;
+    
+        &:before {
+            content: "";
+            width: 0px;
+            height: 0px;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 20px solid #fff;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+
+
+
+
+@-webkit-keyframes spineer {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 #c7c1ea;
+    }
+
+    70% {
+        -webkit-box-shadow: 0 0 0 20px rgba(1, 93, 199, 0);
+    }
+
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(1, 93, 199, 0);
+    }
+}
+
+@keyframes spineer {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 #c7c1ea;
+        box-shadow: 0 0 0 0 #c7c1ea;
+    }
+
+    70% {
+        -webkit-box-shadow: 0 0 0 20px rgba(1, 93, 199, 0);
+        box-shadow: 0 0 0 20px rgba(1, 93, 199, 0);
+    }
+
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(1, 93, 199, 0);
+        box-shadow: 0 0 0 0 rgba(1, 93, 199, 0);
+    }
+}
+
+
+@media(max-width: 1200px) {
+    .wpo-about-video-img:after {
+        left: -30px;
+        top: -30px;
+        width: 106%;
+        height: 56%;
+    }
+}
+
+@media(max-width: 992px) {
+    .wpo-about-video-img:after {
+        left: -18px;
+        top: -30px;
+        width: 105%;
+        height: 56%;
+    }
+
+    .wpo-team-area-2 {
+        padding-bottom: 70px;
+    }
+}
+
+@media(max-width: 767px) {
+    .wpo-about-video-img:after {
+        left: -7px;
+        top: -12px;
+        width: 102%;
+        height: 56%;
+    }
+}
+
+@media(max-width: 590px) {
+    .wpo-about-video-img:after {
+        left: -7px;
+        top: -12px;
+        width: 104%;
+        height: 56%;
+    }
+
+    .wpo-about-video-item h2 {
+        font-size: 27px;
+        line-height: 35px;
+    }
+
+    .wpo-about-video-area .row {
+        padding-bottom: 60px;
+    }
+
+    .wpo-about-video-area {
+        padding-top: 80px;
+    }
+}
