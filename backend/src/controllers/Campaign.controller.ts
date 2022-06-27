@@ -33,11 +33,9 @@ export const getCampaigns = async (req: IRequest, res: IResponse) => {
 
 export const addCampaign = async (req: IRequest, res: IResponse) => {
   try {
-    console.log('Inside add Campaign');
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      console.log('errors, validation',errors)
       return res.status(400).json({ errors: errors.array() });
     }
 
