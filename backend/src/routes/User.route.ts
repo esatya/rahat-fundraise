@@ -12,6 +12,7 @@ import {
   addWalletValidationRules,
   updateUserValidationRules,
   getByWalletIdValidationRules,
+  checkUserExistsRules
 } from '../validators/User.validation';
 
 import {
@@ -25,7 +26,7 @@ import {
   getUserById,
   registerUser,
   updateUserById,
-  getUsersByWalletId,
+  getUsersByWalletId, checkIfUserExists,
 } from '../controllers/User.controller';
 
 import { isAuth, uploadFile } from '../middlewares';
@@ -61,6 +62,11 @@ router.use(uploadFile(fileStorage));
 // @desc    Register new user from webapp
 // @access  Public
 router.post('/register', newUserValidationRules, registerUser);
+
+// @Route   POST api/user/register
+// @desc    Register new user from webapp
+// @access  Public
+router.post('/checkUserExists', isAuth, checkUserExistsRules, checkIfUserExists); 
 
 // @Route   POST api/user/login
 // @desc    User Login with Email & OTP

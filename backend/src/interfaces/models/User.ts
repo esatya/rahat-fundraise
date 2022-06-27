@@ -14,6 +14,7 @@ interface IUser extends mongoose.Document {
   walletId?: string;
   isActive?: boolean;
   emailVerified?: boolean;
+  isAgency?: boolean;
   otp?: {
     number: number;
     expiry: number;
