@@ -65,17 +65,17 @@ const Footer = (props) => {
                 </div>
                 <ul>
                   <li>
-                    <a href="https://rahat.io/" target="_blank">
+                    <a href="https://rahat.io/" target="_blank" rel="noopener noreferrer">
                       Rahat Website
                     </a>
                   </li>
                   <li>
-                    <a href="https://docs.rahat.io/" target="_blank">
+                    <a href="https://docs.rahat.io/" target="_blank" rel="noopener noreferrer">
                       Documentation
                     </a>
                   </li>
                   <li>
-                    <a href="https://github.com/esatya" target="_blank">
+                    <a href="https://github.com/esatya" target="_blank" rel="noopener noreferrer">
                       {' '}
                       GitHub
                     </a>

@@ -44,31 +44,44 @@ const CauseSinglePage = (props) => {
           <div className="row">
             <div className="col col-lg-7">
               <div className="wpo-case-details-wrap text-center">
-                
                 <div className="wpo-case-details-img d-flex justify-content-center">
                   {campaign?.image && (
                     <img
                       src={`${process.env.REACT_APP_API_BASE_URL}${campaign?.image}`}
                       alt=""
-                     className='img-fluid'
-                     style={{maxHeight:"400px",width:'100%',objectFit:'contain'}}
+                      className="img-fluid"
+                      style={{
+                        maxHeight: '400px',
+                        width: '100%',
+                        objectFit: 'contain',
+                      }}
                     />
                   )}
                 </div>
                 {campaign?.creator?.id === user?.data?.id && (
-                  <Link to={`/fundraise/${id}/edit`} className="btn-primary btn btn-md mt-4">
+                  <Link
+                    to={`/fundraise/${id}/edit`}
+                    className="btn-primary btn btn-md mt-4"
+                  >
                     Edit Campaign
                   </Link>
                 )}
                 <CauseTabs campaign={campaign} donated={donated} />
               </div>
             </div>
-            <CauseSidebar
-              campaign={campaign}
-              donated={donated}
-              setDonated={setDonated}
-              refreshData={fetchSingleCampaign}
-            />
+            {campaign?.status === 'PUBLISHED' ? (
+              <CauseSidebar
+                campaign={campaign}
+                donated={donated}
+                setDonated={setDonated}
+                refreshData={fetchSingleCampaign}
+              />
+            ) : (
+              <div className="col col-lg-5 col-12 text-center">
+                You can't donate to the campaign. <br />
+                The campaign is either in draft or expired.
+              </div>
+            )}
           </div>
         </div>
       </div>

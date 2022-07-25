@@ -45,3 +45,14 @@ ol.progtrckr li.progtrckr-todo:hover:before{
     color:#2876B3 !important;
 
 }
+
+.customButton {
+    background-color: #217ec2;
+    color: white;
+}
+
+.customButton:hover {
+    color: #fff;
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}

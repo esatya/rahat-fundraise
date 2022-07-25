@@ -9,9 +9,9 @@ import './style.css';
 const UserCampaigns = (props) => {
   const [user, setUser] = useState({});
 
-  const ClickHandler = () => {
-    window.scrollTo(10, 0);
-  };
+  // const ClickHandler = () => {
+  //   window.scrollTo(10, 0);
+  // };
 
   const { user: contextUser, refreshLoggedInUser } = useContext(UserContext);
 

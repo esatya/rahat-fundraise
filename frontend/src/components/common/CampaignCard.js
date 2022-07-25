@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import '../common/index.css';
 
 const CampaignCard = ({ Cause, citem }) => {
   return (
@@ -27,9 +29,17 @@ const CampaignCard = ({ Cause, citem }) => {
           <div className="wpo-campaign-content">
             <div className="wpo-campaign-text-top">
               <h2>
-                <Link to={`/fundraise/${Cause.id}`} className="text-break">
-                  {Cause.title}
-                </Link>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 250, hide: 400 }}
+                  overlay={(props) => (
+                    <Tooltip {...props}>{Cause.title}</Tooltip>
+                  )}
+                >
+                  <Link to={`/fundraise/${Cause.id}`}>
+                    {Cause.title?.slice(0, 20)}
+                  </Link>
+                </OverlayTrigger>
               </h2>
               <div className="progress-section">
                 <div className="process">
