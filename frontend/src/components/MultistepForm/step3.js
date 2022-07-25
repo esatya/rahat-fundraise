@@ -325,16 +325,16 @@ const Step3 = (props) => {
               </FormGroup>
             </div>
           ) : (
-            <div className="mt-3 mb-2">
+            <div className="mt-3 mb-4">
               <p>Connect your wallet for donation</p>
 
               <ConnectWallet name="Connect Wallet" />
             </div>
           )}
-          <div className="text-center decoration">or</div>
+          {/* <div className="text-center decoration">Or</div> */}
         </div>
         <div>
-          <p className="text-center">Scan the QR code to donate</p>
+          {/* <p className="text-center">Scan the QR code to donate</p>
           <div
             style={{
               background: '#8080803b',
@@ -348,7 +348,7 @@ const Step3 = (props) => {
             <QRCode
               value={props.getStore().walletAddress || 'Wallet not selected'}
             />
-          </div>
+          </div> */}
           <p
             className={
               props.getStore().walletAddress ? 'd-block text-center' : 'd-none'
