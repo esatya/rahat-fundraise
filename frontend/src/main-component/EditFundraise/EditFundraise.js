@@ -13,8 +13,9 @@ import PageTitle from '../../components/pagetitle';
 import Scrollbar from '../../components/scrollbar';
 import UserContext from '../../context/user-context';
 import { isJson } from '../../helper/helper';
-import web3 from'web3';
-import bnbImage from '../../images/icon/binance.png'
+import web3 from 'web3';
+import bnbImage from '../../images/icon/binance.png';
+import { useHistory } from 'react-router-dom';
 
 const EditFundraise = (props) => {
   const [value, setValue] = useState({
@@ -31,6 +32,8 @@ const EditFundraise = (props) => {
   });
   const [image, setImage] = useState(null);
 
+  const history = useHistory();
+
   const campaignId = props.match.params.id;
   // const [wallets, setWallets] = useState([]);
 
@@ -42,7 +45,10 @@ const EditFundraise = (props) => {
         const resData = await fetch(
           `${process.env.REACT_APP_API_BASE_URL}/api/campaign/get-by-id/${campaignId}`,
         ).then((res) => res.json());
-
+        if (user?.data?.id !== resData?.data?.creator?.id) {
+          toast.info("You don't have sufficient priviledges.");
+          history.push('/');
+        }
         setValue({
           title: resData.data.title,
           excerpt: resData.data.excerpt,
@@ -67,29 +73,25 @@ const EditFundraise = (props) => {
     }
   }, [user, campaignId]);
 
-
   const handleWalletSave = (event) => {
     event.preventDefault();
     const isValidAddress = web3.utils.isAddress(value.walletAddress);
-if(isValidAddress){
-  setValue((previous) => {
-    return {
-      ...previous,
-      wallets: previous?.wallets?.concat({
-        name: previous?.walletType || 'Binance',
-        walletAddress: previous?.walletAddress,
-      }),
-      walletType: 'Binance',
-      walletAddress: '',
-    };
-  });
-}
-else{
-  toast.warning('Please enter correct wallet address.');
-
-}
+    if (isValidAddress) {
+      setValue((previous) => {
+        return {
+          ...previous,
+          wallets: previous?.wallets?.concat({
+            name: previous?.walletType || 'Binance',
+            walletAddress: previous?.walletAddress,
+          }),
+          walletType: 'Binance',
+          walletAddress: '',
+        };
+      });
+    } else {
+      toast.warning('Please enter correct wallet address.');
+    }
   };
-
 
   const removeWallet = (index) => {
     const newWallets = value.wallets?.filter((item, idx) => index !== idx);
@@ -300,8 +302,6 @@ else{
                     <div className="wpo-donations-details">
                       <h2>Enter details of your campaign</h2>
                       <div className="row">
-                   
-
                         <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
                           <label htmlFor="fname" className="form-label">
                             Title
@@ -407,21 +407,28 @@ else{
                           <div className="mb-2">Linked Wallets</div>
                           {value?.wallets?.map((wallet, index) => (
                             <p className="mb-0" key={index}>
-                            <small>  <img src={bnbImage} height={20} style={{marginTop:"-0.3rem"}} alt=""/>&nbsp;{wallet?.name}: {wallet?.walletAddress}</small>
-                               <span
-                                 className="text-danger c-p"
-                                 onClick={() => removeWallet(index)}
-                               >
+                              <small>
+                                {' '}
+                                <img
+                                  src={bnbImage}
+                                  height={20}
+                                  style={{ marginTop: '-0.3rem' }}
+                                  alt=""
+                                />
+                                &nbsp;{wallet?.name}: {wallet?.walletAddress}
+                              </small>
+                              <span
+                                className="text-danger c-p"
+                                onClick={() => removeWallet(index)}
+                              >
                                 &nbsp; <i className="fa fa-trash"></i>
-                               </span>
-                             </p>
+                              </span>
+                            </p>
                           ))}
                         </div>
-
-              
                       </div>
-                      <div className='row mt-4'>
-                      <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
+                      <div className="row mt-4">
+                        <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                           <label htmlFor="fname" className="form-label">
                             Target Amount
                           </label>
@@ -451,8 +458,8 @@ else{
                           />
                         </div>
                       </div>
-                      <div className='row mt-4'>
-                      <div className="mt-3">
+                      <div className="row mt-4">
+                        <div className="mt-3">
                           <div className="mb-2">
                             Campaign Status:{' '}
                             <span className="fw-bold">
@@ -489,7 +496,7 @@ else{
                         </div>
                       </div>
                     </div>
-{/* 
+                    {/* 
                     <div className="submit-area">
                       <button type="submit" className="theme-btn submit-btn">
                         Save
