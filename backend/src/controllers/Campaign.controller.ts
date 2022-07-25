@@ -9,9 +9,9 @@ import { IRequest, IResponse } from '../interfaces/vendors';
 
 export const getCampaigns = async (req: IRequest, res: IResponse) => {
   try {
-    const campaigns = await Campaign.find({ status: 'PUBLISHED' }).populate(
-      'creator',
-    );
+    const campaigns = await Campaign.find({status: 'PUBLISHED'}).populate(
+        'creator',
+    ).sort({createdDate: -1});
 
     if (!campaigns) {
       throw new Error('Campaigns not found.');
@@ -100,23 +100,17 @@ export const updateCampaign = async (req: IRequest, res: IResponse) => {
     const { ...updatedData } = req.body;
 
     if (Object.keys(updatedData).length === 0) {
-      return res.status(400).json({
-        error: 'Must have one valid field to update',
-      });
+      throw new Error('Must have one valid field to update');
     }
 
     const campaign: TCampaign = await Campaign.findById(campaignId);
 
     if (!campaign) {
-      return res.status(400).json({
-        error: 'Campaign does not exist',
-      });
+      throw new Error('Campaign does not exist');
     }
 
     if (req.userId !== campaign.creator._id.toString()) {
-      return res.status(401).json({
-        error: 'You are not authorized to update this campaign',
-      });
+      throw new Error('You are not authorized to update this campaign');
     }
 
     const wallets = JSON.parse(req.body?.wallets) || [];
@@ -133,12 +127,6 @@ export const updateCampaign = async (req: IRequest, res: IResponse) => {
         new: true,
       },
     );
-
-    if (!updatedCampaign) {
-      return res.status(400).json({
-        error: 'Campaign does not exist',
-      });
-    }
 
     return res.json({
       ok: true,
@@ -174,9 +162,7 @@ export const updateCampaignStatus = async (req: IRequest, res: IResponse) => {
     }
 
     if (req.userId !== campaign.creator._id.toString()) {
-      return res.status(401).json({
-        error: 'You are not authorized to update this campaign',
-      });
+      throw new Error('You are not authorized to update this campaign');
     }
 
     campaign.status = status;
@@ -222,9 +208,7 @@ export const extendCampaignExpiryDate = async (
     }
 
     if (req.userId !== campaign.creator._id.toString()) {
-      return res.status(401).json({
-        error: 'You are not authorized to update this campaign',
-      });
+      throw new Error('You are not authorized to update this campaign');
     }
 
     const expiryDate = new Date(campaign.expiryDate).getTime();
@@ -270,9 +254,7 @@ export const removeCampaign = async (req: IRequest, res: IResponse) => {
     }
 
     if (req.userId !== campaign.creator._id.toString()) {
-      return res.status(401).json({
-        error: 'You are not authorized to update this campaign',
-      });
+      throw new Error('You are not authorized to update this campaign');
     }
 
     await Campaign.findByIdAndDelete(campaignId);
@@ -306,9 +288,7 @@ export const archiveCampaign = async (req: IRequest, res: IResponse) => {
     }
 
     if (req.userId !== campaign.creator._id.toString()) {
-      return res.status(401).json({
-        error: 'You are not authorized to update this campaign',
-      });
+      throw new Error('You are not authorized to update this campaign');
     }
 
     campaign.status = 'ARCHIVE';
@@ -339,7 +319,7 @@ export const updateCampaignAmount = async (req: IRequest, res: IResponse) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { campaignId } = req.params;
+    const campaignId: string = req.params.campaignId;
     const amount: number = req.body.amount;
 
     const campaign: TCampaign = await Campaign.findById(campaignId);
@@ -351,9 +331,7 @@ export const updateCampaignAmount = async (req: IRequest, res: IResponse) => {
     }
 
     if (req.userId !== campaign.creator._id.toString()) {
-      return res.status(401).json({
-        error: 'You are not authorized to update this campaign',
-      });
+      throw new Error('You are not authorized to update this campaign');
     }
 
     const updatedCampaign: TCampaign = await Campaign.findByIdAndUpdate(

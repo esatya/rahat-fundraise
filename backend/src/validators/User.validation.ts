@@ -15,6 +15,7 @@ export const newUserValidationRules: ValidationChain[] = [
   body('wallet').isString().optional(),
   body('bio').isString().optional(),
   body('isActive').toBoolean(true).optional(),
+  body('isAgency').toBoolean(true).optional(),
 ];
 
 export const updateUserValidationRules: ValidationChain[] = [
@@ -41,11 +42,6 @@ export const addWalletValidationRules: ValidationChain[] = [
   body('wallet').isString(),
 ];
 
-export const socialLoginValidationRules: ValidationChain[] = [
-  body('email').isEmail(),
-  body('social').isString(),
-];
-
 export const getByIdValidationRules: ValidationChain[] = [
   param('id').exists().isString().custom(isObjectIdValidator),
 ];
@@ -61,4 +57,8 @@ export const sendOTPValidationRules: ValidationChain[] = [
 export const verifyOTPValidationRules: ValidationChain[] = [
   body('email').isEmail().normalizeEmail(),
   body('otpNumber').isNumeric().isLength({ min: 6, max: 6 }),
+];
+
+export const checkUserExistsRules: ValidationChain[] = [
+  body('email').exists().isEmail().normalizeEmail(),
 ];

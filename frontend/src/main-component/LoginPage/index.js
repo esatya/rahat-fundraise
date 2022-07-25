@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import React, { useRef, useState, useEffect } from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 

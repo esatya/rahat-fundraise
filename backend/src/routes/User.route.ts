@@ -11,8 +11,8 @@ import {
   verifyOTPValidationRules,
   addWalletValidationRules,
   updateUserValidationRules,
-  socialLoginValidationRules,
   getByWalletIdValidationRules,
+  checkUserExistsRules
 } from '../validators/User.validation';
 
 import {
@@ -23,11 +23,10 @@ import {
   verifyOTP,
   listUsers,
   getProfile,
-  socialLogin,
   getUserById,
   registerUser,
   updateUserById,
-  getUsersByWalletId,
+  getUsersByWalletId, checkIfUserExists,
 } from '../controllers/User.controller';
 
 import { isAuth, uploadFile } from '../middlewares';
@@ -63,6 +62,11 @@ router.use(uploadFile(fileStorage));
 // @desc    Register new user from webapp
 // @access  Public
 router.post('/register', newUserValidationRules, registerUser);
+
+// @Route   POST api/user/register
+// @desc    Register new user from webapp
+// @access  Public
+router.post('/checkUserExists', isAuth, checkUserExistsRules, checkIfUserExists); 
 
 // @Route   POST api/user/login
 // @desc    User Login with Email & OTP
@@ -108,11 +112,6 @@ router.post('/update-by-id', isAuth, updateUserValidationRules, updateUserById);
 // @desc    Add Wallet - logged in user
 // @access  Public
 router.post('/add-wallet', isAuth, addWalletValidationRules, addWallet);
-
-// @Route   POST api/user/social-login
-// @desc    Social Login - Google
-// @access  Public
-router.post('/social-login', socialLoginValidationRules, socialLogin);
 
 // @Route   GET api/user/get-by-walletid
 // @desc    Get User By Wallet-ID
