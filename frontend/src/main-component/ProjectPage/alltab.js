@@ -243,6 +243,7 @@ const CauseTabs = ({ campaign, donated }) => {
                     <div className="wpo-case-content">
                       <div className="wpo-case-text-top">
                         <h2>{campaign?.title}</h2>
+                        <p className="text-break">{campaign?.excerpt}</p>
                         <div className="progress-sub">
                           <div className="progress-section">
                             <div className="process">
@@ -278,8 +279,9 @@ const CauseTabs = ({ campaign, donated }) => {
                               <span className="pe-1">Goal: </span>
                               {campaign?.target} BNB
                             </li>
+                            {console.log(campaign)}
                             <li>
-                              <span>Donor: </span> 0
+                              <span>Donor: </span> {donations?.length}
                             </li>
                           </ul>
                         </div>
@@ -358,8 +360,13 @@ const CauseTabs = ({ campaign, donated }) => {
                                   </td>
                                   <td>
                                     <a
-                                      href={`https://testnet.bscscan.com/tx/${donation.transactionId?donation.transactionId:''}`}
-                                      target="_blank" rel="noopener noreferrer"
+                                      href={`https://testnet.bscscan.com/tx/${
+                                        donation.transactionId
+                                          ? donation.transactionId
+                                          : ''
+                                      }`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
                                       className="text-decoration-underline text-default"
                                     >
                                       {shortenString(donation.transactionId)}
