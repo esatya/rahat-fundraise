@@ -15,6 +15,7 @@ import web3 from "web3";
 import bnbImage from "../../images/icon/binance.png";
 import polyImage from "../../images/icon/polymatic.jpg";
 import { supportedChains } from "../../utils/chains";
+import Button from "react-bootstrap/Button";
 
 const FundraiseRegisterPage = (props) => {
   const [value, setValue] = useState({
@@ -28,6 +29,7 @@ const FundraiseRegisterPage = (props) => {
   });
 
   const [wallets, setWallets] = useState([]);
+  const [submited,setSubmited] = useState(false);
 
   const { user } = useContext(UserContext);
 
@@ -70,7 +72,7 @@ const FundraiseRegisterPage = (props) => {
 
   const SubmitHandler = async (e) => {
     e.preventDefault();
-
+    setSubmited(true);
     registerFundraise(0);
   };
 
@@ -122,9 +124,11 @@ const FundraiseRegisterPage = (props) => {
       if (resData?.ok) {
         props.history.push("/myfundraise");
       } else {
+        setSubmited(false);
         throw new Error("Failed to register campaign.");
       }
     } catch (error) {
+      setSubmited(false);
       return toast.error(error.message);
     }
   };
@@ -309,16 +313,17 @@ const FundraiseRegisterPage = (props) => {
                     </div>
                   </div>
 
-                  <div className="submit-area">
-                    <button type="submit" className="theme-btn submit-btn mx-2">
+                  <div className="submit-area" disabled={submited}>
+                    <Button disabled={submited} type="submit" className="theme-btn submit-btn mx-2">
                       Publish Campaign
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        disabled={submited}
                       className="theme-btn submit-btn mx-2"
                       onClick={RegisterAsDraft}
                     >
                       Save As Draft
-                    </button>
+                    </Button>
                   </div>
                 </form>
               </div>
