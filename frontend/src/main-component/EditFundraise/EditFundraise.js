@@ -15,6 +15,7 @@ import UserContext from '../../context/user-context';
 import { isJson } from '../../helper/helper';
 import web3 from'web3';
 import bnbImage from '../../images/icon/binance.png'
+import {Button} from "reactstrap";
 
 const EditFundraise = (props) => {
   const [value, setValue] = useState({
@@ -30,6 +31,7 @@ const EditFundraise = (props) => {
     image: '',
   });
   const [image, setImage] = useState(null);
+  const [buttonDisable, setButtonDisabled] = useState(false);
 
   const campaignId = props.match.params.id;
   // const [wallets, setWallets] = useState([]);
@@ -152,6 +154,7 @@ else{
   };
 
   const PublishCampaign = async (e) => {
+    setButtonDisabled(true);
     e.preventDefault();
     try {
       const formData = new FormData();
@@ -169,6 +172,8 @@ else{
       ).then((res) => res.json());
 
       if (resData?.ok) {
+        setButtonDisabled(false);
+
         setValue((previous) => {
           return {
             ...previous,
@@ -187,6 +192,7 @@ else{
 
   const MoveToDraft = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
     try {
       const formData = new FormData();
       formData.append('status', 'DRAFT');
@@ -203,6 +209,8 @@ else{
       ).then((res) => res.json());
 
       if (resData?.ok) {
+        setButtonDisabled(false);
+
         setValue((previous) => {
           return {
             ...previous,
@@ -220,6 +228,8 @@ else{
 
   const MoveToArchive = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
+
     try {
       const formData = new FormData();
       formData.append('status', 'ARCHIVE');
@@ -236,6 +246,8 @@ else{
       ).then((res) => res.json());
 
       if (resData?.ok) {
+        setButtonDisabled(false);
+
         setValue((previous) => {
           return {
             ...previous,
@@ -253,6 +265,8 @@ else{
 
   const CloseCampaign = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
+
     try {
       const formData = new FormData();
       formData.append('status', 'CLOSED');
@@ -268,6 +282,8 @@ else{
       ).then((res) => res.json());
 
       if (resData?.ok) {
+        setButtonDisabled(false);
+
         setValue((previous) => {
           return {
             ...previous,
@@ -300,7 +316,7 @@ else{
                     <div className="wpo-donations-details">
                       <h2>Enter details of your campaign</h2>
                       <div className="row">
-                   
+
 
                         <div className="col-lg-12 col-md-6 col-sm-6 col-12 form-group clearfix">
                           <label htmlFor="fname" className="form-label">
@@ -418,7 +434,7 @@ else{
                           ))}
                         </div>
 
-              
+
                       </div>
                       <div className='row mt-4'>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
@@ -462,34 +478,38 @@ else{
                         </div>
 
                         <div className="d-flex flex-row mt-4 flex-wrap">
-                          <button
+                          <Button
+                              disabled={buttonDisable}
                             className="btn btn-success me-3 my-2"
                             onClick={PublishCampaign}
                           >
                             Publish Campaign
-                          </button>
-                          <button
+                          </Button>
+                          <Button
+                              disabled={buttonDisable}
                             className="btn btn-primary me-3 my-2"
                             onClick={MoveToDraft}
                           >
                             Move to Draft
-                          </button>
-                          <button
-                            className="btn btn-primary me-3 my-2"
+                          </Button>
+                          <Button
+                              disabled={buttonDisable}
+                              className="btn btn-primary me-3 my-2"
                             onClick={MoveToArchive}
                           >
                             Move to Archive
-                          </button>
-                          <button
-                            className="btn btn-primary me-3 my-2"
+                          </Button>
+                          <Button
+                              disabled={buttonDisable}
+                              className="btn btn-primary me-3 my-2"
                             onClick={CloseCampaign}
                           >
                             Close Campaign
-                          </button>
+                          </Button>
                         </div>
                       </div>
                     </div>
-{/* 
+{/*
                     <div className="submit-area">
                       <button type="submit" className="theme-btn submit-btn">
                         Save
