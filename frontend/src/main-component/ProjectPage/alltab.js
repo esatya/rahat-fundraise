@@ -252,14 +252,14 @@ const CauseTabs = ({ campaign, donated }) => {
                                   className="progress-bar"
                                   style={{
                                     width: `${
-                                      (campaign?.amount / campaign?.target) *
+                                      (campaign?.amount / campaign?.target) >1? 100:(campaign?.amount / campaign?.target) *
                                       100
                                     }%`,
                                   }}
                                 >
                                   <div className="progress-value">
                                     <span>
-                                      {(
+                                      {(campaign?.amount / campaign?.target) >1? 100:(
                                         (campaign?.amount / campaign?.target) *
                                         100
                                       ).toFixed(2)}
