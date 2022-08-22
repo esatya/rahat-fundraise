@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, Router } from 'react-router-dom';
 import { stateToHTML } from 'draft-js-export-html';
 import { convertFromRaw } from 'draft-js';
 import {
@@ -122,6 +122,11 @@ const CauseTabs = ({ campaign, donated }) => {
     toast.success('Copied to Clipboard.');
   };
 
+  const forceRedirect = (url) => {
+    console.log(url);
+    window.location.href = encodeURI(url);
+  };
+
   if (!campaign) return <>No Campaign</>;
 
   return (
@@ -194,35 +199,55 @@ const CauseTabs = ({ campaign, donated }) => {
                     </LinkedinShareButton>
                   </Dropdown.Item>
 
-                  <Dropdown.Item>
-                    <TelegramShareButton url={window.location.href}>
-                      <TelegramIcon size={32} round={true} className="mx-1" />
-                    </TelegramShareButton>{' '}
+                  <Dropdown.Item
+                    onClick={() =>
+                      forceRedirect(
+                        `https://telegram.me/share/?url=${window.location.href}`,
+                      )
+                    }
+                  >
+                    <TelegramIcon
+                      size={32}
+                      round={true}
+                      className="mx-1 me-2"
+                    />
                     Telegram
                   </Dropdown.Item>
 
-                  <Dropdown.Item>
-                    <ViberShareButton url={window.location.href}>
-                      <ViberIcon size={32} round={true} className="mx-1" />
-                    </ViberShareButton>{' '}
+                  <Dropdown.Item
+                    onClick={() =>
+                      forceRedirect(
+                        `viber://forward?text=${window.location.href}`,
+                      )
+                    }
+                  >
+                    <ViberIcon size={32} round={true} className="mx-1 me-2" />
                     Viber
                   </Dropdown.Item>
 
-                  <Dropdown.Item>
-                    <FacebookMessengerShareButton url={window.location.href}>
-                      <FacebookMessengerIcon
-                        size={32}
-                        round={true}
-                        className="mx-1"
-                      />
-                    </FacebookMessengerShareButton>{' '}
+                  <Dropdown.Item
+                    onClick={() =>
+                      forceRedirect(
+                        `fb-messenger://share?link=${window.location.href}`,
+                      )
+                    }
+                  >
+                    <FacebookMessengerIcon
+                      size={32}
+                      round={true}
+                      className="mx-1 me-2"
+                    />
                     Messenger
                   </Dropdown.Item>
 
-                  <Dropdown.Item>
-                    <EmailShareButton url={window.location.href}>
-                      <EmailIcon size={32} round={true} className="mx-1" />
-                    </EmailShareButton>{' '}
+                  <Dropdown.Item
+                    onClick={() =>
+                      forceRedirect(
+                        `mailto:?subject=${campaign?.title}&body=${window.location.href}`,
+                      )
+                    }
+                  >
+                    <EmailIcon size={32} round={true} className="mx-1 me-2" />
                     Email
                   </Dropdown.Item>
                   <Dropdown.Item
@@ -252,17 +277,23 @@ const CauseTabs = ({ campaign, donated }) => {
                                   className="progress-bar"
                                   style={{
                                     width: `${
-                                      (campaign?.amount / campaign?.target) >1? 100:(campaign?.amount / campaign?.target) *
-                                      100
+                                      campaign?.amount / campaign?.target > 1
+                                        ? 100
+                                        : (campaign?.amount /
+                                            campaign?.target) *
+                                          100
                                     }%`,
                                   }}
                                 >
                                   <div className="progress-value">
                                     <span>
-                                      {(campaign?.amount / campaign?.target) >1? 100:(
-                                        (campaign?.amount / campaign?.target) *
-                                        100
-                                      ).toFixed(2)}
+                                      {campaign?.amount / campaign?.target > 1
+                                        ? 100
+                                        : (
+                                            (campaign?.amount /
+                                              campaign?.target) *
+                                            100
+                                          ).toFixed(2)}
                                     </span>
                                     %
                                   </div>
@@ -279,7 +310,6 @@ const CauseTabs = ({ campaign, donated }) => {
                               <span className="pe-1">Goal: </span>
                               {campaign?.target} BNB
                             </li>
-                            {console.log(campaign)}
                             <li>
                               <span>Donor: </span> {donations?.length}
                             </li>
