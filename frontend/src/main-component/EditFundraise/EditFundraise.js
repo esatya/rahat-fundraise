@@ -13,9 +13,9 @@ import PageTitle from '../../components/pagetitle';
 import Scrollbar from '../../components/scrollbar';
 import UserContext from '../../context/user-context';
 import { isJson } from '../../helper/helper';
-import web3 from'web3';
-import bnbImage from '../../images/icon/binance.png'
-import {Button} from "reactstrap";
+import web3 from 'web3';
+import bnbImage from '../../images/icon/binance.png';
+import { Button } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 
 const EditFundraise = (props) => {
@@ -220,6 +220,7 @@ const EditFundraise = (props) => {
           };
         });
         toast.success('Moved Campaign to draft.');
+        history.push('/myfundraise');
       } else {
         throw new Error('Could not complete action.');
       }
@@ -257,6 +258,7 @@ const EditFundraise = (props) => {
           };
         });
         toast.success('Moved Campaign to Archive.');
+        history.push('/myfundraise');
       } else {
         throw new Error('Could not complete action.');
       }
@@ -293,6 +295,7 @@ const EditFundraise = (props) => {
           };
         });
         toast.success('Closed Campaign');
+        history.push('/myfundraise');
       } else {
         throw new Error('Could not complete action.');
       }
@@ -311,7 +314,7 @@ const EditFundraise = (props) => {
             <div className="row justify-content-center">
               <div className="col-lg-8">
                 <div className="wpo-donate-header">
-                  <h2>Edit your campaign</h2>
+                  <h2>${value?.title}</h2>
                 </div>
                 <div id="Donations" className="tab-pane">
                   <form onSubmit={SubmitHandler}>
@@ -486,29 +489,29 @@ const EditFundraise = (props) => {
 
                         <div className="d-flex flex-row mt-4 flex-wrap">
                           <Button
-                              disabled={buttonDisable}
+                            disabled={buttonDisable}
                             className="btn btn-success me-3 my-2"
                             onClick={PublishCampaign}
                           >
                             Publish Campaign
                           </Button>
                           <Button
-                              disabled={buttonDisable}
+                            disabled={buttonDisable}
                             className="btn btn-primary me-3 my-2"
                             onClick={MoveToDraft}
                           >
                             Move to Draft
                           </Button>
                           <Button
-                              disabled={buttonDisable}
-                              className="btn btn-primary me-3 my-2"
+                            disabled={buttonDisable}
+                            className="btn btn-primary me-3 my-2"
                             onClick={MoveToArchive}
                           >
                             Move to Archive
                           </Button>
                           <Button
-                              disabled={buttonDisable}
-                              className="btn btn-primary me-3 my-2"
+                            disabled={buttonDisable}
+                            className="btn btn-primary me-3 my-2"
                             onClick={CloseCampaign}
                           >
                             Close Campaign
