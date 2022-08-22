@@ -13,8 +13,9 @@ import PageTitle from '../../components/pagetitle';
 import Scrollbar from '../../components/scrollbar';
 import UserContext from '../../context/user-context';
 import { isJson } from '../../helper/helper';
-import web3 from 'web3';
-import bnbImage from '../../images/icon/binance.png';
+import web3 from'web3';
+import bnbImage from '../../images/icon/binance.png'
+import {Button} from "reactstrap";
 import { useHistory } from 'react-router-dom';
 
 const EditFundraise = (props) => {
@@ -31,6 +32,7 @@ const EditFundraise = (props) => {
     image: '',
   });
   const [image, setImage] = useState(null);
+  const [buttonDisable, setButtonDisabled] = useState(false);
 
   const history = useHistory();
 
@@ -154,6 +156,7 @@ const EditFundraise = (props) => {
   };
 
   const PublishCampaign = async (e) => {
+    setButtonDisabled(true);
     e.preventDefault();
     try {
       const formData = new FormData();
@@ -171,6 +174,8 @@ const EditFundraise = (props) => {
       ).then((res) => res.json());
 
       if (resData?.ok) {
+        setButtonDisabled(false);
+
         setValue((previous) => {
           return {
             ...previous,
@@ -189,6 +194,7 @@ const EditFundraise = (props) => {
 
   const MoveToDraft = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
     try {
       const formData = new FormData();
       formData.append('status', 'DRAFT');
@@ -205,6 +211,8 @@ const EditFundraise = (props) => {
       ).then((res) => res.json());
 
       if (resData?.ok) {
+        setButtonDisabled(false);
+
         setValue((previous) => {
           return {
             ...previous,
@@ -222,6 +230,8 @@ const EditFundraise = (props) => {
 
   const MoveToArchive = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
+
     try {
       const formData = new FormData();
       formData.append('status', 'ARCHIVE');
@@ -238,6 +248,8 @@ const EditFundraise = (props) => {
       ).then((res) => res.json());
 
       if (resData?.ok) {
+        setButtonDisabled(false);
+
         setValue((previous) => {
           return {
             ...previous,
@@ -255,6 +267,8 @@ const EditFundraise = (props) => {
 
   const CloseCampaign = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
+
     try {
       const formData = new FormData();
       formData.append('status', 'CLOSED');
@@ -270,6 +284,8 @@ const EditFundraise = (props) => {
       ).then((res) => res.json());
 
       if (resData?.ok) {
+        setButtonDisabled(false);
+
         setValue((previous) => {
           return {
             ...previous,
@@ -469,34 +485,38 @@ const EditFundraise = (props) => {
                         </div>
 
                         <div className="d-flex flex-row mt-4 flex-wrap">
-                          <button
+                          <Button
+                              disabled={buttonDisable}
                             className="btn btn-success me-3 my-2"
                             onClick={PublishCampaign}
                           >
                             Publish Campaign
-                          </button>
-                          <button
+                          </Button>
+                          <Button
+                              disabled={buttonDisable}
                             className="btn btn-primary me-3 my-2"
                             onClick={MoveToDraft}
                           >
                             Move to Draft
-                          </button>
-                          <button
-                            className="btn btn-primary me-3 my-2"
+                          </Button>
+                          <Button
+                              disabled={buttonDisable}
+                              className="btn btn-primary me-3 my-2"
                             onClick={MoveToArchive}
                           >
                             Move to Archive
-                          </button>
-                          <button
-                            className="btn btn-primary me-3 my-2"
+                          </Button>
+                          <Button
+                              disabled={buttonDisable}
+                              className="btn btn-primary me-3 my-2"
                             onClick={CloseCampaign}
                           >
                             Close Campaign
-                          </button>
+                          </Button>
                         </div>
                       </div>
                     </div>
-                    {/* 
+                    {/*
                     <div className="submit-area">
                       <button type="submit" className="theme-btn submit-btn">
                         Save
