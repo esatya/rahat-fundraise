@@ -182,8 +182,8 @@ const EditFundraise = (props) => {
             status: 'Published',
           };
         });
-        toast.success('Published Campaign.');
         SubmitHandler(e);
+        history.push('/myfundraise');
       } else {
         throw new Error('Could not complete action.');
       }
